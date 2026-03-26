@@ -1,0 +1,15 @@
+{
+  "name": "merek-command-center",
+  "version": "1.0.0",
+  "description": "Merek Security Solutions — State of Play Command Center",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

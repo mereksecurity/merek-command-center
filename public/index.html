@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Merek — Command Center</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f1117; --bg-card: #1a1d27; --bg-hover: #1f2233; --bg-input: #14161f;
+      --border: #2a2d3a; --border-light: #222533; --border-focus: #d97757;
+      --text: #e8e8ed; --text-dim: #8b8d9a; --text-muted: #5c5e6e;
+      --accent: #d97757; --accent-glow: rgba(217,119,87,0.12);
+      --green: #4ade80; --green-dim: rgba(74,222,128,0.10);
+      --yellow: #fbbf24; --yellow-dim: rgba(251,191,36,0.10);
+      --red: #f87171; --red-dim: rgba(248,113,113,0.10);
+      --blue: #60a5fa; --blue-dim: rgba(96,165,250,0.10);
+      --purple: #a78bfa; --purple-dim: rgba(167,139,250,0.10);
+      --cyan: #22d3ee; --cyan-dim: rgba(34,211,238,0.10);
+    }
+    body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color:var(--text); height:100vh; overflow:hidden; display:flex; flex-direction:column; }
+
+    /* ── Header ── */
+    header { display:flex; justify-content:space-between; align-items:center; padding:14px 24px; border-bottom:1px solid var(--border); flex-shrink:0; }
+    .logo { display:flex; align-items:center; gap:10px; }
+    .logo-mark { width:30px; height:30px; background:var(--accent); border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; color:#fff; }
+    .logo h1 { font-size:1.05rem; font-weight:700; letter-spacing:-0.03em; }
+    .logo span { font-size:0.65rem; color:var(--text-muted); }
+    .header-actions { display:flex; gap:8px; align-items:center; }
+    .hdr-btn { padding:6px 14px; border-radius:7px; font-size:0.68rem; font-weight:600; cursor:pointer; border:1px solid var(--border); background:var(--bg-card); color:var(--text-dim); transition:all 0.15s; }
+    .hdr-btn:hover { border-color:var(--accent); color:var(--text); }
+    .hdr-btn.primary { background:var(--accent); color:#fff; border-color:var(--accent); }
+    .hdr-btn.primary:hover { opacity:0.9; }
+    .sync-count { background:var(--red); color:#fff; font-size:0.5rem; padding:1px 5px; border-radius:8px; margin-left:4px; font-weight:700; }
+
+    /* ── KPI Strip ── */
+    .kpi-strip { display:flex; gap:1px; background:var(--border); border-bottom:1px solid var(--border); flex-shrink:0; }
+    .kpi { flex:1; background:var(--bg); padding:10px 14px; text-align:center; }
+    .kpi-val { font-size:1.35rem; font-weight:700; letter-spacing:-0.03em; }
+    .kpi-lbl { font-size:0.55rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.06em; margin-top:2px; }
+
+    /* ── Tabs ── */
+    .tab-bar { display:flex; gap:0; border-bottom:1px solid var(--border); padding:0 24px; flex-shrink:0; background:var(--bg); overflow-x:auto; }
+    .tab { padding:9px 16px; font-size:0.7rem; font-weight:500; color:var(--text-muted); cursor:pointer; border:none; background:none; border-bottom:2px solid transparent; transition:all 0.15s; white-space:nowrap; }
+    .tab:hover { color:var(--text-dim); }
+    .tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+
+    /* ── Content ── */
+    .tab-content { flex:1; overflow:hidden; display:none; }
+    .tab-content.active { display:flex; }
+    .panel { flex:1; overflow-y:auto; padding:16px 24px; }
+    .panel::-webkit-scrollbar { width:4px; }
+    .panel::-webkit-scrollbar-thumb { background:var(--border); border-radius:4px; }
+    .panel + .panel { border-left:1px solid var(--border); }
+
+    .section-label { font-size:0.62rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.06em; margin:18px 0 8px; padding-bottom:5px; border-bottom:1px solid var(--border-light); display:flex; justify-content:space-between; align-items:center; }
+    .section-label:first-child { margin-top:0; }
+    .section-label .add-btn { font-size:0.6rem; color:var(--accent); cursor:pointer; padding:2px 8px; border:1px solid rgba(217,119,87,0.3); border-radius:4px; background:none; }
+    .section-label .add-btn:hover { background:var(--accent-glow); }
+
+    /* ── Interactive Cards ── */
+    .i-card {
+      padding:12px 14px; border-radius:10px; margin-bottom:6px;
+      background:var(--bg-card); border:1px solid var(--border);
+      position:relative; cursor:pointer; transition:all 0.15s;
+    }
+    .i-card:hover { border-color:rgba(217,119,87,0.3); }
+    .i-card.editing { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent); }
+    .i-card-top { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+    .i-card-title { font-size:0.8rem; font-weight:600; flex:1; }
+    .i-card-meta { font-size:0.65rem; color:var(--text-dim); margin-top:3px; }
+    .i-card-actions { display:flex; gap:4px; opacity:0; transition:opacity 0.15s; }
+    .i-card:hover .i-card-actions { opacity:1; }
+    .act-btn { padding:3px 8px; border-radius:5px; font-size:0.58rem; font-weight:600; cursor:pointer; border:1px solid var(--border); background:var(--bg); color:var(--text-dim); transition:all 0.15s; }
+    .act-btn:hover { border-color:var(--accent); color:var(--text); }
+    .act-btn.danger:hover { border-color:var(--red); color:var(--red); }
+    .act-btn.email { border-color:rgba(96,165,250,0.3); color:var(--blue); }
+    .act-btn.email:hover { background:var(--blue-dim); }
+    .act-btn.sow { border-color:rgba(167,139,250,0.3); color:var(--purple); }
+    .act-btn.sow:hover { background:var(--purple-dim); }
+    .act-btn.cal { border-color:rgba(74,222,128,0.3); color:var(--green); }
+    .act-btn.cal:hover { background:var(--green-dim); }
+
+    /* ── Status Badges (clickable) ── */
+    .badge { font-size:0.55rem; font-weight:600; padding:2px 7px; border-radius:5px; text-transform:uppercase; letter-spacing:0.03em; flex-shrink:0; min-width:62px; text-align:center; cursor:pointer; position:relative; }
+    .badge:hover { filter:brightness(1.2); }
+    .b-strong { background:var(--green-dim); color:var(--green); }
+    .b-active { background:var(--blue-dim); color:var(--blue); }
+    .b-atrisk { background:var(--red-dim); color:var(--red); }
+    .b-aging { background:var(--yellow-dim); color:var(--yellow); }
+    .b-stale { background:rgba(255,255,255,0.04); color:var(--text-muted); }
+    .b-waiting { background:var(--purple-dim); color:var(--purple); }
+    .b-delivered { background:var(--cyan-dim); color:var(--cyan); }
+    .b-submitted { background:var(--green-dim); color:var(--green); }
+    .b-secured { background:var(--green-dim); color:var(--green); }
+    .b-stalled { background:var(--red-dim); color:var(--red); }
+    .b-uncertain { background:var(--yellow-dim); color:var(--yellow); }
+    .b-engaged { background:var(--blue-dim); color:var(--blue); }
+    .b-complete { background:var(--green-dim); color:var(--green); }
+    .b-designed { background:var(--purple-dim); color:var(--purple); }
+    .b-ready { background:var(--cyan-dim); color:var(--cyan); }
+    .b-rebuild { background:var(--yellow-dim); color:var(--yellow); }
+    .b-draft { background:var(--accent-glow); color:var(--accent); }
+    .b-inprog { background:var(--blue-dim); color:var(--blue); }
+    .b-paused { background:rgba(255,255,255,0.04); color:var(--text-muted); }
+
+    /* ── Status Dropdown ── */
+    .status-dropdown {
+      position:absolute; top:100%; right:0; z-index:100;
+      background:var(--bg-card); border:1px solid var(--border); border-radius:8px;
+      padding:4px; min-width:140px; box-shadow:0 8px 24px rgba(0,0,0,0.4);
+      display:none;
+    }
+    .status-dropdown.open { display:block; }
+    .status-opt { padding:6px 10px; font-size:0.68rem; border-radius:5px; cursor:pointer; display:flex; align-items:center; gap:8px; }
+    .status-opt:hover { background:var(--bg-hover); }
+    .status-dot { width:8px; height:8px; border-radius:50%; }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px);
+      z-index:1000; display:none; align-items:center; justify-content:center;
+    }
+    .modal-overlay.open { display:flex; }
+    .modal {
+      background:var(--bg-card); border:1px solid var(--border); border-radius:14px;
+      width:90%; max-width:640px; max-height:85vh; overflow-y:auto;
+      box-shadow:0 24px 48px rgba(0,0,0,0.5);
+    }
+    .modal-header {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:16px 20px; border-bottom:1px solid var(--border);
+    }
+    .modal-header h2 { font-size:0.95rem; font-weight:600; }
+    .modal-close { background:none; border:none; color:var(--text-muted); font-size:1.2rem; cursor:pointer; padding:4px 8px; }
+    .modal-close:hover { color:var(--text); }
+    .modal-body { padding:20px; }
+    .modal-footer { padding:12px 20px; border-top:1px solid var(--border); display:flex; justify-content:flex-end; gap:8px; }
+
+    .form-group { margin-bottom:14px; }
+    .form-label { font-size:0.65rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:4px; display:block; }
+    .form-input, .form-select, .form-textarea {
+      width:100%; padding:9px 12px; border-radius:7px; border:1px solid var(--border);
+      background:var(--bg-input); color:var(--text); font-family:'Inter',sans-serif;
+      font-size:0.78rem; transition:border-color 0.15s;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { outline:none; border-color:var(--accent); }
+    .form-textarea { min-height:100px; resize:vertical; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+
+    /* ── Change Log ── */
+    .changelog { position:fixed; bottom:0; right:0; width:340px; max-height:300px; z-index:900; transform:translateY(calc(100% - 36px)); transition:transform 0.25s ease; }
+    .changelog.expanded { transform:translateY(0); }
+    .changelog-header {
+      background:var(--accent); color:#fff; padding:8px 14px; font-size:0.7rem; font-weight:600;
+      cursor:pointer; display:flex; justify-content:space-between; align-items:center;
+      border-radius:8px 8px 0 0;
+    }
+    .changelog-body { background:var(--bg-card); border:1px solid var(--border); border-top:none; overflow-y:auto; max-height:264px; }
+    .cl-entry { padding:8px 14px; font-size:0.68rem; border-bottom:1px solid var(--border-light); display:flex; gap:8px; }
+    .cl-entry:last-child { border-bottom:none; }
+    .cl-time { color:var(--text-muted); min-width:50px; flex-shrink:0; font-size:0.6rem; }
+    .cl-action { flex:1; color:var(--text-dim); line-height:1.4; }
+    .cl-type { font-size:0.55rem; font-weight:600; padding:1px 6px; border-radius:3px; flex-shrink:0; }
+    .cl-type.edit { background:var(--blue-dim); color:var(--blue); }
+    .cl-type.create { background:var(--green-dim); color:var(--green); }
+    .cl-type.email { background:var(--purple-dim); color:var(--purple); }
+    .cl-type.sow { background:var(--accent-glow); color:var(--accent); }
+    .cl-type.cal { background:var(--cyan-dim); color:var(--cyan); }
+
+    /* ── Inline Edit ── */
+    .editable { cursor:text; border-bottom:1px dashed transparent; transition:border-color 0.15s; }
+    .editable:hover { border-bottom-color:var(--text-muted); }
+    .editable:focus { outline:none; border-bottom-color:var(--accent); background:var(--bg-input); padding:2px 4px; border-radius:3px; }
+
+    /* ── Quick Action Bar ── */
+    .quick-bar {
+      display:flex; gap:6px; margin-top:8px; flex-wrap:wrap;
+    }
+
+    @media (max-width:900px) {
+      .tab-content.active { flex-direction:column; }
+      .panel + .panel { border-left:none; border-top:1px solid var(--border); }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-mark">M</div>
+    <div>
+      <h1>Command Center</h1>
+      <span>Mike Davis — Merek Security Solutions</span>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="hdr-btn" onclick="openModal('new-thread')">+ Thread</button>
+    <button class="hdr-btn" onclick="openModal('compose-email')">+ Email</button>
+    <button class="hdr-btn" onclick="openModal('draft-sow')">+ SOW</button>
+    <button class="hdr-btn" onclick="openModal('new-event')">+ Event</button>
+    <button class="hdr-btn primary" onclick="exportChanges()">Sync<span class="sync-count" id="syncCount" style="display:none;">0</span></button>
+  </div>
+</header>
+
+<div class="kpi-strip">
+  <div class="kpi"><div class="kpi-val" style="color:var(--text)">20</div><div class="kpi-lbl">Threads</div></div>
+  <div class="kpi"><div class="kpi-val" style="color:var(--red)">3</div><div class="kpi-lbl">Need Action</div></div>
+  <div class="kpi"><div class="kpi-val" style="color:var(--green)">3</div><div class="kpi-lbl">Active Grants</div></div>
+  <div class="kpi"><div class="kpi-val" style="color:var(--accent)">9</div><div class="kpi-lbl">Manuscripts</div></div>
+  <div class="kpi"><div class="kpi-val" style="color:var(--purple)">4</div><div class="kpi-lbl">Pending SOWs</div></div>
+  <div class="kpi"><div class="kpi-val" style="color:var(--cyan)" id="changeCount">0</div><div class="kpi-lbl">Pending Changes</div></div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab active" onclick="switchTab(this,'threads')">Threads</button>
+  <button class="tab" onclick="switchTab(this,'grants')">Grants</button>
+  <button class="tab" onclick="switchTab(this,'sow')">SOWs</button>
+  <button class="tab" onclick="switchTab(this,'revenue')">Revenue</button>
+  <button class="tab" onclick="switchTab(this,'manuscripts')">Manuscripts</button>
+  <button class="tab" onclick="switchTab(this,'priorities')">Priorities</button>
+  <button class="tab" onclick="switchTab(this,'changelog')">Change Log</button>
+</div>
+
+<!-- ═══════════════ TAB: THREADS ═══════════════ -->
+<div id="tab-threads" class="tab-content active">
+  <div class="panel" style="flex:1.4;" id="threads-panel">
+    <div class="section-label">Relationship Health — All Threads <button class="add-btn" onclick="openModal('new-thread')">+ New Thread</button></div>
+    <!-- Threads are rendered by JS -->
+  </div>
+  <div class="panel" style="flex:0.6; max-width:340px;">
+    <div class="section-label">Upcoming Calendar <button class="add-btn" onclick="openModal('new-event')">+ Event</button></div>
+    <div id="calendar-panel"></div>
+    <div class="section-label" style="margin-top:20px;">Quick Actions</div>
+    <div id="quick-actions-panel"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ TAB: GRANTS ═══════════════ -->
+<div id="tab-grants" class="tab-content">
+  <div class="panel" id="grants-panel"></div>
+  <div class="panel" style="flex:0.7; max-width:380px;" id="grants-timeline-panel"></div>
+</div>
+
+<!-- ═══════════════ TAB: SOWs ═══════════════ -->
+<div id="tab-sow" class="tab-content">
+  <div class="panel" id="sow-panel"></div>
+  <div class="panel" style="flex:0.7; max-width:380px;" id="sow-sidebar"></div>
+</div>
+
+<!-- ═══════════════ TAB: REVENUE ═══════════════ -->
+<div id="tab-revenue" class="tab-content">
+  <div class="panel" id="revenue-panel"></div>
+  <div class="panel" style="flex:0.7; max-width:380px;" id="revenue-sidebar"></div>
+</div>
+
+<!-- ═══════════════ TAB: MANUSCRIPTS ═══════════════ -->
+<div id="tab-manuscripts" class="tab-content">
+  <div class="panel" id="manuscripts-panel"></div>
+</div>
+
+<!-- ═══════════════ TAB: PRIORITIES ═══════════════ -->
+<div id="tab-priorities" class="tab-content">
+  <div class="panel" id="priorities-panel"></div>
+</div>
+
+<!-- ═══════════════ TAB: CHANGE LOG ═══════════════ -->
+<div id="tab-changelog" class="tab-content">
+  <div class="panel" id="full-changelog-panel">
+    <div class="section-label">All Pending Changes <button class="add-btn" onclick="exportChanges()">Export for Sync</button></div>
+    <div id="full-cl-list"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ MODALS ═══════════════ -->
+
+<!-- New Thread Modal -->
+<div class="modal-overlay" id="modal-new-thread">
+  <div class="modal">
+    <div class="modal-header"><h2>Create New Thread</h2><button class="modal-close" onclick="closeModal('new-thread')">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Thread Name</label><input class="form-input" id="nt-name" placeholder="e.g., Microsoft Tribal Contract"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Status</label>
+          <select class="form-select" id="nt-status">
+            <option value="STRONG">Strong</option><option value="ACTIVE" selected>Active</option><option value="AGING">Aging</option>
+            <option value="WAITING">Waiting</option><option value="STALE">Stale</option><option value="STALLED">Stalled</option>
+            <option value="AT RISK">At Risk</option><option value="UNCERTAIN">Uncertain</option><option value="ENGAGED">Engaged</option>
+            <option value="SUBMITTED">Submitted</option><option value="SECURED">Secured</option><option value="DELIVERED">Delivered</option>
+            <option value="COMPLETE">Complete</option><option value="DESIGNED">Designed</option><option value="REBUILDING">Rebuilding</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Category</label>
+          <select class="form-select" id="nt-category">
+            <option value="consulting">Consulting</option><option value="fellowship">Fellowship</option>
+            <option value="grant">Grant</option><option value="creative">Creative</option>
+            <option value="community">Community</option><option value="personal">Personal</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Contact(s)</label><input class="form-input" id="nt-contact" placeholder="e.g., David Peach, Joshua Elicio"></div>
+      <div class="form-group"><label class="form-label">Notes</label><textarea class="form-textarea" id="nt-notes" placeholder="Context, history, next steps..."></textarea></div>
+      <div class="form-group"><label class="form-label">Financial Value (if known)</label><input class="form-input" id="nt-value" placeholder="e.g., $25,000"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="hdr-btn" onclick="closeModal('new-thread')">Cancel</button>
+      <button class="hdr-btn primary" onclick="createThread()">Create Thread</button>
+    </div>
+  </div>
+</div>
+
+<!-- Compose Email Modal -->
+<div class="modal-overlay" id="modal-compose-email">
+  <div class="modal">
+    <div class="modal-header"><h2>Compose Email</h2><button class="modal-close" onclick="closeModal('compose-email')">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">To</label><input class="form-input" id="em-to" placeholder="email@example.com"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">CC</label><input class="form-input" id="em-cc" placeholder="Optional"></div>
+        <div class="form-group"><label class="form-label">Related Thread</label>
+          <select class="form-select" id="em-thread"><option value="">None</option></select>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Subject</label><input class="form-input" id="em-subject" placeholder="Subject line"></div>
+      <div class="form-group"><label class="form-label">Body</label><textarea class="form-textarea" id="em-body" style="min-height:180px;" placeholder="Write your email..."></textarea></div>
+      <div class="form-group" style="font-size:0.65rem; color:var(--text-muted);">This will create a Gmail draft via Claude on next sync. Mike sends manually.</div>
+    </div>
+    <div class="modal-footer">
+      <button class="hdr-btn" onclick="closeModal('compose-email')">Cancel</button>
+      <button class="hdr-btn primary" onclick="createEmailDraft()">Queue Draft</button>
+    </div>
+  </div>
+</div>
+
+<!-- Draft SOW Modal -->
+<div class="modal-overlay" id="modal-draft-sow">
+  <div class="modal" style="max-width:720px;">
+    <div class="modal-header"><h2>Draft Statement of Work</h2><button class="modal-close" onclick="closeModal('draft-sow')">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Client Name</label><input class="form-input" id="sow-client" placeholder="e.g., TXNM Energy"></div>
+        <div class="form-group"><label class="form-label">Engagement Title</label><input class="form-input" id="sow-title" placeholder="e.g., Human Risk Mitigation Training"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">SOW Type</label>
+          <select class="form-select" id="sow-type">
+            <option value="cybersecurity">Cybersecurity Assessment / Compliance</option>
+            <option value="cyberpsychology">Cyberpsychology Consulting</option>
+            <option value="mindfullbytes">MindfulBytes Program Delivery</option>
+            <option value="research">Research Partnership</option>
+            <option value="general">General Consulting</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Related Thread</label>
+          <select class="form-select" id="sow-thread"><option value="">None</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Estimated Value</label><input class="form-input" id="sow-value" placeholder="e.g., $45,000"></div>
+        <div class="form-group"><label class="form-label">Version</label><input class="form-input" id="sow-version" value="v1.0"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Scope Summary</label><textarea class="form-textarea" id="sow-scope" placeholder="What Merek will do and why. Lead with the client's problem."></textarea></div>
+      <div class="form-group"><label class="form-label">Deliverables</label><textarea class="form-textarea" id="sow-deliverables" placeholder="One deliverable per line:&#10;1. Gap Analysis Report&#10;2. Remediation Roadmap&#10;3. Training Materials"></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Timeline</label><input class="form-input" id="sow-timeline" placeholder="e.g., 8 weeks"></div>
+        <div class="form-group"><label class="form-label">Payment Terms</label>
+          <select class="form-select" id="sow-payment">
+            <option value="net30">Net 30</option><option value="milestone">Milestone-Based</option>
+            <option value="retainer">Monthly Retainer</option><option value="fixed">Fixed Fee</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Relevant Merek Credentials (select 2-3)</label>
+        <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:4px;">
+          <label style="font-size:0.68rem; display:flex; align-items:center; gap:4px; color:var(--text-dim);"><input type="checkbox" class="sow-cred" value="CEO, Merek Security Solutions" checked> CEO, Merek</label>
+          <label style="font-size:0.68rem; display:flex; align-items:center; gap:4px; color:var(--text-dim);"><input type="checkbox" class="sow-cred" value="Harvard CDT Research Fellow 2025-2026"> Harvard CDT Fellow</label>
+          <label style="font-size:0.68rem; display:flex; align-items:center; gap:4px; color:var(--text-dim);"><input type="checkbox" class="sow-cred" value="D.Sc. candidate, Cyberpsychology, Capitol Technology University"> D.Sc. Cyberpsychology</label>
+          <label style="font-size:0.68rem; display:flex; align-items:center; gap:4px; color:var(--text-dim);"><input type="checkbox" class="sow-cred" value="U.S. Navy veteran (22 years)"> Navy Veteran</label>
+          <label style="font-size:0.68rem; display:flex; align-items:center; gap:4px; color:var(--text-dim);"><input type="checkbox" class="sow-cred" value="Executive Director, NM-CCCR (501c3)"> Exec Dir NM-CCCR</label>
+          <label style="font-size:0.68rem; display:flex; align-items:center; gap:4px; color:var(--text-dim);"><input type="checkbox" class="sow-cred" value="Pentagon, LANL, Boeing experience"> Pentagon/LANL/Boeing</label>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Additional Notes for Claude</label><textarea class="form-textarea" id="sow-notes" placeholder="Any context Claude should know when generating the full SOW document..."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="hdr-btn" onclick="closeModal('draft-sow')">Cancel</button>
+      <button class="hdr-btn primary" onclick="createSOWDraft()">Queue SOW Draft</button>
+    </div>
+  </div>
+</div>
+
+<!-- New Calendar Event Modal -->
+<div class="modal-overlay" id="modal-new-event">
+  <div class="modal">
+    <div class="modal-header"><h2>Create Calendar Event</h2><button class="modal-close" onclick="closeModal('new-event')">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Event Title</label><input class="form-input" id="ev-title" placeholder="e.g., Follow-up call with David Peach"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Date</label><input class="form-input" id="ev-date" type="date"></div>
+        <div class="form-group"><label class="form-label">Time</label><input class="form-input" id="ev-time" type="time"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Duration</label>
+          <select class="form-select" id="ev-duration">
+            <option value="30">30 min</option><option value="60" selected>1 hour</option>
+            <option value="90">1.5 hours</option><option value="120">2 hours</option><option value="allday">All Day</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Related Thread</label>
+          <select class="form-select" id="ev-thread"><option value="">None</option></select>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="ev-desc" placeholder="Optional notes..."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="hdr-btn" onclick="closeModal('new-event')">Cancel</button>
+      <button class="hdr-btn primary" onclick="createEvent()">Queue Event</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Thread Modal -->
+<div class="modal-overlay" id="modal-edit-thread">
+  <div class="modal">
+    <div class="modal-header"><h2>Edit Thread</h2><button class="modal-close" onclick="closeModal('edit-thread')">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Thread Name</label><input class="form-input" id="et-name"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Status</label>
+          <select class="form-select" id="et-status">
+            <option value="STRONG">Strong</option><option value="ACTIVE">Active</option><option value="AGING">Aging</option>
+            <option value="WAITING">Waiting</option><option value="STALE">Stale</option><option value="STALLED">Stalled</option>
+            <option value="AT RISK">At Risk</option><option value="UNCERTAIN">Uncertain</option><option value="ENGAGED">Engaged</option>
+            <option value="SUBMITTED">Submitted</option><option value="SECURED">Secured</option><option value="DELIVERED">Delivered</option>
+            <option value="COMPLETE">Complete</option><option value="DESIGNED">Designed</option><option value="REBUILDING">Rebuilding</option><option value="PAUSED">Paused</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Days Since Contact</label><input class="form-input" id="et-days" type="number"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Contact(s)</label><input class="form-input" id="et-contact"></div>
+      <div class="form-group"><label class="form-label">Notes / Action Items</label><textarea class="form-textarea" id="et-notes" style="min-height:140px;"></textarea></div>
+      <input type="hidden" id="et-index">
+    </div>
+    <div class="modal-footer">
+      <button class="hdr-btn" onclick="closeModal('edit-thread')">Cancel</button>
+      <button class="hdr-btn primary" onclick="saveThread()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════ DATA STORE ═══════════════
+const STATE = {
+  threads: [
+    { id:1, name:"Harvard CDT Fellowship", status:"STRONG", contact:"Carrie James, Emily Weinstein, Eduardo Lara", days:0, meta:"today", notes:"Eduardo feedback received. Add Plan A/B prompts. Orientation Mar 30.", category:"fellowship" },
+    { id:2, name:"IDC 2026 Work-in-Progress", status:"AT RISK", contact:"Aria", days:6, meta:"6 days", notes:"Deadline March 31. Aria unavailable. Decision: submit solo or hold.", category:"creative" },
+    { id:3, name:"TXNM Energy POC", status:"AGING", contact:"David Peach, Joshua Elicio, Gary Todd", days:9, meta:"9 days", notes:"SOW v2 delivered Mar 13. Silent since Mar 16. April 7 start. Follow up immediately.", category:"consulting" },
+    { id:4, name:"Kairos Four-Way Collaboration", status:"REBUILDING", contact:"Brad", days:2, meta:"2 days", notes:"Reconstruction Package sent. Awaiting Brad onboarding.", category:"creative" },
+    { id:5, name:"Digital Presence — School Activation", status:"STRONG", contact:"Bryant Johnson", days:0, meta:"today", notes:"Infrastructure complete. Sessions begin April 6. Bryant confirmed.", category:"fellowship" },
+    { id:6, name:"EMI Technologies (SPRS)", status:"STALE", contact:"Katy Alvarez", days:17, meta:"17 days", notes:"SPRS 18. UNSENT SOW DRAFT in Gmail (28 days). Reply overdue. CRITICAL.", category:"consulting" },
+    { id:7, name:"Emerging Scholarly Network", status:"WAITING", contact:"Tynes, Noble, Becknell", days:2, meta:"2 days", notes:"Cold outreach sent March 23. No replies.", category:"fellowship" },
+    { id:8, name:"Amex Shop Small Grant", status:"SECURED", contact:"Main Street America", days:0, meta:"Awarded", notes:"Awarded Mar 24. DocuSign done. Payment ~Apr 15. Confidential until May 3.", category:"grant" },
+    { id:9, name:"Billy Bit / Majik Kids", status:"DELIVERED", contact:"Bonnie Hay, Bradley Morris", days:0, meta:"today", notes:"Complete package sent. Awaiting response.", category:"creative" },
+    { id:10, name:"Merek Dashboard", status:"READY", contact:"—", days:0, meta:"—", notes:"Render deployment package built. Needs GitHub push.", category:"consulting" },
+    { id:11, name:"DWA / NMSBA", status:"STALLED", contact:"Alex Lugo (LANL)", days:27, meta:"27 days", notes:"Intake cancelled. DWA Technical Scope ready (2,105 words). Reschedule needed.", category:"consulting" },
+    { id:12, name:"Red & Yellow Bank / William Foster", status:"ACTIVE", contact:"William Foster", days:0, meta:"today", notes:"NM viability confirmed. Attorney search in progress.", category:"consulting" },
+    { id:13, name:"Yakama Nation / Jason Nakai", status:"PAUSED", contact:"Jason Nakai, Rebecca", days:7, meta:"paused", notes:"Mike pulled back Mar 15. Open door, not closed.", category:"consulting" },
+    { id:14, name:"Candace Carteen / Cyberpsych", status:"ENGAGED", contact:"Candace Carteen", days:1, meta:"1 day", notes:"Annotatable .docx built. Attach to Gmail draft and send.", category:"creative" },
+    { id:15, name:"Cambridge Digital Minds", status:"SUBMITTED", contact:"Cambridge University", days:0, meta:"done", notes:"Application submitted. Deadline Mar 27. 15 fellows globally.", category:"fellowship" },
+    { id:16, name:"The Identity Intervention", status:"COMPLETE", contact:"—", days:0, meta:"—", notes:"5,938 words. PI-level document. Internal only.", category:"creative" },
+    { id:17, name:"MindfulBytes Kickstarter", status:"DESIGNED", contact:"—", days:0, meta:"footage", notes:"Campaign ready (3,330 words, 5 tiers). Needs April session footage.", category:"grant" },
+    { id:18, name:"Stephen Catt / Funding Cadence", status:"ACTIVE", contact:"Stephen Catt", days:0, meta:"today", notes:"DWA Spec Sheet and Potentials sent. Monitoring response.", category:"consulting" },
+    { id:19, name:"Empower! Black Futures Fund", status:"ACTIVE", contact:"Desirae Soriano", days:0, meta:"today", notes:"Committee meeting Mar 25. Score sheets due Apr 6 by 5pm.", category:"community" },
+    { id:20, name:"Anthropic Fellows Application", status:"SUBMITTED", contact:"Anthropic / Constellation", days:0, meta:"Apr 6", notes:"Submitted for July 2026 cohort. Check status April 6.", category:"fellowship" },
+  ],
+  changeLog: [],
+  nextThreadId: 21
+};
+
+// ═══════════════ HELPERS ═══════════════
+const statusMap = {
+  'STRONG':'b-strong','ACTIVE':'b-active','AT RISK':'b-atrisk','AGING':'b-aging',
+  'STALE':'b-stale','WAITING':'b-waiting','DELIVERED':'b-delivered','SUBMITTED':'b-submitted',
+  'SECURED':'b-secured','STALLED':'b-stalled','UNCERTAIN':'b-uncertain','ENGAGED':'b-engaged',
+  'COMPLETE':'b-complete','DESIGNED':'b-designed','READY':'b-ready','REBUILDING':'b-rebuild',
+  'PAUSED':'b-paused','DRAFT':'b-draft'
+};
+
+function badgeClass(status) { return statusMap[status] || 'b-active'; }
+
+function logChange(type, description, data={}) {
+  const now = new Date();
+  const time = now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+  STATE.changeLog.push({ type, description, data, time, timestamp: now.toISOString() });
+  updateSyncCount();
+  renderChangeLog();
+}
+
+function updateSyncCount() {
+  const count = STATE.changeLog.length;
+  document.getElementById('changeCount').textContent = count;
+  const sc = document.getElementById('syncCount');
+  if (count > 0) { sc.style.display = 'inline'; sc.textContent = count; }
+  else { sc.style.display = 'none'; }
+}
+
+// ═══════════════ TAB SWITCHING ═══════════════
+function switchTab(btn, name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ═══════════════ MODALS ═══════════════
+function openModal(name) {
+  document.getElementById('modal-' + name).classList.add('open');
+  populateThreadDropdowns();
+}
+function closeModal(name) {
+  document.getElementById('modal-' + name).classList.remove('open');
+}
+
+function populateThreadDropdowns() {
+  ['em-thread','sow-thread','ev-thread'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = '<option value="">None</option>';
+    STATE.threads.forEach(t => {
+      el.innerHTML += `<option value="${t.id}">${t.id}. ${t.name}</option>`;
+    });
+  });
+}
+
+// ═══════════════ THREAD ACTIONS ═══════════════
+function createThread() {
+  const t = {
+    id: STATE.nextThreadId++,
+    name: document.getElementById('nt-name').value,
+    status: document.getElementById('nt-status').value,
+    contact: document.getElementById('nt-contact').value,
+    days: 0, meta: 'new',
+    notes: document.getElementById('nt-notes').value,
+    category: document.getElementById('nt-category').value
+  };
+  STATE.threads.push(t);
+  logChange('create', `New thread: ${t.name} [${t.status}]`, { thread: t });
+  closeModal('new-thread');
+  renderThreads();
+  // Clear form
+  ['nt-name','nt-contact','nt-notes','nt-value'].forEach(id => document.getElementById(id).value = '');
+}
+
+function editThread(idx) {
+  const t = STATE.threads[idx];
+  document.getElementById('et-name').value = t.name;
+  document.getElementById('et-status').value = t.status;
+  document.getElementById('et-days').value = t.days;
+  document.getElementById('et-contact').value = t.contact;
+  document.getElementById('et-notes').value = t.notes;
+  document.getElementById('et-index').value = idx;
+  openModal('edit-thread');
+}
+
+function saveThread() {
+  const idx = parseInt(document.getElementById('et-index').value);
+  const t = STATE.threads[idx];
+  const oldStatus = t.status;
+  t.name = document.getElementById('et-name').value;
+  t.status = document.getElementById('et-status').value;
+  t.days = parseInt(document.getElementById('et-days').value) || 0;
+  t.contact = document.getElementById('et-contact').value;
+  t.notes = document.getElementById('et-notes').value;
+  const changes = [];
+  if (oldStatus !== t.status) changes.push(`status: ${oldStatus} → ${t.status}`);
+  changes.push('notes updated');
+  logChange('edit', `Thread ${t.id} (${t.name}): ${changes.join(', ')}`, { threadId: t.id, oldStatus, newStatus: t.status });
+  closeModal('edit-thread');
+  renderThreads();
+}
+
+function quickEmail(threadIdx) {
+  const t = STATE.threads[threadIdx];
+  document.getElementById('em-to').value = '';
+  document.getElementById('em-subject').value = `Re: ${t.name}`;
+  document.getElementById('em-body').value = '';
+  openModal('compose-email');
+  setTimeout(() => { document.getElementById('em-thread').value = t.id; }, 50);
+}
+
+function quickSOW(threadIdx) {
+  const t = STATE.threads[threadIdx];
+  document.getElementById('sow-client').value = t.contact.split(',')[0].trim();
+  document.getElementById('sow-title').value = t.name;
+  openModal('draft-sow');
+  setTimeout(() => { document.getElementById('sow-thread').value = t.id; }, 50);
+}
+
+// ═══════════════ EMAIL / SOW / EVENT CREATION ═══════════════
+function createEmailDraft() {
+  const draft = {
+    to: document.getElementById('em-to').value,
+    cc: document.getElementById('em-cc').value,
+    subject: document.getElementById('em-subject').value,
+    body: document.getElementById('em-body').value,
+    thread: document.getElementById('em-thread').value
+  };
+  logChange('email', `Email draft: "${draft.subject}" to ${draft.to}`, draft);
+  closeModal('compose-email');
+}
+
+function createSOWDraft() {
+  const creds = [...document.querySelectorAll('.sow-cred:checked')].map(c => c.value);
+  const sow = {
+    client: document.getElementById('sow-client').value,
+    title: document.getElementById('sow-title').value,
+    type: document.getElementById('sow-type').value,
+    value: document.getElementById('sow-value').value,
+    version: document.getElementById('sow-version').value,
+    scope: document.getElementById('sow-scope').value,
+    deliverables: document.getElementById('sow-deliverables').value,
+    timeline: document.getElementById('sow-timeline').value,
+    payment: document.getElementById('sow-payment').value,
+    credentials: creds,
+    notes: document.getElementById('sow-notes').value,
+    thread: document.getElementById('sow-thread').value
+  };
+  logChange('sow', `SOW draft: ${sow.client} — ${sow.title} (${sow.version})`, sow);
+  closeModal('draft-sow');
+}
+
+function createEvent() {
+  const ev = {
+    title: document.getElementById('ev-title').value,
+    date: document.getElementById('ev-date').value,
+    time: document.getElementById('ev-time').value,
+    duration: document.getElementById('ev-duration').value,
+    description: document.getElementById('ev-desc').value,
+    thread: document.getElementById('ev-thread').value
+  };
+  logChange('cal', `Calendar event: "${ev.title}" on ${ev.date} at ${ev.time}`, ev);
+  closeModal('new-event');
+}
+
+// ═══════════════ EXPORT / SYNC ═══════════════
+function exportChanges() {
+  if (STATE.changeLog.length === 0) { alert('No pending changes to sync.'); return; }
+  const output = {
+    exportedAt: new Date().toISOString(),
+    changeCount: STATE.changeLog.length,
+    changes: STATE.changeLog,
+    currentThreads: STATE.threads
+  };
+  const blob = new Blob([JSON.stringify(output, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `merek-sync-${new Date().toISOString().slice(0,10)}.json`;
+  a.click(); URL.revokeObjectURL(url);
+}
+
+// ═══════════════ RENDERERS ═══════════════
+function renderThreads() {
+  const panel = document.getElementById('threads-panel');
+  let html = '<div class="section-label">Relationship Health — All Threads <button class="add-btn" onclick="openModal(\'new-thread\')">+ New Thread</button></div>';
+  STATE.threads.forEach((t, idx) => {
+    html += `
+      <div class="i-card" ondblclick="editThread(${idx})">
+        <div class="i-card-top">
+          <span style="font-size:0.6rem;color:var(--text-muted);width:16px;text-align:right;flex-shrink:0;">${t.id}</span>
+          <span class="badge ${badgeClass(t.status)}" onclick="editThread(${idx})">${t.status}</span>
+          <span class="i-card-title">${t.name}</span>
+          <span style="font-size:0.65rem;color:var(--text-muted);flex-shrink:0;">${t.meta}</span>
+          <div class="i-card-actions">
+            <button class="act-btn" onclick="editThread(${idx})">Edit</button>
+            <button class="act-btn email" onclick="quickEmail(${idx})">Email</button>
+            ${['consulting'].includes(t.category) ? `<button class="act-btn sow" onclick="quickSOW(${idx})">SOW</button>` : ''}
+          </div>
+        </div>
+        <div class="i-card-meta">${t.contact} ${t.notes ? '— ' + t.notes.substring(0,80) + (t.notes.length>80?'...':'') : ''}</div>
+      </div>`;
+  });
+  panel.innerHTML = html;
+
+  // Calendar sidebar
+  const calPanel = document.getElementById('calendar-panel');
+  const calEvents = [
+    { date:'MAR 25', cls:'today', event:'Empower! Black Futures Committee', time:'5:30–7:00 PM · Today' },
+    { date:'MAR 26', cls:'normal', event:'PZ Community Meeting', time:'11:30 AM' },
+    { date:'MAR 27', cls:'deadline', event:'Cambridge Digital Minds DEADLINE', time:'Submitted ✓' },
+    { date:'MAR 30', cls:'normal', event:'Educator Fellow Orientation', time:'Rio Grande & Montessori One' },
+    { date:'MAR 31', cls:'deadline', event:'IDC 2026 DEADLINE', time:'Decision needed' },
+    { date:'APR 1', cls:'normal', event:'Funding Cadence + PZ Food for Thought', time:'Rent due' },
+    { date:'APR 6', cls:'normal', event:'Co-design sessions BEGIN', time:'Aria call · Empower! scores due' },
+    { date:'APR 7', cls:'normal', event:'TXNM Energy POC start', time:'Awaiting David Peach' },
+  ];
+  calPanel.innerHTML = calEvents.map(e => `
+    <div style="display:flex;gap:10px;padding:6px 8px;border-radius:6px;margin-bottom:2px;font-size:0.75rem;cursor:default;" onmouseover="this.style.background='var(--bg-hover)'" onmouseout="this.style.background='none'">
+      <span style="font-size:0.58rem;font-weight:600;min-width:40px;color:var(--${e.cls === 'deadline' ? 'red' : e.cls === 'today' ? 'green' : 'accent'});">${e.date}</span>
+      <div><div>${e.event}</div><div style="font-size:0.6rem;color:var(--text-muted);margin-top:1px;">${e.time}</div></div>
+    </div>`).join('');
+
+  // Quick actions
+  const qaPanel = document.getElementById('quick-actions-panel');
+  const actions = [
+    { label:'Send EMI SOW draft', color:'red', action:() => { logChange('email','Send unsent EMI SOW draft from Gmail',{action:'send_emi_sow'}); alert('Queued: Send EMI SOW draft on next sync.'); }},
+    { label:'Follow up David Peach', color:'yellow', action:() => quickEmail(2) },
+    { label:'Reply to Katy (EMI)', color:'yellow', action:() => quickEmail(5) },
+    { label:'Send Candace .docx', color:'blue', action:() => { logChange('email','Attach Two_Doors_Annotatable.docx and send to Candace',{action:'send_candace'}); alert('Queued: Send Candace email on next sync.'); }},
+  ];
+  qaPanel.innerHTML = actions.map(a => `
+    <div style="padding:7px 10px;border-radius:6px;margin-bottom:3px;font-size:0.72rem;cursor:pointer;border-left:3px solid var(--${a.color});background:var(--${a.color}-dim);"
+      onclick="(${a.action.toString()})()">${a.label}</div>`).join('');
+}
+
+function renderChangeLog() {
+  const list = document.getElementById('full-cl-list');
+  if (!list) return;
+  if (STATE.changeLog.length === 0) {
+    list.innerHTML = '<div style="font-size:0.75rem;color:var(--text-muted);padding:20px;text-align:center;">No changes yet. Edit threads, compose emails, draft SOWs, or create events — they\'ll appear here.</div>';
+    return;
+  }
+  list.innerHTML = [...STATE.changeLog].reverse().map(e => `
+    <div class="cl-entry">
+      <span class="cl-time">${e.time}</span>
+      <span class="cl-type ${e.type}">${e.type}</span>
+      <span class="cl-action">${e.description}</span>
+    </div>`).join('');
+}
+
+// ═══════════════ RENDER: GRANTS ═══════════════
+function renderGrants() {
+  const grants = [
+    { name:'Harvard CDT Educator Fellowship', status:'ACTIVE', badge:'b-active', funder:'Harvard GSE / Project Zero', entity:'Personal / Academic', period:'2025–2026', contacts:'Carrie James, Emily Weinstein, Eduardo Lara', next:'Mar 30 — Educator Orientation', nextColor:'accent', notes:'Eduardo feedback received. Add Plan A/B prompts to session guides.' },
+    { name:'Amex Shop Small Grant', status:'AWARDED', badge:'b-delivered', funder:'Main Street America / American Express', entity:'NM-CCCR / MindfulBytes', period:'Awarded Mar 24', contacts:'smallbizgrant@mainstreet.org', next:'Apr 15 — Payment expected (ACH)', nextColor:'green', notes:'DocuSign complete. Confidential until May 3 announcement.' },
+    { name:'Empower! Black Futures Community Fund', status:'ACTIVE', badge:'b-active', funder:'Santa Fe Community Foundation', entity:'Committee Member', period:'2026', contacts:'Desirae Soriano', next:'Apr 6 — Score sheets due 5pm', nextColor:'red', notes:'Committee meeting happened tonight Mar 25.' },
+  ];
+  const pending = [
+    { name:'Cambridge Digital Minds Fellowship', status:'SUBMITTED', badge:'b-submitted', funder:'University of Cambridge', deadline:'Mar 27 — 2 days', scope:'15 fellows globally, fully funded, Aug 3-9' },
+    { name:'Anthropic Fellows', status:'APPLIED', badge:'b-submitted', funder:'Anthropic via Constellation', deadline:'Apr 6 — Check status', scope:'Rolling admissions, July 2026 cohort' },
+  ];
+  const pipeline = [
+    { name:'MindfulBytes Kickstarter', status:'DESIGNED', badge:'b-designed', target:'Late April / Early May', blocker:'Needs April session footage' },
+  ];
+  const deadlines = [
+    { date:'MAR 24', cls:'done', prog:'Amex', desc:'Award notification received', stat:'✓ Done', sc:'b-complete' },
+    { date:'MAR 25', cls:'done', prog:'Amex', desc:'DocuSign signed & countersigned', stat:'✓ Done', sc:'b-complete' },
+    { date:'MAR 25', cls:'done', prog:'Empower!', desc:'Committee meeting (Zoom)', stat:'✓ Done', sc:'b-complete' },
+    { date:'MAR 27', cls:'urgent', prog:'Cambridge', desc:'Application deadline', stat:'Verify', sc:'b-submitted' },
+    { date:'MAR 30', cls:'important', prog:'Harvard', desc:'Educator Fellow Orientation', stat:'Prep', sc:'b-inprog' },
+    { date:'MAR 31', cls:'done', prog:'Amex', desc:'Paperwork deadline (9am CT)', stat:'✓ Done', sc:'b-complete' },
+    { date:'APR 6', cls:'urgent', prog:'Empower!', desc:'Initial score sheets due 5pm', stat:'Action', sc:'b-atrisk' },
+    { date:'APR 6', cls:'important', prog:'Harvard', desc:'Co-Design Sessions BEGIN', stat:'Ready', sc:'b-inprog' },
+    { date:'APR 6', cls:'important', prog:'Anthropic', desc:'Check application status', stat:'Follow Up', sc:'b-waiting' },
+    { date:'APR 13', cls:'important', prog:'Harvard', desc:'April Fellows Lab Meeting', stat:'Prep', sc:'b-inprog' },
+    { date:'APR 15', cls:'monitor', prog:'Amex', desc:'ACH payment expected', stat:'Watch', sc:'b-waiting' },
+    { date:'APR 15', cls:'monitor', prog:'Harvard', desc:'Roundtable — Digital Presence', stat:'Prep', sc:'b-inprog' },
+    { date:'MAY 3', cls:'monitor', prog:'Amex', desc:'Public announcement goes live', stat:'Pending', sc:'b-designed' },
+    { date:'MAY 11', cls:'monitor', prog:'Empower!', desc:'Final score sheets due 5pm', stat:'After visits', sc:'b-waiting' },
+    { date:'MAY 31', cls:'monitor', prog:'Harvard', desc:'Fellowship deliverables due', stat:'Critical', sc:'b-atrisk' },
+  ];
+
+  let html = '<div class="section-label" style="color:var(--green);">Active Funded Programs</div>';
+  grants.forEach(g => {
+    html += `<div class="i-card"><div class="i-card-top"><span class="badge ${g.badge}">${g.status}</span><span class="i-card-title">${g.name}</span></div>
+    <div class="i-card-meta">${g.funder}</div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:6px;font-size:0.68rem;">
+      <div><span style="color:var(--text-muted);font-size:0.56rem;text-transform:uppercase;">Entity</span><div>${g.entity}</div></div>
+      <div><span style="color:var(--text-muted);font-size:0.56rem;text-transform:uppercase;">Contacts</span><div>${g.contacts}</div></div>
+      <div><span style="color:var(--text-muted);font-size:0.56rem;text-transform:uppercase;">Next</span><div style="color:var(--${g.nextColor});">${g.next}</div></div>
+    </div>
+    <div style="font-size:0.66rem;color:var(--text-dim);margin-top:4px;">${g.notes}</div></div>`;
+  });
+  html += '<div class="section-label" style="color:var(--yellow);">Pending Applications</div>';
+  pending.forEach(p => {
+    html += `<div class="i-card"><div class="i-card-top"><span class="badge ${p.badge}">${p.status}</span><span class="i-card-title">${p.name}</span></div>
+    <div class="i-card-meta">${p.funder}</div>
+    <div style="display:flex;gap:16px;margin-top:6px;font-size:0.68rem;">
+      <div><span style="color:var(--text-muted);font-size:0.56rem;text-transform:uppercase;">Deadline</span><div style="color:var(--yellow);">${p.deadline}</div></div>
+      <div><span style="color:var(--text-muted);font-size:0.56rem;text-transform:uppercase;">Scope</span><div>${p.scope}</div></div>
+    </div></div>`;
+  });
+  html += '<div class="section-label" style="color:var(--text-muted);">Pipeline</div>';
+  pipeline.forEach(p => {
+    html += `<div class="i-card" style="opacity:0.7;"><div class="i-card-top"><span class="badge ${p.badge}">${p.status}</span><span class="i-card-title">${p.name}</span></div>
+    <div style="font-size:0.68rem;margin-top:4px;"><span style="color:var(--yellow);">${p.blocker}</span> · Target: ${p.target}</div></div>`;
+  });
+  document.getElementById('grants-panel').innerHTML = html;
+
+  // Timeline sidebar
+  let tl = '<div class="section-label">Grant Deadline Timeline</div>';
+  const clsColor = { done:'green', urgent:'red', important:'yellow', monitor:'text-dim' };
+  deadlines.forEach(d => {
+    tl += `<div style="padding:6px 10px;border-radius:6px;margin-bottom:2px;display:flex;align-items:center;gap:10px;font-size:0.74rem;" onmouseover="this.style.background='var(--bg-hover)'" onmouseout="this.style.background='none'">
+      <span style="font-size:0.6rem;font-weight:600;min-width:48px;color:var(--${clsColor[d.cls]});${d.cls==='done'?'text-decoration:line-through;':''}">${d.date}</span>
+      <span style="font-size:0.58rem;color:var(--text-muted);min-width:64px;">${d.prog}</span>
+      <span style="flex:1;">${d.desc}</span>
+      <span class="badge ${d.sc}" style="min-width:auto;font-size:0.5rem;">${d.stat}</span>
+    </div>`;
+  });
+  tl += `<div class="section-label" style="margin-top:20px;">Grant Health</div>`;
+  const health = [
+    { name:'Harvard CDT', color:'green', label:'Strong — active feedback loop' },
+    { name:'Amex Shop Small', color:'cyan', label:'Secured — await disbursement' },
+    { name:'Empower!', color:'green', label:'Strong — committee active' },
+    { name:'Cambridge', color:'yellow', label:'Uncertain — verify submission' },
+    { name:'Anthropic', color:'yellow', label:'Uncertain — no confirmation' },
+    { name:'Kickstarter', color:'text-muted', label:'Pipeline — needs footage' },
+  ];
+  health.forEach(h => {
+    tl += `<div style="display:flex;justify-content:space-between;padding:4px 8px;font-size:0.7rem;"><span>${h.name}</span><span style="color:var(--${h.color});">● ${h.label}</span></div>`;
+  });
+  document.getElementById('grants-timeline-panel').innerHTML = tl;
+}
+
+// ═══════════════ RENDER: SOWs ═══════════════
+function renderSOWs() {
+  const sows = [
+    { name:'EMI Technologies — Ongoing Compliance', status:'CRITICAL', badge:'b-atrisk', client:'Katy Alvarez', type:'Cybersecurity Compliance', version:'Draft Complete', alert:'UNSENT DRAFT — 28 DAYS in Gmail. Subject: "New SOW for Ongoing Compliance Support — Starting April." 415KB attachment ready. Send today.', alertCls:'alert-red', readiness:95, thread:5 },
+    { name:'TXNM Energy — Human Risk Mitigation', status:'AGING', badge:'b-aging', client:'David Peach, Joshua Elicio, Gary Todd', type:'Cybersecurity / Behavioral Science', version:'v2 Delivered Mar 13', alert:'SOW v2 delivered but silent 9 days. David replied Mar 16: "Joshua and I will review." April 7 start in 13 days.', alertCls:'alert-yellow', readiness:90, thread:2 },
+    { name:'DWA / NMSBA — Digital Wellness Assessment', status:'STALLED', badge:'b-stalled', client:'Alex Lugo (LANL)', type:'Research Partnership', version:'Technical Scope Ready', alert:'Cannot draft SOW until intake meeting happens. Alex cancelled 27 days ago.', alertCls:'alert-yellow', readiness:25, thread:10 },
+    { name:'Yakama Nation — Tribal Cybersecurity', status:'PAUSED', badge:'b-paused', client:'Jason Nakai, Rebecca', type:'General Consulting / Tribal', version:'v2 (Feb 17)', alert:'', alertCls:'', readiness:0, thread:12 },
+  ];
+
+  let html = '<div class="section-label">SOW Pipeline <button class="add-btn" onclick="openModal(\'draft-sow\')">+ Draft SOW</button></div>';
+  sows.forEach((s,i) => {
+    html += `<div class="i-card">
+      <div class="i-card-top">
+        <span class="badge ${s.badge}">${s.status}</span>
+        <span class="i-card-title">${s.name}</span>
+        <div class="i-card-actions">
+          <button class="act-btn email" onclick="quickEmail(${s.thread})">Email</button>
+          <button class="act-btn sow" onclick="openModal('draft-sow')">Edit SOW</button>
+        </div>
+      </div>
+      <div class="i-card-meta">${s.client} · ${s.type} · ${s.version}</div>
+      ${s.alert ? `<div style="margin-top:6px;padding:7px 10px;border-radius:6px;font-size:0.68rem;line-height:1.4;" class="${s.alertCls}">${s.alert}</div>` : ''}
+    </div>`;
+  });
+  document.getElementById('sow-panel').innerHTML = html;
+
+  // Sidebar: readiness + actions
+  let sb = '<div class="section-label">SOW Readiness Scores</div>';
+  sows.forEach(s => {
+    const color = s.readiness >= 80 ? (s.status==='CRITICAL'?'red':'green') : s.readiness >= 40 ? 'yellow' : 'text-muted';
+    sb += `<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;margin-bottom:3px;font-size:0.74rem;" onmouseover="this.style.background='var(--bg-hover)'" onmouseout="this.style.background='none'">
+      <span style="font-size:0.88rem;font-weight:700;color:var(--${color});min-width:36px;text-align:center;">${s.readiness}</span>
+      <span style="flex:1;">${s.name.split('—')[0].trim()}</span>
+      <div style="width:70px;height:5px;background:var(--border);border-radius:3px;overflow:hidden;"><div style="height:100%;width:${s.readiness}%;background:var(--${color});border-radius:3px;"></div></div>
+    </div>`;
+  });
+  sb += `<div class="section-label" style="margin-top:20px;">Quick Actions</div>`;
+  const sowActions = [
+    { label:'Send EMI draft from Gmail', color:'red' },
+    { label:'Follow up David Peach (TXNM)', color:'yellow' },
+    { label:'Reschedule Alex Lugo (DWA)', color:'yellow' },
+    { label:'Create Merek SOW template on Drive', color:'blue' },
+  ];
+  sowActions.forEach(a => {
+    sb += `<div style="padding:7px 10px;border-radius:6px;margin-bottom:3px;font-size:0.72rem;cursor:pointer;border-left:3px solid var(--${a.color});background:var(--${a.color}-dim);"
+      onclick="logChange('edit','Quick action: ${a.label}',{}); this.style.opacity='0.4'; this.style.pointerEvents='none';">${a.label}</div>`;
+  });
+  sb += `<div class="section-label" style="margin-top:20px;">Merek Credentials Bank</div>
+    <div style="font-size:0.66rem;line-height:1.7;color:var(--text-dim);">
+    <span style="color:var(--accent);">●</span> CEO, Merek Security Solutions<br>
+    <span style="color:var(--accent);">●</span> Exec Dir, NM-CCCR (501c3)<br>
+    <span style="color:var(--accent);">●</span> Harvard CDT Research Fellow 2025-26<br>
+    <span style="color:var(--accent);">●</span> D.Sc. candidate, Cyberpsychology<br>
+    <span style="color:var(--accent);">●</span> U.S. Navy veteran (22 years)<br>
+    <span style="color:var(--accent);">●</span> Pentagon, LANL, Boeing experience</div>`;
+  document.getElementById('sow-sidebar').innerHTML = sb;
+}
+
+// ═══════════════ RENDER: REVENUE ═══════════════
+function renderRevenue() {
+  const confirmed = [
+    { name:'TXNM Energy — POC', badge:'b-aging', client:'David Peach', value:'TBD', status:'Silent 9 days', risk:'Medium', riskColor:'yellow' },
+    { name:'EMI Technologies — SPRS Phase III', badge:'b-stale', client:'Katy Alvarez', value:'TBD', status:'17 days stale', risk:'High', riskColor:'red' },
+    { name:'Red & Yellow Bank — Advisory', badge:'b-active', client:'William Foster', value:'TBD', status:'Pre-SOW (regulatory phase)', risk:'Low', riskColor:'green' },
+  ];
+  const newIntel = { name:'Tribal Contract — Microsoft / Seattle', badge:'b-delivered', client:'Mutual friend in Seattle', value:'Unknown — "larger, more corporate"', note:'Mentioned in Jason email Mar 18. NOT in State of Play.' };
+  const outflows = [
+    { name:'Bryant Johnson — Lead Facilitator', amount:'$3,500 flat (2 installments)', period:'Late Mar — Early May' },
+    { name:'Brad Bennett — Merek Internal', amount:'TBD — Invoice #2 paying, #3 incoming', period:'Monthly' },
+  ];
+
+  let html = '<div class="section-label" style="color:var(--green);">Confirmed Revenue — Active Engagements</div>';
+  confirmed.forEach(c => {
+    html += `<div class="i-card"><div class="i-card-top"><span class="badge ${c.badge}">${c.risk} Risk</span><span class="i-card-title">${c.name}</span></div>
+    <div class="i-card-meta">${c.client} · Value: ${c.value} · ${c.status}</div></div>`;
+  });
+  html += '<div class="section-label" style="color:var(--cyan);">New Intelligence — Not in State of Play</div>';
+  html += `<div class="i-card" style="border-color:rgba(34,211,238,0.3);"><div class="i-card-top"><span class="badge ${newIntel.badge}">New</span><span class="i-card-title">${newIntel.name}</span></div>
+  <div class="i-card-meta">${newIntel.client} · ${newIntel.value}</div>
+  <div style="font-size:0.66rem;color:var(--cyan);margin-top:4px;">${newIntel.note}</div></div>`;
+  html += '<div class="section-label" style="color:var(--red);">Committed Outflows</div>';
+  outflows.forEach(o => {
+    html += `<div class="i-card"><div class="i-card-top"><span class="i-card-title">${o.name}</span></div>
+    <div class="i-card-meta">${o.amount} · ${o.period}</div></div>`;
+  });
+  document.getElementById('revenue-panel').innerHTML = html;
+
+  // Sidebar
+  let sb = '<div class="section-label">Revenue Risk Assessment</div>';
+  const risks = [
+    { name:'EMI Technologies', color:'red', reason:'17 days stale + Phase III unsigned' },
+    { name:'TXNM Energy', color:'yellow', reason:'9 days silent + Apr 7 start' },
+    { name:'DWA / NMSBA', color:'yellow', reason:'27 days stalled + no reschedule' },
+    { name:'Red & Yellow Bank', color:'green', reason:'Strong engagement, pre-SOW' },
+    { name:'Stephen Catt', color:'green', reason:'Active cadence, materials sent' },
+  ];
+  risks.forEach(r => {
+    sb += `<div style="display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:6px;margin-bottom:2px;font-size:0.74rem;" onmouseover="this.style.background='var(--bg-hover)'" onmouseout="this.style.background='none'">
+      <span style="width:8px;height:8px;border-radius:50%;background:var(--${r.color});flex-shrink:0;"></span>
+      <span style="flex:1;">${r.name}</span>
+      <span style="font-size:0.6rem;color:var(--text-muted);max-width:180px;text-align:right;">${r.reason}</span>
+    </div>`;
+  });
+  sb += '<div class="section-label" style="margin-top:20px;">Known Inflows (60 days)</div>';
+  const inflows = [
+    { name:'Amex Shop Small (ACH)', when:'~Apr 15', color:'green' },
+    { name:'Harvard travel reimb.', when:'Submitted Mar 17', color:'yellow' },
+    { name:'Brad Invoice #2', when:'Paying now', color:'green' },
+    { name:'TXNM Phase 1 billing', when:'If Apr 7 holds', color:'yellow' },
+  ];
+  inflows.forEach(f => {
+    sb += `<div style="display:flex;justify-content:space-between;padding:3px 8px;font-size:0.7rem;"><span>${f.name}</span><span style="color:var(--${f.color});">${f.when}</span></div>`;
+  });
+  sb += '<div class="section-label" style="margin-top:20px;">Known Outflows (60 days)</div>';
+  const outs = [
+    { name:'Bryant (installment 1)', amt:'~$1,750', color:'red' },
+    { name:'Brad Bennett (March)', amt:'TBD', color:'red' },
+    { name:'Placitas rent', amt:'Apr 1', color:'red' },
+  ];
+  outs.forEach(o => {
+    sb += `<div style="display:flex;justify-content:space-between;padding:3px 8px;font-size:0.7rem;"><span>${o.name}</span><span style="color:var(--${o.color});">${o.amt}</span></div>`;
+  });
+  document.getElementById('revenue-sidebar').innerHTML = sb;
+}
+
+// ═══════════════ RENDER: MANUSCRIPTS ═══════════════
+function renderManuscripts() {
+  const mss = [
+    { title:'CTRL+ALT+HAPPINESS', words:'66,162', color:'green', detail:'Editorial overhaul complete. Five passes. Aria reading — call Apr 6. ISBN: 979-8-9996753-0-9.' },
+    { title:'Computer Love', words:'~58,434', color:'yellow', detail:'First draft. Five digital bonding patterns. 790 ChatGPT conversations woven at XML level.' },
+    { title:'The Ones In The Back Of The Bus', words:'~25,149', color:'blue', detail:'Stories, poems, lessons from a Greyhound bus trip. Prose + verse hybrid.' },
+    { title:'Dissertation', words:'25,599', color:'green', detail:'Barnes-revised. Two research questions. Manuscript complete. Defense NOT scheduled.' },
+    { title:'14 Slim: A Verse Memoir', words:'~19,585', color:'green', detail:'First Edition. Three registers. Greenville, SC → Santa Fe.' },
+    { title:'Nirmata: A Novel of Creation Without Memory', words:'~3,373', color:'yellow', detail:'Movement One COMPLETE. Co-authored. Trojan Horse: five layers. Movement Two pending.' },
+    { title:'The Five Conflict Languages', words:'~1,456', color:'red', detail:'Early draft. Chapter 1 written. Remaining outlined.' },
+    { title:'Straight-ish (TV Pilot)', words:'~1,042', color:'red', detail:'Half-hour comedy. 6-episode breakdown. Tone: Will & Grace meets Insecure.' },
+    { title:'The Autonomy Experiment', words:'ms. 13', color:'text-muted', detail:'Co-written with Kairos. Seeker owes response matching 1,482-line depth.' },
+  ];
+  let html = '<div class="section-label">The Center — All Manuscripts (200,800+ words)</div>';
+  mss.forEach(m => {
+    html += `<div class="i-card" style="border-left:3px solid var(--${m.color});">
+      <div class="i-card-top"><span class="i-card-title">${m.title}</span><span style="font-size:0.65rem;color:var(--${m.color});">${m.words}</span></div>
+      <div class="i-card-meta">${m.detail}</div>
+    </div>`;
+  });
+  html += `<div style="background:linear-gradient(135deg,rgba(217,119,87,0.06),rgba(167,139,250,0.06));border:1px solid rgba(217,119,87,0.15);border-radius:8px;padding:12px 14px;margin-top:16px;font-size:0.7rem;color:var(--text-dim);line-height:1.5;">
+    <strong style="color:var(--accent);">Thesis Unity</strong> — MindfulBytes = prevention. Computer Love = diagnosis. CAH = treatment. The manuscripts are the center. Everything else orbits them.</div>`;
+  document.getElementById('manuscripts-panel').innerHTML = html;
+}
+
+// ═══════════════ RENDER: PRIORITIES ═══════════════
+function renderPriorities() {
+  const urgent = [
+    'Empower! Committee Meeting — TODAY 5:30 PM',
+    'IDC 2026 — DECISION: submit solo or hold (March 31)',
+    'Follow up with David Peach — TXNM SOW silent 9 days',
+    'SEND EMI SOW DRAFT — sitting unsent 28 days in Gmail',
+    'Candace Carteen — attach .docx to Gmail draft, send',
+    'Reply to Katy / EMI — 17 days stale',
+    'Monitor Stephen Catt response to DWA Spec Sheet',
+    'Educator Fellow Orientation — March 30',
+  ];
+  const important = [
+    'Add Plan A/B prompts to session guides per Eduardo',
+    'Send DWA Technical Scope to NMSBA / reschedule Alex Lugo',
+    'Temperature check Yakama / Jason Nakai (paused)',
+    'Check scholarly network responses — Tynes, Noble, Becknell',
+    'Upload Seeker files to Google Drive',
+    'APA membership renewal (expired)',
+    'Add Microsoft tribal contract to State of Play',
+  ];
+  const foundation = [
+    'Nirmata Movement Two — the fracture',
+    'Seeker response to Kairos (1,482-line depth)',
+    'Schedule four-way call with Brad',
+    'Execute dashboard deployment (Render)',
+    'Draft Phase III SOW for EMI',
+    'Await Billy Bit / Bonnie response',
+    'Strategy session with Bradley Morris',
+    'Kickstarter campaign — after April footage',
+    'William / Red & Yellow Bank — regulatory deep-dive',
+  ];
+  let html = '<div class="section-label">Urgent — This Week</div>';
+  urgent.forEach((p,i) => {
+    html += `<div class="i-card" style="border-left:3px solid var(--red);" onclick="logChange('edit','Marked done: ${p.replace(/'/g,"\\'")}',{}); this.style.opacity='0.3'; this.style.textDecoration='line-through';">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.65rem;font-weight:600;color:var(--accent);min-width:16px;">${i+1}</span>
+        <span style="font-size:0.76rem;flex:1;">${p}</span>
+        <span style="font-size:0.55rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--red-dim);color:var(--red);">Urgent</span>
+      </div>
+    </div>`;
+  });
+  html += '<div class="section-label">Important — Next Two Weeks</div>';
+  important.forEach((p,i) => {
+    html += `<div class="i-card" style="border-left:3px solid var(--yellow);" onclick="logChange('edit','Marked done: ${p.replace(/'/g,"\\'")}',{}); this.style.opacity='0.3'; this.style.textDecoration='line-through';">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.65rem;font-weight:600;color:var(--accent);min-width:16px;">${i+urgent.length+1}</span>
+        <span style="font-size:0.76rem;flex:1;">${p}</span>
+        <span style="font-size:0.55rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--yellow-dim);color:var(--yellow);">Important</span>
+      </div>
+    </div>`;
+  });
+  html += '<div class="section-label">Foundational — Ongoing</div>';
+  foundation.forEach((p,i) => {
+    html += `<div class="i-card" style="border-left:3px solid var(--purple);opacity:0.8;" onclick="logChange('edit','Marked done: ${p.replace(/'/g,"\\'")}',{}); this.style.opacity='0.3'; this.style.textDecoration='line-through';">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.65rem;font-weight:600;color:var(--accent);min-width:16px;">${i+urgent.length+important.length+1}</span>
+        <span style="font-size:0.76rem;flex:1;">${p}</span>
+        <span style="font-size:0.55rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--purple-dim);color:var(--purple);">Foundation</span>
+      </div>
+    </div>`;
+  });
+  document.getElementById('priorities-panel').innerHTML = html;
+}
+
+// ═══════════════ INIT ═══════════════
+renderThreads();
+renderGrants();
+renderSOWs();
+renderRevenue();
+renderManuscripts();
+renderPriorities();
+renderChangeLog();
+document.getElementById('ev-date').value = new Date().toISOString().slice(0,10);
+</script>
+</body>
+</html>
