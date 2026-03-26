@@ -195,7 +195,7 @@
     <div class="logo-mark">M</div>
     <div>
       <h1>Command Center</h1>
-      <span>Mike Davis — Merek Security Solutions · <span id="last-refresh" style="color:var(--green);">Live</span></span>
+      <span>Mike Davis — Merek Security Solutions · <span id="last-refresh" style="color:var(--green);">Updated Mar 26, 2026</span></span>
     </div>
   </div>
   <div class="header-actions">
@@ -203,7 +203,8 @@
     <button class="hdr-btn" onclick="openModal('compose-email')">+ Email</button>
     <button class="hdr-btn" onclick="openModal('draft-sow')">+ SOW</button>
     <button class="hdr-btn" onclick="openModal('new-event')">+ Event</button>
-    <button class="hdr-btn primary" onclick="exportChanges()">Sync<span class="sync-count" id="syncCount" style="display:none;">0</span></button>
+    <button class="hdr-btn" onclick="exportChanges()">Sync<span class="sync-count" id="syncCount" style="display:none;">0</span></button>
+    <button class="hdr-btn primary" onclick="alert('To refresh: Open Claude Desktop → Scheduled → command-center-refresh → Run Now.\n\nOr start a new Cowork session and say: Run the command-center-refresh task.')">Refresh</button>
   </div>
 </header>
 
