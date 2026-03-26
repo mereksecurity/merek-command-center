@@ -183,44 +183,19 @@
       .tab-content.active { flex-direction:column; }
       .panel + .panel { border-left:none; border-top:1px solid var(--border); }
     }
-    /* ── Auth Gate ── */
-    #auth-gate { position:fixed; inset:0; z-index:9999; background:var(--bg); display:flex; align-items:center; justify-content:center; }
-    #auth-gate.hidden { display:none; }
-    .auth-box { background:var(--bg-card); border:1px solid var(--border); border-radius:16px; padding:48px 40px; width:380px; text-align:center; }
-    .auth-box .logo-mark { width:48px; height:48px; font-size:20px; margin:0 auto 18px; border-radius:12px; }
-    .auth-box h2 { font-size:1.1rem; font-weight:700; margin-bottom:6px; letter-spacing:-0.02em; }
-    .auth-box p { font-size:0.72rem; color:var(--text-muted); margin-bottom:24px; }
-    .auth-box input { width:100%; padding:12px 16px; border-radius:8px; border:1px solid var(--border); background:var(--bg-input); color:var(--text); font-size:0.85rem; font-family:inherit; outline:none; transition:border-color 0.15s; }
-    .auth-box input:focus { border-color:var(--accent); }
-    .auth-box input.error { border-color:var(--red); }
-    .auth-box button { width:100%; margin-top:14px; padding:12px; border-radius:8px; border:none; background:var(--accent); color:#fff; font-size:0.8rem; font-weight:600; font-family:inherit; cursor:pointer; transition:opacity 0.15s; }
-    .auth-box button:hover { opacity:0.9; }
-    .auth-error { color:var(--red); font-size:0.7rem; margin-top:10px; min-height:18px; }
-    #app-root { display:none; }
-    #app-root.visible { display:flex; flex-direction:column; height:100vh; }
+    /* Auth is now handled server-side via Netlify Edge Function */
   </style>
 </head>
 <body>
 
-<!-- Auth Gate -->
-<div id="auth-gate">
-  <div class="auth-box">
-    <div class="logo-mark" style="display:flex;align-items:center;justify-content:center;background:var(--accent);font-weight:700;color:#fff;">M</div>
-    <h2>Command Center</h2>
-    <p>Merek Security Solutions</p>
-    <input type="password" id="auth-pass" placeholder="Enter password" autocomplete="off" autofocus>
-    <button id="auth-btn" onclick="checkAuth()">Unlock</button>
-    <div class="auth-error" id="auth-error"></div>
-  </div>
-</div>
-
-<div id="app-root">
+<!-- Auth handled server-side by Netlify Edge Function -->
+<div id="app-root" style="display:flex;flex-direction:column;height:100vh;">
 <header>
   <div class="logo">
     <div class="logo-mark">M</div>
     <div>
       <h1>Command Center</h1>
-      <span>Mike Davis — Merek Security Solutions</span>
+      <span>Mike Davis — Merek Security Solutions · <span id="last-refresh" style="color:var(--green);">Live</span></span>
     </div>
   </div>
   <div class="header-actions">
@@ -677,14 +652,21 @@ function exportChanges() {
   const output = {
     exportedAt: new Date().toISOString(),
     changeCount: STATE.changeLog.length,
-    changes: STATE.changeLog,
+    changes: STATE.changeLog.map(c => ({ ...c, synced: false })),
     currentThreads: STATE.threads
   };
+  // Download the sync queue JSON
   const blob = new Blob([JSON.stringify(output, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = `merek-sync-${new Date().toISOString().slice(0,10)}.json`;
+  a.href = url; a.download = `sync-queue.json`;
   a.click(); URL.revokeObjectURL(url);
+  // Visual feedback
+  const btn = document.querySelector('.hdr-btn.primary');
+  const origText = btn.innerHTML;
+  btn.innerHTML = 'Synced!';
+  btn.style.background = 'var(--green)';
+  setTimeout(() => { btn.innerHTML = origText; btn.style.background = ''; }, 2000);
 }
 
 // ═══════════════ RENDERERS ═══════════════
@@ -1067,35 +1049,5 @@ renderChangeLog();
 document.getElementById('ev-date').value = new Date().toISOString().slice(0,10);
 </script>
 </div><!-- end app-root -->
-
-<script>
-// Password gate — SHA-256 hash comparison (no plaintext stored)
-async function hashPass(pw) {
-  const enc = new TextEncoder().encode(pw);
-  const buf = await crypto.subtle.digest('SHA-256', enc);
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
-}
-const PASS_HASH = '3c5b980d6add5b57636613ea6dc759c38ab098aadd0ab9fd913d4be7e30c7d15';
-
-async function checkAuth() {
-  const input = document.getElementById('auth-pass').value;
-  const inputHash = await hashPass(input);
-  if (inputHash === PASS_HASH) {
-    document.getElementById('auth-gate').classList.add('hidden');
-    document.getElementById('app-root').classList.add('visible');
-    sessionStorage.setItem('merek-auth', 'true');
-  } else {
-    document.getElementById('auth-pass').classList.add('error');
-    document.getElementById('auth-error').textContent = 'Incorrect password';
-    setTimeout(() => {
-      document.getElementById('auth-pass').classList.remove('error');
-      document.getElementById('auth-error').textContent = '';
-    }, 2000);
-  }
-}
-document.getElementById('auth-pass').addEventListener('keydown', e => {
-  if (e.key === 'Enter') checkAuth();
-});
-</script>
 </body>
 </html>

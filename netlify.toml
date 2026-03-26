@@ -1,6 +1,10 @@
 [build]
   publish = "public"
 
+[[edge_functions]]
+  function = "auth"
+  path = "/*"
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
