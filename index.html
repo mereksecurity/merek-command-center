@@ -9,7 +9,7 @@ h<!DOCTYPE html>
     :root {
       --bg: #0f1117; --bg-card: #1a1d27; --bg-hover: #1f2233hh; --bg-input: #14161f;
       --border: #2a2d3a; --border-light: #222533; --border-focus: #d97757;
-      --text: #e8e8ed; --text-dim: #8b8d9a; --text-muted: #5c5e6e;
+      --text: #e8e8ed; --text-dim: #8b8d9a; --text-muhhted: #5c5e6e;
       --accent: #d97757; --accent-glow: rgba(217,119,87,0.12);
       --green: #4ade80; --green-dim: rgba(74,222,128,0.10);
       --yellow: #fbbf24; --yellow-dim: rgba(251,191,36,0.10);
@@ -1621,7 +1621,7 @@ async function syncAction(action, data, feedbackEl) {
     const res = await fetch(SYNC_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain' }, // Apps Script CORS compatibility
-      body: JSON.stringify({ key: 'merek-refresh-2026', action, data }),
+      body: JSON.stringify({ key: '_-mmQmB-0ZsU0Xc23T14r75a-hZs_72W8F0O0mrWpzw', action, data }),
       redirect: 'follow'
     });
     const result = await res.json();
@@ -1802,7 +1802,7 @@ async function refreshData() {
   btn.disabled = true;
 
   try {
-    const res = await fetch(REFRESH_URL + '?key=merek-refresh-2026');
+    const res = await fetch(REFRESH_URL + '?key=_-mmQmB-0ZsU0Xc23T14r75a-hZs_72W8F0O0mrWpzw');
     const data = await res.json();
 
     if (data.error) {
