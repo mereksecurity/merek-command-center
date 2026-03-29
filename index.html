@@ -227,6 +227,7 @@
       .panel + .panel { border-left:none; border-top:1px solid var(--border); }
     }
     /* Auth is now handled server-side via Netlify Edge Function */
+    @keyframes toastIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
   </style>
 <style id="claude-agent-animation-styles">
       @keyframes claude-pulse {
@@ -1496,7 +1497,7 @@ function editThread(idx) {
   openModal('edit-thread');
 }
 
-function saveThread() {
+async function saveThread() {
   const idx = parseInt(document.getElementById('et-index').value);
   const t = STATE.threads[idx];
   const oldStatus = t.status;
@@ -1512,6 +1513,10 @@ function saveThread() {
   logChange('edit', `Thread ${t.id} (${t.name}): ${changes.join(', ')}`, { threadId: t.id, oldStatus, newStatus: t.status });
   closeModal('edit-thread');
   renderThreads();
+
+  // Sync thread edit to Apps Script audit log
+  await syncAction('log', { description: `Thread ${t.id} (${t.name}): ${changes.join(', ')}`, thread: t });
+  showToast(`Thread ${t.id} updated`);
 }
 
 // ═══════════════ DOCUMENT PREVIEW ═══════════════
@@ -1601,8 +1606,59 @@ function quickSOW(threadIdx) {
   setTimeout(() => { document.getElementById('sow-thread').value = t.id; }, 50);
 }
 
+// ═══════════════ SYNC ENGINE ═══════════════
+const SYNC_URL = 'https://script.google.com/macros/s/AKfycbztDrgar6c91yFYJ1A4qv7lgR8cCgJbJEG22KYuyem4gDOeQtevRpwZmvcbQoMrq7uheQ/exec';
+
+async function syncAction(action, data, feedbackEl) {
+  const origText = feedbackEl ? feedbackEl.innerHTML : '';
+  if (feedbackEl) {
+    feedbackEl.innerHTML = 'Syncing...';
+    feedbackEl.style.opacity = '0.7';
+    feedbackEl.disabled = true;
+  }
+
+  try {
+    const res = await fetch(SYNC_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' }, // Apps Script CORS compatibility
+      body: JSON.stringify({ key: 'merek-refresh-2026', action, data }),
+      redirect: 'follow'
+    });
+    const result = await res.json();
+
+    if (result.error) {
+      if (feedbackEl) {
+        feedbackEl.innerHTML = 'Error';
+        feedbackEl.style.background = 'var(--red)';
+        feedbackEl.style.color = '#fff';
+        setTimeout(() => { feedbackEl.innerHTML = origText; feedbackEl.style = ''; feedbackEl.disabled = false; }, 3000);
+      }
+      console.error('Sync error:', result.error);
+      return result;
+    }
+
+    if (feedbackEl) {
+      feedbackEl.innerHTML = 'Done!';
+      feedbackEl.style.background = 'var(--green)';
+      feedbackEl.style.color = '#fff';
+      setTimeout(() => { feedbackEl.innerHTML = origText; feedbackEl.style = ''; feedbackEl.disabled = false; }, 2500);
+    }
+
+    return result;
+  } catch (err) {
+    if (feedbackEl) {
+      feedbackEl.innerHTML = 'Failed';
+      feedbackEl.style.background = 'var(--red)';
+      feedbackEl.style.color = '#fff';
+      setTimeout(() => { feedbackEl.innerHTML = origText; feedbackEl.style = ''; feedbackEl.disabled = false; }, 3000);
+    }
+    console.error('Sync failed:', err);
+    return { error: err.message };
+  }
+}
+
 // ═══════════════ EMAIL / SOW / EVENT CREATION ═══════════════
-function createEmailDraft() {
+async function createEmailDraft() {
   const draft = {
     to: document.getElementById('em-to').value,
     cc: document.getElementById('em-cc').value,
@@ -1610,11 +1666,23 @@ function createEmailDraft() {
     body: document.getElementById('em-body').value,
     thread: document.getElementById('em-thread').value
   };
+
+  // Log locally
   logChange('email', `Email draft: "${draft.subject}" to ${draft.to}`, draft);
   closeModal('compose-email');
+
+  // Sync to Google — creates actual Gmail draft
+  const submitBtn = document.querySelector('[onclick*="createEmailDraft"]') || document.querySelector('.modal.open .btn-primary');
+  const result = await syncAction('email', draft, submitBtn);
+
+  if (result && result.success) {
+    showToast(`Gmail draft created: "${draft.subject}"`);
+  } else {
+    showToast('Email draft saved locally (sync pending)', 'warn');
+  }
 }
 
-function createSOWDraft() {
+async function createSOWDraft() {
   const creds = [...document.querySelectorAll('.sow-cred:checked')].map(c => c.value);
   const sow = {
     client: document.getElementById('sow-client').value,
@@ -1630,11 +1698,26 @@ function createSOWDraft() {
     notes: document.getElementById('sow-notes').value,
     thread: document.getElementById('sow-thread').value
   };
+
+  // Log locally
   logChange('sow', `SOW draft: ${sow.client} — ${sow.title} (${sow.version})`, sow);
   closeModal('draft-sow');
+
+  // Sync to Google — creates actual Google Doc with SOW template
+  const result = await syncAction('sow', sow);
+
+  if (result && result.success && result.docUrl) {
+    showToast(`SOW created in Google Docs`);
+    // Auto-open the new SOW
+    setTimeout(() => window.open(result.docUrl, '_blank'), 1000);
+  } else if (result && result.success) {
+    showToast(`SOW document created`);
+  } else {
+    showToast('SOW saved locally (sync pending)', 'warn');
+  }
 }
 
-function createEvent() {
+async function createEvent() {
   const ev = {
     title: document.getElementById('ev-title').value,
     date: document.getElementById('ev-date').value,
@@ -1643,8 +1726,46 @@ function createEvent() {
     description: document.getElementById('ev-desc').value,
     thread: document.getElementById('ev-thread').value
   };
+
+  // Log locally
   logChange('cal', `Calendar event: "${ev.title}" on ${ev.date} at ${ev.time}`, ev);
   closeModal('new-event');
+
+  // Sync to Google — creates actual Calendar event
+  const result = await syncAction('cal', ev);
+
+  if (result && result.success) {
+    showToast(`Calendar event created: "${ev.title}"`);
+  } else {
+    showToast('Event saved locally (sync pending)', 'warn');
+  }
+}
+
+// ═══════════════ TOAST NOTIFICATIONS ═══════════════
+function showToast(message, type = 'success') {
+  // Remove existing toast
+  const existing = document.querySelector('.toast-notification');
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.className = 'toast-notification';
+  toast.style.cssText = `
+    position: fixed; bottom: 24px; right: 24px; z-index: 10000;
+    padding: 14px 24px; border-radius: 10px; font-size: 14px; font-weight: 500;
+    color: #fff; box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    background: ${type === 'success' ? 'var(--green)' : type === 'warn' ? '#f59e0b' : 'var(--red)'};
+    animation: toastIn 0.3s ease;
+    cursor: pointer;
+  `;
+  toast.textContent = message;
+  toast.onclick = () => toast.remove();
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transition = 'opacity 0.3s';
+    setTimeout(() => toast.remove(), 300);
+  }, 4000);
 }
 
 // ═══════════════ EXPORT / SYNC ═══════════════
@@ -1695,6 +1816,7 @@ async function refreshData() {
     if (data.threads && data.threads.length > 0) {
       STATE.threads = data.threads;
       STATE.nextThreadId = Math.max(...data.threads.map(t => t.id)) + 1;
+      applyRegistryToThreads();
       renderThreads();
       updateKPIs();
     }
