@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Merek — Command Center</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -179,13 +178,78 @@
       display:flex; gap:6px; margin-top:8px; flex-wrap:wrap;
     }
 
+    /* ── Document Preview Slide-Out Panel ── */
+    .doc-preview-overlay {
+      position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter:blur(2px);
+      z-index:1100; display:none; opacity:0; transition:opacity 0.25s ease;
+    }
+    .doc-preview-overlay.open { display:block; opacity:1; }
+    .doc-preview-panel {
+      position:fixed; top:0; right:-520px; width:min(520px, 92vw); height:100vh;
+      background:var(--bg-card); border-left:1px solid var(--border);
+      box-shadow:-8px 0 32px rgba(0,0,0,0.5); z-index:1101;
+      display:flex; flex-direction:column; transition:right 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .doc-preview-panel.open { right:0; }
+    .doc-preview-header {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:12px 16px; border-bottom:1px solid var(--border); flex-shrink:0;
+    }
+    .doc-preview-header h3 { font-size:0.82rem; font-weight:600; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-right:8px; }
+    .doc-preview-actions { display:flex; gap:6px; align-items:center; flex-shrink:0; }
+    .doc-preview-actions a, .doc-preview-actions button {
+      padding:5px 10px; border-radius:6px; font-size:0.62rem; font-weight:600; cursor:pointer;
+      border:1px solid var(--border); background:var(--bg); color:var(--text-dim); text-decoration:none; transition:all 0.15s;
+    }
+    .doc-preview-actions a:hover, .doc-preview-actions button:hover { border-color:var(--accent); color:var(--text); }
+    .doc-preview-actions .open-ext { border-color:rgba(96,165,250,0.3); color:var(--blue); }
+    .doc-preview-actions .open-ext:hover { background:var(--blue-dim); }
+    .doc-preview-body { flex:1; overflow:hidden; }
+    .doc-preview-body iframe { width:100%; height:100%; border:none; background:#fff; border-radius:0; }
+    .doc-preview-empty {
+      display:flex; align-items:center; justify-content:center; height:100%;
+      color:var(--text-muted); font-size:0.85rem;
+    }
+
+    /* Doc button on cards */
+    .act-btn.doc { border-color:rgba(34,211,238,0.3); color:var(--cyan); position:relative; }
+    .act-btn.doc:hover { background:var(--cyan-dim); }
+    .act-btn.doc .no-doc-tip {
+      display:none; position:absolute; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%);
+      background:var(--bg-card); border:1px solid var(--border); border-radius:6px;
+      padding:4px 10px; font-size:0.6rem; color:var(--text-muted); white-space:nowrap;
+      box-shadow:0 4px 12px rgba(0,0,0,0.3); pointer-events:none;
+    }
+    .act-btn.doc:hover .no-doc-tip.show { display:block; }
+
     @media (max-width:900px) {
       .tab-content.active { flex-direction:column; }
       .panel + .panel { border-left:none; border-top:1px solid var(--border); }
     }
     /* Auth is now handled server-side via Netlify Edge Function */
   </style>
-</head>
+<style id="claude-agent-animation-styles">
+      @keyframes claude-pulse {
+        0% {
+          box-shadow: 
+            inset 0 0 10px rgba(217, 119, 87, 0.5),
+            inset 0 0 20px rgba(217, 119, 87, 0.3),
+            inset 0 0 30px rgba(217, 119, 87, 0.1);
+        }
+        50% {
+          box-shadow: 
+            inset 0 0 15px rgba(217, 119, 87, 0.7),
+            inset 0 0 25px rgba(217, 119, 87, 0.5),
+            inset 0 0 35px rgba(217, 119, 87, 0.2);
+        }
+        100% {
+          box-shadow: 
+            inset 0 0 10px rgba(217, 119, 87, 0.5),
+            inset 0 0 20px rgba(217, 119, 87, 0.3),
+            inset 0 0 30px rgba(217, 119, 87, 0.1);
+        }
+      }
+    </style></head>
 <body>
 
 <!-- Auth handled server-side by Netlify Edge Function -->
@@ -195,14 +259,14 @@
     <div class="logo-mark">M</div>
     <div>
       <h1>Command Center</h1>
-      <span>Mike Davis — Merek Security Solutions · <span id="last-refresh" style="color:var(--green);">Updated Mar 26, 2026</span></span>
+      <span>Mike Davis — Merek Security Solutions · <span id="last-refresh" style="color:var(--green);">Updated Mar 29, 2026</span></span>
     </div>
   </div>
   <div class="header-actions">
-    <button class="hdr-btn" onclick="openModal('new-thread')">+ Thread</button>
-    <button class="hdr-btn" onclick="openModal('compose-email')">+ Email</button>
-    <button class="hdr-btn" onclick="openModal('draft-sow')">+ SOW</button>
-    <button class="hdr-btn" onclick="openModal('new-event')">+ Event</button>
+    <button class="hdr-btn" onclick="openModal(&#39;new-thread&#39;)">+ Thread</button>
+    <button class="hdr-btn" onclick="openModal(&#39;compose-email&#39;)">+ Email</button>
+    <button class="hdr-btn" onclick="openModal(&#39;draft-sow&#39;)">+ SOW</button>
+    <button class="hdr-btn" onclick="openModal(&#39;new-event&#39;)">+ Event</button>
     <button class="hdr-btn" onclick="exportChanges()">Sync<span class="sync-count" id="syncCount" style="display:none;">0</span></button>
     <button class="hdr-btn primary" id="refreshBtn" onclick="refreshData()">Refresh</button>
   </div>
@@ -213,67 +277,811 @@
   <div class="kpi"><div class="kpi-val" style="color:var(--red)">3</div><div class="kpi-lbl">Need Action</div></div>
   <div class="kpi"><div class="kpi-val" style="color:var(--green)">3</div><div class="kpi-lbl">Active Grants</div></div>
   <div class="kpi"><div class="kpi-val" style="color:var(--accent)">9</div><div class="kpi-lbl">Manuscripts</div></div>
-  <div class="kpi"><div class="kpi-val" style="color:var(--purple)">4</div><div class="kpi-lbl">Pending SOWs</div></div>
-  <div class="kpi"><div class="kpi-val" style="color:var(--cyan)" id="changeCount">0</div><div class="kpi-lbl">Pending Changes</div></div>
+  <div class="kpi"><div class="kpi-val" style="color:var(--green)">2</div><div class="kpi-lbl">Submitted ✓</div></div>
+  <div class="kpi"><div class="kpi-val" style="color:var(--cyan)" id="changeCount">2</div><div class="kpi-lbl">Pending Changes</div></div>
 </div>
 
 <div class="tab-bar">
-  <button class="tab active" onclick="switchTab(this,'threads')">Threads</button>
-  <button class="tab" onclick="switchTab(this,'grants')">Grants</button>
-  <button class="tab" onclick="switchTab(this,'sow')">SOWs</button>
-  <button class="tab" onclick="switchTab(this,'revenue')">Revenue</button>
-  <button class="tab" onclick="switchTab(this,'manuscripts')">Manuscripts</button>
-  <button class="tab" onclick="switchTab(this,'priorities')">Priorities</button>
-  <button class="tab" onclick="switchTab(this,'changelog')">Change Log</button>
+  <button class="tab active" onclick="switchTab(this,&#39;threads&#39;)">Threads</button>
+  <button class="tab" onclick="switchTab(this,&#39;grants&#39;)">Grants</button>
+  <button class="tab" onclick="switchTab(this,&#39;sow&#39;)">SOWs</button>
+  <button class="tab" onclick="switchTab(this,&#39;revenue&#39;)">Revenue</button>
+  <button class="tab" onclick="switchTab(this,&#39;manuscripts&#39;)">Manuscripts</button>
+  <button class="tab" onclick="switchTab(this,&#39;priorities&#39;)">Priorities</button>
+  <button class="tab" onclick="switchTab(this,&#39;changelog&#39;)">Change Log</button>
 </div>
 
 <!-- ═══════════════ TAB: THREADS ═══════════════ -->
 <div id="tab-threads" class="tab-content active">
-  <div class="panel" style="flex:1.4;" id="threads-panel">
-    <div class="section-label">Relationship Health — All Threads <button class="add-btn" onclick="openModal('new-thread')">+ New Thread</button></div>
-    <!-- Threads are rendered by JS -->
-  </div>
+  <div class="panel" style="flex:1.4;" id="threads-panel"><div class="section-label">Relationship Health — All Threads <button class="add-btn" onclick="openModal(&#39;new-thread&#39;)">+ New Thread</button></div>
+      <div class="i-card" ondblclick="editThread(0)">
+        <div class="i-card-top">
+          <span style="font-size:0.6rem;color:var(--text-muted);width:16px;text-align:right;flex-shrink:0;">1</span>
+          <span class="badge b-strong" onclick="editThread(0)">STRONG</span>
+          <span class="i-card-title">Harvard CDT Fellowship</span>
+          <span style="font-size:0.65rem;color:var(--text-muted);flex-shrink:0;">today</span>
+          <div class="i-card-actions">
+            <button class="act-btn doc" onclick="event.stopPropagation();openDocPreview(0)" title="Preview document">📄</button>
+            <button class="act-btn" onclick="editThread(0)">Edit</button>
+            <button class="act-btn email" onclick="quickEmail(0)">Email</button>
+            
+          </div>
+        </div>
+        <div class="i-card-meta">Carrie James, Emily Weinstein, Eduardo Lara — All CDT feedback addressed. Plan A/B prompts built. Orientation moved to April 1...</div>
+      </div>
+      <div class="i-card" ondblclick="editThread(1)">
+        <div class="i-card-top">
+          <span style="font-size:0.6rem;color:var(--text-muted);width:16px;text-align:right;flex-shrink:0;">2</span>
+          <span class="badge b-submitted" onclick="editThread(1)">SUBMITTED</span>
+          <span class="i-card-title">IDC 2026 Work-in-Progress</span>
+          <span style="font-size:0.65rem;color:var(--text-muted);flex-shrink:0;">submitted</span>
+          <div class="i-card-actions">
+            <button class="act-btn doc" onclick="event.stopPropagation();openDocPreview(1)" title="No document linked">📄<span class="no-doc-tip show">No document linked</span></button>
+            <button class="act-btn" onclick="editThread(1)">Edit</button>
+            <button class="act-btn email" onclick="quickEmail(1)">Email</button>
+            
+          </div>
+        </div>
+        <div class="i-card-meta">Aria Gaston-Panthaki — SUBMITTED solo March 26. Title: When the Body Satisfices. Notification expected ...</div>
+      </div>
+      <div class="i-card" ondblclick="editThread(2)">
+        <div class="i-card-top">
+          <span style="font-size:0.6rem;color:var(--text-muted);width:16px;text-align:right;flex-shrink:0;">3</span>
+          <span class="badge b-aging" onclick="editThread(2)">AGING</span>
+          <span class="i-card-title">TXNM Energy POC</span>
+          <span style="font-size:0.65rem;color:var(--text-muted);flex-shrink:0;">10 days</span>
+          <div class="i-card-actions">
+            <button class="act-btn doc" onclick="event.stopPropagation();openDocPreview(2)" title="No document linked">📄<span class="no-doc-tip show">No document linked</span></button>
+            <button class="act-btn" onclick="editThread(2)">Edit</button>
+            <button class="act-btn email" onclick="quickEmail(2)">Email</button>
+            <button class="act-btn sow" onclick="quickSOW(2)">SOW</button>
+          </div>
+        </div>
+        <div class="i-card-meta">David Peach, Joshua Elicio, Gary Todd — SOW v2 delivered Mar 13. Silent since Mar 16. April 7 start in 12 days. Follow u...</div>
+      </div>
+      <div class="i-card" ondblclick="editThread(3)">
+        <div class="i-card-top">
+          <span style="font-size:0.6rem;color:var(--text-muted);width:16px;text-align:right;flex-shrink:0;">4</span>
+          <span class="badge b-rebuild" onclick="editThread(3)">REBUILDING</span>
+          <span class="i-card-title">Kairos Four-Way Collaboration</span>
+          <span style="font-size:0.65rem;color:var(--text-muted);flex-shrink:0;">3 days</span>
+          <div class="i-card-actions">
+            <button class="act-btn doc" onclick="event.stopPropagation();openDocPreview(3)" title="No document linked">📄<span class="no-doc-tip show">No document linked</span></button>
+            <button class="act-btn" onclick="editThread(3)">Edit</button>
+            <button class="act-btn email" onclick="quickEmail(3)">Email</button>
+            
+          </div>
+        </div>
+        <div class="i-card-meta">Brad — Reconstruction Package sent. Awaiting Brad onboarding new Kairos. Upload 3 files...</div>
+      </div>
+      <div class="i-card" ondblclick="editThread(4)">
+        <div class="i-card-top">
+          <span style="font-size:0.6rem;color:var(--text-muted);width:16px;text-align:right;flex-shrink:0;">5</span>
+          <span class="badge b-strong" onclick="editThread(4)">STRONG</span>
+          <span class="i-card-title">Digital Presence — School Activation</span>
+          <span style="font-size:0.65rem;color:var(--text-muted);flex-shrink:0;">today</span>
+          <div class="i-card-actions">
+            <button class="act-btn doc" onclick="event.stopPropagation();openDocPreview(4)" title="No document linked">📄<span class="no-doc-tip show">No document linked</span></button>
+            <button class="act-btn" onclick="editThread(4)">Edit</button>
+            <button class="act-btn email" onclick="quickEmail(4)">Email</button>
+            
+          </div>
+        </div>
+        <div class="i-card-meta">Bryant Johnson — Infrastructure complete. Roundtable April 15. Orientation April 16. Co-design se...</div>
+      </div>
+      <div class="i-card" ondblclick="editThread(5)">
+        <div class="i-card-top">
+          <span style="font-size:0.6rem;color:var(--text-muted);width:16px;text-align:right;flex-shrink:0;">6</span>
+          <span class="badge b-stale" onclick="editThread(5)">STALE</span>
+          <span class="i-card-title">EMI Technologies (SPRS)</span>
+          <span style="font-size:0.65rem;color:var(--text-muted);flex-shrink:0;">18 days</span>
+          <div class="i-card-actions">
+            <button class="act-btn doc" onclick="event.stopPropagation();openDocPreview(5)" title="Preview document">📄</button>
+            <button class="act-btn" onclick="editThread(5)">Edit</button>
+            <button class="act-btn email" onclick="quickEmail(5)">Email</button>
+            <button class="act-btn sow" onclick="quickSOW(5)">SOW</button>
+          </div>
+        </div>
+        <div class="i-card-meta">Katy Alvarez — SPRS 18. UNSENT SOW DRAFT in Gmail (30 days). Reply overdue. CRITICAL.</div>
+      </div>
+      <div class="i-card" ondblclick="editThread(6)">
+        <div class="i-card-top">
+          <span style="font-size:0.6rem;color:var(--text-muted);width:16px;text-align:right;flex-shrink:0;">7</span>
+          <span class="badge b-waiting" onclick="editThread(6)">WAITING</span>
+          <span class="i-card-title">Emerging Scholarly Network</span>
+          <span style="font-size:0.65rem;color:var(--text-muted);flex-shrink:0;">3 days</span>
+          <div class="i-card-actions">
+            <button class="act-btn doc" onclick="event.stopPropagation();openDocPreview(6)" title="No document linked">📄<span class="no-doc-tip show">No document linked</span></button>
+            <button class="act-btn" onclick="editThread(6)">Edit</button>
+            <button class="act-btn email" onclick="quickEmail(6)">Email</button>
+            
+          </div>
+        </div>
+        <div class="i-card-meta">Tynes, Noble, Becknell — Cold outreach sent March 23. No replies found in Gmail.</div>
+      </div>
+      <div class="i-card" ondblclick="editThread(7)">
+        <div class="i-card-top">
+          <span style="font-size:0.6rem;color:var(--text-muted);width:16px;text-align:right;flex-shrink:0;">8</span>
+          <span class="badge b-secured" onclick="editThread(7)">SECURED</span>
+          <span class="i-card-title">Amex Shop Small Grant</span>
+          <span style="font-size:0.65rem;color:var(--text-muted);flex-shrink:0;">Awarded</span>
+          <div class="i-card-actions">
+            <button class="act-btn doc" onclick="event.stopPropagation();openDocPreview(7)" title="No document linked">📄<span class="no-doc-tip show">No document linked</span></button>
+            <button class="act-btn" onclick="editThread(7)">Edit</button>
+            <button class="act-btn email" onclick="quickEmail(7)">Email</button>
+            
+          </div>
+        </div>
+        <div class="i-card-meta">Main Street America — Awarded Mar 24. DocuSign done. Payment ~Apr 15. Confidential until May 3.</div>
+      </div>
+      <div class="i-card" ondblclick="editThread(8)">
+        <div class="i-card-top">
+          <span style="font-size:0.6rem;color:var(--text-muted);width:16px;text-align:right;flex-shrink:0;">9</span>
+          <span class="badge b-delivered" onclick="editThread(8)">DELIVERED</span>
+          <span class="i-card-title">Billy Bit / Majik Kids</span>
+          <span style="font-size:0.65rem;color:var(--text-muted);flex-shrink:0;">responded ✓</span>
+          <div class="i-card-actions">
+            <button class="act-btn doc" onclick="event.stopPropagation();openDocPreview(8)" title="No document linked">📄<span class="no-doc-tip show">No document linked</span></button>
+            <button class="act-btn" onclick="editThread(8)">Edit</button>
+            <button class="act-btn email" onclick="quickEmail(8)">Email</button>
+            
+          </div>
+        </div>
+        <div class="i-card-meta">Bonnie Hay, Bradley Morris — Bonnie Hay responded March 26: 'Many thanks for sending this over!' — Reply and ...</div>
+      </div>
+      <div class="i-card" ondblclick="editThread(9)">
+        <div class="i-card-top">
+          <span style="font-size:0.6rem;color:var(--text-muted);width:16px;text-align:right;flex-shrink:0;">10</span>
+          <span class="badge b-ready" onclick="editThread(9)">READY</span>
+          <span class="i-card-title">Merek Dashboard</span>
+          <span style="font-size:0.65rem;color:var(--text-muted);flex-shrink:0;">deployed</span>
+          <div class="i-card-actions">
+            <button class="act-btn doc" onclick="event.stopPropagation();openDocPreview(9)" title="No document linked">📄<span class="no-doc-tip show">No document linked</span></button>
+            <button class="act-btn" onclick="editThread(9)">Edit</button>
+            <button class="act-btn email" onclick="quickEmail(9)">Email</button>
+            <button class="act-btn sow" onclick="quickSOW(9)">SOW</button>
+          </div>
+        </div>
+        <div class="i-card-meta">— — Command Center deployed to Netlify. 3 GitHub tokens created March 26 (merek-comm...</div>
+      </div>
+      <div class="i-card" ondblclick="editThread(10)">
+        <div class="i-card-top">
+          <span style="font-size:0.6rem;color:var(--text-muted);width:16px;text-align:right;flex-shrink:0;">11</span>
+          <span class="badge b-stalled" onclick="editThread(10)">STALLED</span>
+          <span class="i-card-title">DWA / NMSBA</span>
+          <span style="font-size:0.65rem;color:var(--text-muted);flex-shrink:0;">28 days</span>
+          <div class="i-card-actions">
+            <button class="act-btn doc" onclick="event.stopPropagation();openDocPreview(10)" title="No document linked">📄<span class="no-doc-tip show">No document linked</span></button>
+            <button class="act-btn" onclick="editThread(10)">Edit</button>
+            <button class="act-btn email" onclick="quickEmail(10)">Email</button>
+            <button class="act-btn sow" onclick="quickSOW(10)">SOW</button>
+          </div>
+        </div>
+        <div class="i-card-meta">Alex Lugo (LANL) — Intake cancelled. DWA Technical Scope ready (2,105 words). Reschedule needed. Se...</div>
+      </div>
+      <div class="i-card" ondblclick="editThread(11)">
+        <div class="i-card-top">
+          <span style="font-size:0.6rem;color:var(--text-muted);width:16px;text-align:right;flex-shrink:0;">12</span>
+          <span class="badge b-active" onclick="editThread(11)">ACTIVE</span>
+          <span class="i-card-title">Red &amp; Yellow Bank / William Foster</span>
+          <span style="font-size:0.65rem;color:var(--text-muted);flex-shrink:0;">1 day</span>
+          <div class="i-card-actions">
+            <button class="act-btn doc" onclick="event.stopPropagation();openDocPreview(11)" title="No document linked">📄<span class="no-doc-tip show">No document linked</span></button>
+            <button class="act-btn" onclick="editThread(11)">Edit</button>
+            <button class="act-btn email" onclick="quickEmail(11)">Email</button>
+            <button class="act-btn sow" onclick="quickSOW(11)">SOW</button>
+          </div>
+        </div>
+        <div class="i-card-meta">William Foster — Ashley D. Bell call completed Mar 25. NM confirmed viable. Attorney search ongoi...</div>
+      </div>
+      <div class="i-card" ondblclick="editThread(12)">
+        <div class="i-card-top">
+          <span style="font-size:0.6rem;color:var(--text-muted);width:16px;text-align:right;flex-shrink:0;">13</span>
+          <span class="badge b-uncertain" onclick="editThread(12)">UNCERTAIN</span>
+          <span class="i-card-title">Yakama Nation / Jason Nakai</span>
+          <span style="font-size:0.65rem;color:var(--text-muted);flex-shrink:0;">8 days</span>
+          <div class="i-card-actions">
+            <button class="act-btn doc" onclick="event.stopPropagation();openDocPreview(12)" title="No document linked">📄<span class="no-doc-tip show">No document linked</span></button>
+            <button class="act-btn" onclick="editThread(12)">Edit</button>
+            <button class="act-btn email" onclick="quickEmail(12)">Email</button>
+            <button class="act-btn sow" onclick="quickSOW(12)">SOW</button>
+          </div>
+        </div>
+        <div class="i-card-meta">Jason Nakai, Rebecca — Direction shifted. Jason apologized for pace Mar 18. SOW being updated by Rebecc...</div>
+      </div>
+      <div class="i-card" ondblclick="editThread(13)">
+        <div class="i-card-top">
+          <span style="font-size:0.6rem;color:var(--text-muted);width:16px;text-align:right;flex-shrink:0;">14</span>
+          <span class="badge b-engaged" onclick="editThread(13)">ENGAGED</span>
+          <span class="i-card-title">Candace Carteen / Cyberpsych</span>
+          <span style="font-size:0.65rem;color:var(--text-muted);flex-shrink:0;">sent</span>
+          <div class="i-card-actions">
+            <button class="act-btn doc" onclick="event.stopPropagation();openDocPreview(13)" title="No document linked">📄<span class="no-doc-tip show">No document linked</span></button>
+            <button class="act-btn" onclick="editThread(13)">Edit</button>
+            <button class="act-btn email" onclick="quickEmail(13)">Email</button>
+            
+          </div>
+        </div>
+        <div class="i-card-meta">Candace Carteen — Two_Doors_Annotatable.docx SENT. Candace confirmed she will review Monday/Tuesda...</div>
+      </div>
+      <div class="i-card" ondblclick="editThread(14)">
+        <div class="i-card-top">
+          <span style="font-size:0.6rem;color:var(--text-muted);width:16px;text-align:right;flex-shrink:0;">15</span>
+          <span class="badge b-submitted" onclick="editThread(14)">SUBMITTED</span>
+          <span class="i-card-title">Cambridge Digital Minds</span>
+          <span style="font-size:0.65rem;color:var(--text-muted);flex-shrink:0;">done</span>
+          <div class="i-card-actions">
+            <button class="act-btn doc" onclick="event.stopPropagation();openDocPreview(14)" title="No document linked">📄<span class="no-doc-tip show">No document linked</span></button>
+            <button class="act-btn" onclick="editThread(14)">Edit</button>
+            <button class="act-btn email" onclick="quickEmail(14)">Email</button>
+            
+          </div>
+        </div>
+        <div class="i-card-meta">Cambridge University — Application submitted. Deadline Mar 27. Inaugural cohort, 15 fellows globally, f...</div>
+      </div>
+      <div class="i-card" ondblclick="editThread(15)">
+        <div class="i-card-top">
+          <span style="font-size:0.6rem;color:var(--text-muted);width:16px;text-align:right;flex-shrink:0;">16</span>
+          <span class="badge b-complete" onclick="editThread(15)">COMPLETE</span>
+          <span class="i-card-title">The Identity Intervention</span>
+          <span style="font-size:0.65rem;color:var(--text-muted);flex-shrink:0;">—</span>
+          <div class="i-card-actions">
+            <button class="act-btn doc" onclick="event.stopPropagation();openDocPreview(15)" title="No document linked">📄<span class="no-doc-tip show">No document linked</span></button>
+            <button class="act-btn" onclick="editThread(15)">Edit</button>
+            <button class="act-btn email" onclick="quickEmail(15)">Email</button>
+            
+          </div>
+        </div>
+        <div class="i-card-meta">— — 5,938 words. PI-level document. Internal only. Does not go to Bryant.</div>
+      </div>
+      <div class="i-card" ondblclick="editThread(16)">
+        <div class="i-card-top">
+          <span style="font-size:0.6rem;color:var(--text-muted);width:16px;text-align:right;flex-shrink:0;">17</span>
+          <span class="badge b-designed" onclick="editThread(16)">DESIGNED</span>
+          <span class="i-card-title">MindfulBytes Kickstarter</span>
+          <span style="font-size:0.65rem;color:var(--text-muted);flex-shrink:0;">footage</span>
+          <div class="i-card-actions">
+            <button class="act-btn doc" onclick="event.stopPropagation();openDocPreview(16)" title="No document linked">📄<span class="no-doc-tip show">No document linked</span></button>
+            <button class="act-btn" onclick="editThread(16)">Edit</button>
+            <button class="act-btn email" onclick="quickEmail(16)">Email</button>
+            
+          </div>
+        </div>
+        <div class="i-card-meta">— — Campaign ready (3,330 words, 5 tiers). Launch target late April/early May after ...</div>
+      </div>
+      <div class="i-card" ondblclick="editThread(17)">
+        <div class="i-card-top">
+          <span style="font-size:0.6rem;color:var(--text-muted);width:16px;text-align:right;flex-shrink:0;">18</span>
+          <span class="badge b-active" onclick="editThread(17)">ACTIVE</span>
+          <span class="i-card-title">Stephen Catt / Funding Cadence</span>
+          <span style="font-size:0.65rem;color:var(--text-muted);flex-shrink:0;">1 day</span>
+          <div class="i-card-actions">
+            <button class="act-btn doc" onclick="event.stopPropagation();openDocPreview(17)" title="No document linked">📄<span class="no-doc-tip show">No document linked</span></button>
+            <button class="act-btn" onclick="editThread(17)">Edit</button>
+            <button class="act-btn email" onclick="quickEmail(17)">Email</button>
+            <button class="act-btn sow" onclick="quickSOW(17)">SOW</button>
+          </div>
+        </div>
+        <div class="i-card-meta">Stephen Catt — DWA Spec Sheet and Potentials sent. Otter.ai summary received. Next call April 1...</div>
+      </div>
+      <div class="i-card" ondblclick="editThread(18)">
+        <div class="i-card-top">
+          <span style="font-size:0.6rem;color:var(--text-muted);width:16px;text-align:right;flex-shrink:0;">19</span>
+          <span class="badge b-active" onclick="editThread(18)">ACTIVE</span>
+          <span class="i-card-title">Empower! Black Futures Fund</span>
+          <span style="font-size:0.65rem;color:var(--text-muted);flex-shrink:0;">today</span>
+          <div class="i-card-actions">
+            <button class="act-btn doc" onclick="event.stopPropagation();openDocPreview(18)" title="No document linked">📄<span class="no-doc-tip show">No document linked</span></button>
+            <button class="act-btn" onclick="editThread(18)">Edit</button>
+            <button class="act-btn email" onclick="quickEmail(18)">Email</button>
+            
+          </div>
+        </div>
+        <div class="i-card-meta">Desirae Soriano — Applications assigned. Score sheets due Apr 6 by 5pm. Decision day April 8.</div>
+      </div>
+      <div class="i-card" ondblclick="editThread(19)">
+        <div class="i-card-top">
+          <span style="font-size:0.6rem;color:var(--text-muted);width:16px;text-align:right;flex-shrink:0;">20</span>
+          <span class="badge b-submitted" onclick="editThread(19)">SUBMITTED</span>
+          <span class="i-card-title">Anthropic Fellows Application</span>
+          <span style="font-size:0.65rem;color:var(--text-muted);flex-shrink:0;">Apr 6</span>
+          <div class="i-card-actions">
+            <button class="act-btn doc" onclick="event.stopPropagation();openDocPreview(19)" title="No document linked">📄<span class="no-doc-tip show">No document linked</span></button>
+            <button class="act-btn" onclick="editThread(19)">Edit</button>
+            <button class="act-btn email" onclick="quickEmail(19)">Email</button>
+            
+          </div>
+        </div>
+        <div class="i-card-meta">Anthropic / Constellation — Submitted for July 2026 cohort. Rolling admissions. Check status April 6.</div>
+      </div></div>
   <div class="panel" style="flex:0.6; max-width:340px;">
-    <div class="section-label">Upcoming Calendar <button class="add-btn" onclick="openModal('new-event')">+ Event</button></div>
-    <div id="calendar-panel"></div>
+    <div class="section-label">Upcoming Calendar <button class="add-btn" onclick="openModal(&#39;new-event&#39;)">+ Event</button></div>
+    <div id="calendar-panel">
+    <div style="display:flex;gap:10px;padding:6px 8px;border-radius:6px;margin-bottom:2px;font-size:0.75rem;cursor:default;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.58rem;font-weight:600;min-width:40px;color:var(--red);">MAR 27</span>
+      <div><div>Cambridge Digital Minds DEADLINE</div><div style="font-size:0.6rem;color:var(--text-muted);margin-top:1px;">Submitted ✓</div></div>
+    </div>
+    <div style="display:flex;gap:10px;padding:6px 8px;border-radius:6px;margin-bottom:2px;font-size:0.75rem;cursor:default;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.58rem;font-weight:600;min-width:40px;color:var(--accent);">APR 1</span>
+      <div><div>Funding Cadence + PZ Food for Thought</div><div style="font-size:0.6rem;color:var(--text-muted);margin-top:1px;">10 AM MT · Rent due</div></div>
+    </div>
+    <div style="display:flex;gap:10px;padding:6px 8px;border-radius:6px;margin-bottom:2px;font-size:0.75rem;cursor:default;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.58rem;font-weight:600;min-width:40px;color:var(--red);">APR 3</span>
+      <div><div>InfoSec World 2026 — SUBMIT PROPOSALS</div><div style="font-size:0.6rem;color:var(--text-muted);margin-top:1px;">2 proposals ready</div></div>
+    </div>
+    <div style="display:flex;gap:10px;padding:6px 8px;border-radius:6px;margin-bottom:2px;font-size:0.75rem;cursor:default;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.58rem;font-weight:600;min-width:40px;color:var(--accent);">APR 3</span>
+      <div><div>Mike and Ryan Hang Session</div><div style="font-size:0.6rem;color:var(--text-muted);margin-top:1px;">Noon</div></div>
+    </div>
+    <div style="display:flex;gap:10px;padding:6px 8px;border-radius:6px;margin-bottom:2px;font-size:0.75rem;cursor:default;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.58rem;font-weight:600;min-width:40px;color:var(--red);">APR 6</span>
+      <div><div>Empower! Score Sheets Due 5pm</div><div style="font-size:0.6rem;color:var(--text-muted);margin-top:1px;">Aria call noon · Anthropic check</div></div>
+    </div>
+    <div style="display:flex;gap:10px;padding:6px 8px;border-radius:6px;margin-bottom:2px;font-size:0.75rem;cursor:default;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.58rem;font-weight:600;min-width:40px;color:var(--red);">APR 7</span>
+      <div><div>TXNM Energy POC start</div><div style="font-size:0.6rem;color:var(--text-muted);margin-top:1px;">Awaiting David Peach</div></div>
+    </div>
+    <div style="display:flex;gap:10px;padding:6px 8px;border-radius:6px;margin-bottom:2px;font-size:0.75rem;cursor:default;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.58rem;font-weight:600;min-width:40px;color:var(--red);">APR 8</span>
+      <div><div>Empower! Decision Day</div><div style="font-size:0.6rem;color:var(--text-muted);margin-top:1px;">Funding Cadence 10 AM</div></div>
+    </div>
+    <div style="display:flex;gap:10px;padding:6px 8px;border-radius:6px;margin-bottom:2px;font-size:0.75rem;cursor:default;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.58rem;font-weight:600;min-width:40px;color:var(--accent);">APR 9</span>
+      <div><div>Scott and Mike MindMeld Weekend</div><div style="font-size:0.6rem;color:var(--text-muted);margin-top:1px;">TBD (But Sunny)</div></div>
+    </div>
+    <div style="display:flex;gap:10px;padding:6px 8px;border-radius:6px;margin-bottom:2px;font-size:0.75rem;cursor:default;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.58rem;font-weight:600;min-width:40px;color:var(--accent);">APR 13</span>
+      <div><div>April Fellows Lab Meeting</div><div style="font-size:0.6rem;color:var(--text-muted);margin-top:1px;">1 PM · Eduardo (Zoom)</div></div>
+    </div>
+    <div style="display:flex;gap:10px;padding:6px 8px;border-radius:6px;margin-bottom:2px;font-size:0.75rem;cursor:default;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.58rem;font-weight:600;min-width:40px;color:var(--red);">APR 14</span>
+      <div><div>IDC 2026 Notification Expected</div><div style="font-size:0.6rem;color:var(--text-muted);margin-top:1px;">Submitted ✓ Mar 26</div></div>
+    </div>
+    <div style="display:flex;gap:10px;padding:6px 8px;border-radius:6px;margin-bottom:2px;font-size:0.75rem;cursor:default;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.58rem;font-weight:600;min-width:40px;color:var(--accent);">APR 15</span>
+      <div><div>Roundtable — Rio Grande School</div><div style="font-size:0.6rem;color:var(--text-muted);margin-top:1px;">3:15 PM · 75-90 min</div></div>
+    </div>
+    <div style="display:flex;gap:10px;padding:6px 8px;border-radius:6px;margin-bottom:2px;font-size:0.75rem;cursor:default;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.58rem;font-weight:600;min-width:40px;color:var(--accent);">APR 16</span>
+      <div><div>Educator Fellow Orientation</div><div style="font-size:0.6rem;color:var(--text-muted);margin-top:1px;">Rio Grande &amp; Montessori One</div></div>
+    </div>
+    <div style="display:flex;gap:10px;padding:6px 8px;border-radius:6px;margin-bottom:2px;font-size:0.75rem;cursor:default;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.58rem;font-weight:600;min-width:40px;color:var(--accent);">APR 17</span>
+      <div><div>Nakayla Birthday</div><div style="font-size:0.6rem;color:var(--text-muted);margin-top:1px;">All day</div></div>
+    </div>
+    <div style="display:flex;gap:10px;padding:6px 8px;border-radius:6px;margin-bottom:2px;font-size:0.75rem;cursor:default;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.58rem;font-weight:600;min-width:40px;color:var(--accent);">APR 20</span>
+      <div><div>Empower! Site Visit Window Opens</div><div style="font-size:0.6rem;color:var(--text-muted);margin-top:1px;">Through May 2</div></div>
+    </div>
+    <div style="display:flex;gap:10px;padding:6px 8px;border-radius:6px;margin-bottom:2px;font-size:0.75rem;cursor:default;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.58rem;font-weight:600;min-width:40px;color:var(--accent);">APR 21</span>
+      <div><div>Antonio Medical Appointment</div><div style="font-size:0.6rem;color:var(--text-muted);margin-top:1px;">3:05 PM · SW Gastro</div></div>
+    </div></div>
     <div class="section-label" style="margin-top:20px;">Quick Actions</div>
-    <div id="quick-actions-panel"></div>
+    <div id="quick-actions-panel">
+    <div style="padding:7px 10px;border-radius:6px;margin-bottom:3px;font-size:0.72rem;cursor:pointer;border-left:3px solid var(--red);background:var(--red-dim);" onclick="(() =&gt; { logChange(&#39;email&#39;,&#39;Send unsent EMI SOW draft from Gmail&#39;,{action:&#39;send_emi_sow&#39;}); alert(&#39;Queued: Send EMI SOW draft on next sync.&#39;); })()">Send EMI SOW draft — 31 DAYS UNSENT</div>
+    <div style="padding:7px 10px;border-radius:6px;margin-bottom:3px;font-size:0.72rem;cursor:pointer;border-left:3px solid var(--red);background:var(--red-dim);" onclick="(() =&gt; quickEmail(2))()">Follow up David Peach — 10 days silent</div>
+    <div style="padding:7px 10px;border-radius:6px;margin-bottom:3px;font-size:0.72rem;cursor:pointer;border-left:3px solid var(--yellow);background:var(--yellow-dim);" onclick="(() =&gt; quickEmail(5))()">Reply to Katy (EMI) — 18 days stale</div>
+    <div style="padding:7px 10px;border-radius:6px;margin-bottom:3px;font-size:0.72rem;cursor:pointer;border-left:3px solid var(--yellow);background:var(--yellow-dim);" onclick="(() =&gt; { logChange(&#39;edit&#39;,&#39;Reminder: Score sheets due to Desirae by 5pm April 6&#39;,{}); alert(&#39;Reminder set.&#39;); })()">Empower! score sheets — due Apr 6</div>
+    <div style="padding:7px 10px;border-radius:6px;margin-bottom:3px;font-size:0.72rem;cursor:pointer;border-left:3px solid var(--yellow);background:var(--yellow-dim);" onclick="(() =&gt; quickEmail(10))()">Reschedule Alex Lugo (DWA) — 28 days</div></div>
   </div>
 </div>
 
 <!-- ═══════════════ TAB: GRANTS ═══════════════ -->
 <div id="tab-grants" class="tab-content">
-  <div class="panel" id="grants-panel"></div>
-  <div class="panel" style="flex:0.7; max-width:380px;" id="grants-timeline-panel"></div>
+  <div class="panel" id="grants-panel"><div class="section-label" style="color:var(--green);">Active Funded Programs</div><div class="i-card"><div class="i-card-top"><span class="badge b-active">ACTIVE</span><span class="i-card-title">Harvard CDT Educator Fellowship</span></div>
+    <div class="i-card-meta">Harvard GSE / Project Zero</div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:6px;font-size:0.68rem;">
+      <div><span style="color:var(--text-muted);font-size:0.56rem;text-transform:uppercase;">Entity</span><div>Personal / Academic</div></div>
+      <div><span style="color:var(--text-muted);font-size:0.56rem;text-transform:uppercase;">Contacts</span><div>Carrie James, Emily Weinstein, Eduardo Lara</div></div>
+      <div><span style="color:var(--text-muted);font-size:0.56rem;text-transform:uppercase;">Next</span><div style="color:var(--accent);">Apr 15 — Roundtable · Apr 16 — Orientation</div></div>
+    </div>
+    <div style="font-size:0.66rem;color:var(--text-dim);margin-top:4px;">All CDT feedback addressed. Plan A/B prompts built. Roundtable Discussion Guide ready. Orientation moved to April 16.</div></div><div class="i-card"><div class="i-card-top"><span class="badge b-delivered">AWARDED</span><span class="i-card-title">Amex Shop Small Grant</span></div>
+    <div class="i-card-meta">Main Street America / American Express</div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:6px;font-size:0.68rem;">
+      <div><span style="color:var(--text-muted);font-size:0.56rem;text-transform:uppercase;">Entity</span><div>NM-CCCR / MindfulBytes</div></div>
+      <div><span style="color:var(--text-muted);font-size:0.56rem;text-transform:uppercase;">Contacts</span><div>smallbizgrant@mainstreet.org</div></div>
+      <div><span style="color:var(--text-muted);font-size:0.56rem;text-transform:uppercase;">Next</span><div style="color:var(--green);">Apr 15 — Payment expected (ACH)</div></div>
+    </div>
+    <div style="font-size:0.66rem;color:var(--text-dim);margin-top:4px;">DocuSign complete. Confidential until May 3 announcement. Expansion: 6-7 schools / 1,000+ students by Sept 2026.</div></div><div class="i-card"><div class="i-card-top"><span class="badge b-active">ACTIVE</span><span class="i-card-title">Empower! Black Futures Community Fund</span></div>
+    <div class="i-card-meta">Santa Fe Community Foundation</div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:6px;font-size:0.68rem;">
+      <div><span style="color:var(--text-muted);font-size:0.56rem;text-transform:uppercase;">Entity</span><div>Committee Member</div></div>
+      <div><span style="color:var(--text-muted);font-size:0.56rem;text-transform:uppercase;">Contacts</span><div>Desirae Soriano</div></div>
+      <div><span style="color:var(--text-muted);font-size:0.56rem;text-transform:uppercase;">Next</span><div style="color:var(--red);">Apr 6 — Score sheets due 5pm · Apr 8 — Decision Day</div></div>
+    </div>
+    <div style="font-size:0.66rem;color:var(--text-dim);margin-top:4px;">Applications assigned at March 25 committee meeting. Decision day confirmed April 8 per Desirae.</div></div><div class="section-label" style="color:var(--yellow);">Pending Applications</div><div class="i-card"><div class="i-card-top"><span class="badge b-submitted">SUBMITTED ✓</span><span class="i-card-title">Cambridge Digital Minds Fellowship</span></div>
+    <div class="i-card-meta">University of Cambridge</div>
+    <div style="display:flex;gap:16px;margin-top:6px;font-size:0.68rem;">
+      <div><span style="color:var(--text-muted);font-size:0.56rem;text-transform:uppercase;">Deadline</span><div style="color:var(--yellow);">Mar 27 — Submitted ✓</div></div>
+      <div><span style="color:var(--text-muted);font-size:0.56rem;text-transform:uppercase;">Scope</span><div>Inaugural cohort, 15 fellows globally, fully funded, Aug 3-9 at Cambridge</div></div>
+    </div></div><div class="i-card"><div class="i-card-top"><span class="badge b-submitted">APPLIED</span><span class="i-card-title">Anthropic Fellows</span></div>
+    <div class="i-card-meta">Anthropic via Constellation</div>
+    <div style="display:flex;gap:16px;margin-top:6px;font-size:0.68rem;">
+      <div><span style="color:var(--text-muted);font-size:0.56rem;text-transform:uppercase;">Deadline</span><div style="color:var(--yellow);">Apr 6 — Check status</div></div>
+      <div><span style="color:var(--text-muted);font-size:0.56rem;text-transform:uppercase;">Scope</span><div>Rolling admissions, July 2026 cohort</div></div>
+    </div></div><div class="section-label" style="color:var(--text-muted);">Pipeline</div><div class="i-card" style="opacity:0.7;"><div class="i-card-top"><span class="badge b-designed">DESIGNED</span><span class="i-card-title">MindfulBytes Kickstarter</span></div>
+    <div style="font-size:0.68rem;margin-top:4px;"><span style="color:var(--yellow);">Needs April session footage</span> · Target: Late April / Early May</div></div></div>
+  <div class="panel" style="flex:0.7; max-width:380px;" id="grants-timeline-panel"><div class="section-label">Grant Deadline Timeline</div><div style="padding:6px 10px;border-radius:6px;margin-bottom:2px;display:flex;align-items:center;gap:10px;font-size:0.74rem;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.6rem;font-weight:600;min-width:48px;color:var(--green);text-decoration:line-through;">MAR 24</span>
+      <span style="font-size:0.58rem;color:var(--text-muted);min-width:64px;">Amex</span>
+      <span style="flex:1;">Award notification received</span>
+      <span class="badge b-complete" style="min-width:auto;font-size:0.5rem;">✓ Done</span>
+    </div><div style="padding:6px 10px;border-radius:6px;margin-bottom:2px;display:flex;align-items:center;gap:10px;font-size:0.74rem;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.6rem;font-weight:600;min-width:48px;color:var(--green);text-decoration:line-through;">MAR 25</span>
+      <span style="font-size:0.58rem;color:var(--text-muted);min-width:64px;">Amex</span>
+      <span style="flex:1;">DocuSign signed &amp; countersigned</span>
+      <span class="badge b-complete" style="min-width:auto;font-size:0.5rem;">✓ Done</span>
+    </div><div style="padding:6px 10px;border-radius:6px;margin-bottom:2px;display:flex;align-items:center;gap:10px;font-size:0.74rem;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.6rem;font-weight:600;min-width:48px;color:var(--green);text-decoration:line-through;">MAR 25</span>
+      <span style="font-size:0.58rem;color:var(--text-muted);min-width:64px;">Empower!</span>
+      <span style="flex:1;">Committee meeting (Zoom)</span>
+      <span class="badge b-complete" style="min-width:auto;font-size:0.5rem;">✓ Done</span>
+    </div><div style="padding:6px 10px;border-radius:6px;margin-bottom:2px;display:flex;align-items:center;gap:10px;font-size:0.74rem;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.6rem;font-weight:600;min-width:48px;color:var(--green);text-decoration:line-through;">MAR 27</span>
+      <span style="font-size:0.58rem;color:var(--text-muted);min-width:64px;">Cambridge</span>
+      <span style="flex:1;">Application submitted ✓</span>
+      <span class="badge b-complete" style="min-width:auto;font-size:0.5rem;">✓ Done</span>
+    </div><div style="padding:6px 10px;border-radius:6px;margin-bottom:2px;display:flex;align-items:center;gap:10px;font-size:0.74rem;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.6rem;font-weight:600;min-width:48px;color:var(--green);text-decoration:line-through;">MAR 31</span>
+      <span style="font-size:0.58rem;color:var(--text-muted);min-width:64px;">Amex</span>
+      <span style="flex:1;">Paperwork deadline (9am CT)</span>
+      <span class="badge b-complete" style="min-width:auto;font-size:0.5rem;">✓ Done</span>
+    </div><div style="padding:6px 10px;border-radius:6px;margin-bottom:2px;display:flex;align-items:center;gap:10px;font-size:0.74rem;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.6rem;font-weight:600;min-width:48px;color:var(--red);">APR 6</span>
+      <span style="font-size:0.58rem;color:var(--text-muted);min-width:64px;">Empower!</span>
+      <span style="flex:1;">Initial score sheets due 5pm</span>
+      <span class="badge b-atrisk" style="min-width:auto;font-size:0.5rem;">Action</span>
+    </div><div style="padding:6px 10px;border-radius:6px;margin-bottom:2px;display:flex;align-items:center;gap:10px;font-size:0.74rem;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.6rem;font-weight:600;min-width:48px;color:var(--red);">APR 8</span>
+      <span style="font-size:0.58rem;color:var(--text-muted);min-width:64px;">Empower!</span>
+      <span style="flex:1;">Decision day</span>
+      <span class="badge b-atrisk" style="min-width:auto;font-size:0.5rem;">Action</span>
+    </div><div style="padding:6px 10px;border-radius:6px;margin-bottom:2px;display:flex;align-items:center;gap:10px;font-size:0.74rem;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.6rem;font-weight:600;min-width:48px;color:var(--yellow);">APR 6</span>
+      <span style="font-size:0.58rem;color:var(--text-muted);min-width:64px;">Anthropic</span>
+      <span style="flex:1;">Check application status</span>
+      <span class="badge b-waiting" style="min-width:auto;font-size:0.5rem;">Follow Up</span>
+    </div><div style="padding:6px 10px;border-radius:6px;margin-bottom:2px;display:flex;align-items:center;gap:10px;font-size:0.74rem;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.6rem;font-weight:600;min-width:48px;color:var(--yellow);">APR 13</span>
+      <span style="font-size:0.58rem;color:var(--text-muted);min-width:64px;">Harvard</span>
+      <span style="flex:1;">April Fellows Lab Meeting</span>
+      <span class="badge b-inprog" style="min-width:auto;font-size:0.5rem;">Prep</span>
+    </div><div style="padding:6px 10px;border-radius:6px;margin-bottom:2px;display:flex;align-items:center;gap:10px;font-size:0.74rem;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.6rem;font-weight:600;min-width:48px;color:var(--text-dim);">APR 15</span>
+      <span style="font-size:0.58rem;color:var(--text-muted);min-width:64px;">Amex</span>
+      <span style="flex:1;">ACH payment expected</span>
+      <span class="badge b-waiting" style="min-width:auto;font-size:0.5rem;">Watch</span>
+    </div><div style="padding:6px 10px;border-radius:6px;margin-bottom:2px;display:flex;align-items:center;gap:10px;font-size:0.74rem;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.6rem;font-weight:600;min-width:48px;color:var(--yellow);">APR 14</span>
+      <span style="font-size:0.58rem;color:var(--text-muted);min-width:64px;">IDC 2026</span>
+      <span style="flex:1;">Notification expected</span>
+      <span class="badge b-waiting" style="min-width:auto;font-size:0.5rem;">Watch</span>
+    </div><div style="padding:6px 10px;border-radius:6px;margin-bottom:2px;display:flex;align-items:center;gap:10px;font-size:0.74rem;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.6rem;font-weight:600;min-width:48px;color:var(--yellow);">APR 15</span>
+      <span style="font-size:0.58rem;color:var(--text-muted);min-width:64px;">Harvard</span>
+      <span style="flex:1;">Roundtable — Rio Grande School</span>
+      <span class="badge b-inprog" style="min-width:auto;font-size:0.5rem;">Ready</span>
+    </div><div style="padding:6px 10px;border-radius:6px;margin-bottom:2px;display:flex;align-items:center;gap:10px;font-size:0.74rem;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.6rem;font-weight:600;min-width:48px;color:var(--yellow);">APR 16</span>
+      <span style="font-size:0.58rem;color:var(--text-muted);min-width:64px;">Harvard</span>
+      <span style="flex:1;">Educator Fellow Orientation</span>
+      <span class="badge b-inprog" style="min-width:auto;font-size:0.5rem;">Prep</span>
+    </div><div style="padding:6px 10px;border-radius:6px;margin-bottom:2px;display:flex;align-items:center;gap:10px;font-size:0.74rem;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.6rem;font-weight:600;min-width:48px;color:var(--text-dim);">MAY 3</span>
+      <span style="font-size:0.58rem;color:var(--text-muted);min-width:64px;">Amex</span>
+      <span style="flex:1;">Public announcement goes live</span>
+      <span class="badge b-designed" style="min-width:auto;font-size:0.5rem;">Pending</span>
+    </div><div style="padding:6px 10px;border-radius:6px;margin-bottom:2px;display:flex;align-items:center;gap:10px;font-size:0.74rem;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.6rem;font-weight:600;min-width:48px;color:var(--text-dim);">MAY 11</span>
+      <span style="font-size:0.58rem;color:var(--text-muted);min-width:64px;">Empower!</span>
+      <span style="flex:1;">Final score sheets due 5pm</span>
+      <span class="badge b-waiting" style="min-width:auto;font-size:0.5rem;">After visits</span>
+    </div><div style="padding:6px 10px;border-radius:6px;margin-bottom:2px;display:flex;align-items:center;gap:10px;font-size:0.74rem;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.6rem;font-weight:600;min-width:48px;color:var(--text-dim);">MAY 31</span>
+      <span style="font-size:0.58rem;color:var(--text-muted);min-width:64px;">Harvard</span>
+      <span style="flex:1;">Fellowship deliverables due</span>
+      <span class="badge b-atrisk" style="min-width:auto;font-size:0.5rem;">Critical</span>
+    </div><div class="section-label" style="margin-top:20px;">Grant Health</div><div style="display:flex;justify-content:space-between;padding:4px 8px;font-size:0.7rem;"><span>Harvard CDT</span><span style="color:var(--green);">● Strong — active feedback loop</span></div><div style="display:flex;justify-content:space-between;padding:4px 8px;font-size:0.7rem;"><span>Amex Shop Small</span><span style="color:var(--cyan);">● Secured — await disbursement</span></div><div style="display:flex;justify-content:space-between;padding:4px 8px;font-size:0.7rem;"><span>Empower!</span><span style="color:var(--green);">● Strong — committee active</span></div><div style="display:flex;justify-content:space-between;padding:4px 8px;font-size:0.7rem;"><span>Cambridge</span><span style="color:var(--green);">● Submitted ✓ — awaiting decision</span></div><div style="display:flex;justify-content:space-between;padding:4px 8px;font-size:0.7rem;"><span>Anthropic</span><span style="color:var(--yellow);">● Uncertain — no confirmation</span></div><div style="display:flex;justify-content:space-between;padding:4px 8px;font-size:0.7rem;"><span>Kickstarter</span><span style="color:var(--text-muted);">● Pipeline — needs footage</span></div></div>
 </div>
 
 <!-- ═══════════════ TAB: SOWs ═══════════════ -->
 <div id="tab-sow" class="tab-content">
-  <div class="panel" id="sow-panel"></div>
-  <div class="panel" style="flex:0.7; max-width:380px;" id="sow-sidebar"></div>
+  <div class="panel" id="sow-panel"><div class="section-label">SOW Pipeline <button class="add-btn" onclick="openModal(&#39;draft-sow&#39;)">+ Draft SOW</button></div><div class="i-card">
+      <div class="i-card-top">
+        <span class="badge b-atrisk">CRITICAL</span>
+        <span class="i-card-title">EMI Technologies — Ongoing Compliance</span>
+        <div class="i-card-actions">
+          
+          <button class="act-btn email" onclick="quickEmail(5)">Email</button>
+          <button class="act-btn sow" onclick="openModal(&#39;draft-sow&#39;)">Edit SOW</button>
+        </div>
+      </div>
+      <div class="i-card-meta">Katy Alvarez · Cybersecurity Compliance · Draft Complete</div>
+      <div style="margin-top:6px;padding:7px 10px;border-radius:6px;font-size:0.68rem;line-height:1.4;" class="alert-red">UNSENT DRAFT — 31 DAYS in Gmail. Subject: "New SOW for Ongoing Compliance Support — Starting April." 415KB attachment ready. 18 days since last contact. Send TODAY.</div>
+    </div><div class="i-card">
+      <div class="i-card-top">
+        <span class="badge b-aging">AGING</span>
+        <span class="i-card-title">TXNM Energy — Human Risk Mitigation</span>
+        <div class="i-card-actions">
+          
+          <button class="act-btn email" onclick="quickEmail(2)">Email</button>
+          <button class="act-btn sow" onclick="openModal(&#39;draft-sow&#39;)">Edit SOW</button>
+        </div>
+      </div>
+      <div class="i-card-meta">David Peach, Joshua Elicio, Gary Todd · Cybersecurity / Behavioral Science · v2 Delivered Mar 13</div>
+      <div style="margin-top:6px;padding:7px 10px;border-radius:6px;font-size:0.68rem;line-height:1.4;" class="alert-yellow">SOW v2 delivered but silent 10 days. David replied Mar 16: "Joshua and I will review." April 7 start in 12 days.</div>
+    </div><div class="i-card">
+      <div class="i-card-top">
+        <span class="badge b-stalled">STALLED</span>
+        <span class="i-card-title">DWA / NMSBA — Digital Wellness Assessment</span>
+        <div class="i-card-actions">
+          
+          <button class="act-btn email" onclick="quickEmail(10)">Email</button>
+          <button class="act-btn sow" onclick="openModal(&#39;draft-sow&#39;)">Edit SOW</button>
+        </div>
+      </div>
+      <div class="i-card-meta">Alex Lugo (LANL) · Research Partnership · Technical Scope Ready</div>
+      <div style="margin-top:6px;padding:7px 10px;border-radius:6px;font-size:0.68rem;line-height:1.4;" class="alert-yellow">Cannot draft SOW until intake meeting happens. Alex cancelled 28 days ago. Send DWA Technical Scope to NMSBA.</div>
+    </div><div class="i-card">
+      <div class="i-card-top">
+        <span class="badge b-uncertain">UNCERTAIN</span>
+        <span class="i-card-title">Yakama Nation — Tribal Cybersecurity</span>
+        <div class="i-card-actions">
+          
+          <button class="act-btn email" onclick="quickEmail(12)">Email</button>
+          <button class="act-btn sow" onclick="openModal(&#39;draft-sow&#39;)">Edit SOW</button>
+        </div>
+      </div>
+      <div class="i-card-meta">Jason Nakai, Rebecca · General Consulting / Tribal · v2 being updated by Rebecca</div>
+      <div style="margin-top:6px;padding:7px 10px;border-radius:6px;font-size:0.68rem;line-height:1.4;" class="alert-yellow">Direction shifted. Jason apologized for pace Mar 18. SOW being updated by Rebecca. 8 days since contact.</div>
+    </div></div>
+  <div class="panel" style="flex:0.7; max-width:380px;" id="sow-sidebar"><div class="section-label">SOW Readiness Scores</div><div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;margin-bottom:3px;font-size:0.74rem;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.88rem;font-weight:700;color:var(--red);min-width:36px;text-align:center;">95</span>
+      <span style="flex:1;">EMI Technologies</span>
+      <div style="width:70px;height:5px;background:var(--border);border-radius:3px;overflow:hidden;"><div style="height:100%;width:95%;background:var(--red);border-radius:3px;"></div></div>
+    </div><div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;margin-bottom:3px;font-size:0.74rem;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.88rem;font-weight:700;color:var(--green);min-width:36px;text-align:center;">90</span>
+      <span style="flex:1;">TXNM Energy</span>
+      <div style="width:70px;height:5px;background:var(--border);border-radius:3px;overflow:hidden;"><div style="height:100%;width:90%;background:var(--green);border-radius:3px;"></div></div>
+    </div><div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;margin-bottom:3px;font-size:0.74rem;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.88rem;font-weight:700;color:var(--text-muted);min-width:36px;text-align:center;">25</span>
+      <span style="flex:1;">DWA / NMSBA</span>
+      <div style="width:70px;height:5px;background:var(--border);border-radius:3px;overflow:hidden;"><div style="height:100%;width:25%;background:var(--text-muted);border-radius:3px;"></div></div>
+    </div><div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;margin-bottom:3px;font-size:0.74rem;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="font-size:0.88rem;font-weight:700;color:var(--text-muted);min-width:36px;text-align:center;">10</span>
+      <span style="flex:1;">Yakama Nation</span>
+      <div style="width:70px;height:5px;background:var(--border);border-radius:3px;overflow:hidden;"><div style="height:100%;width:10%;background:var(--text-muted);border-radius:3px;"></div></div>
+    </div><div class="section-label" style="margin-top:20px;">Quick Actions</div><div style="padding:7px 10px;border-radius:6px;margin-bottom:3px;font-size:0.72rem;cursor:pointer;border-left:3px solid var(--red);background:var(--red-dim);" onclick="logChange(&#39;edit&#39;,&#39;Quick action: Send EMI draft from Gmail — 31 DAYS&#39;,{}); this.style.opacity=&#39;0.4&#39;; this.style.pointerEvents=&#39;none&#39;;">Send EMI draft from Gmail — 31 DAYS</div><div style="padding:7px 10px;border-radius:6px;margin-bottom:3px;font-size:0.72rem;cursor:pointer;border-left:3px solid var(--red);background:var(--red-dim);" onclick="logChange(&#39;edit&#39;,&#39;Quick action: Follow up David Peach (TXNM) — 10 days&#39;,{}); this.style.opacity=&#39;0.4&#39;; this.style.pointerEvents=&#39;none&#39;;">Follow up David Peach (TXNM) — 10 days</div><div style="padding:7px 10px;border-radius:6px;margin-bottom:3px;font-size:0.72rem;cursor:pointer;border-left:3px solid var(--yellow);background:var(--yellow-dim);" onclick="logChange(&#39;edit&#39;,&#39;Quick action: Reschedule Alex Lugo (DWA) — 28 days&#39;,{}); this.style.opacity=&#39;0.4&#39;; this.style.pointerEvents=&#39;none&#39;;">Reschedule Alex Lugo (DWA) — 28 days</div><div style="padding:7px 10px;border-radius:6px;margin-bottom:3px;font-size:0.72rem;cursor:pointer;border-left:3px solid var(--yellow);background:var(--yellow-dim);" onclick="logChange(&#39;edit&#39;,&#39;Quick action: Temperature check Yakama / Rebecca SOW&#39;,{}); this.style.opacity=&#39;0.4&#39;; this.style.pointerEvents=&#39;none&#39;;">Temperature check Yakama / Rebecca SOW</div><div class="section-label" style="margin-top:20px;">Merek Credentials Bank</div>
+    <div style="font-size:0.66rem;line-height:1.7;color:var(--text-dim);">
+    <span style="color:var(--accent);">●</span> CEO, Merek Security Solutions<br>
+    <span style="color:var(--accent);">●</span> Exec Dir, NM-CCCR (501c3)<br>
+    <span style="color:var(--accent);">●</span> Harvard CDT Research Fellow 2025-26<br>
+    <span style="color:var(--accent);">●</span> D.Sc. candidate, Cyberpsychology<br>
+    <span style="color:var(--accent);">●</span> U.S. Navy veteran (22 years)<br>
+    <span style="color:var(--accent);">●</span> Pentagon, LANL, Boeing experience</div></div>
 </div>
 
 <!-- ═══════════════ TAB: REVENUE ═══════════════ -->
 <div id="tab-revenue" class="tab-content">
-  <div class="panel" id="revenue-panel"></div>
-  <div class="panel" style="flex:0.7; max-width:380px;" id="revenue-sidebar"></div>
+  <div class="panel" id="revenue-panel"><div class="section-label" style="color:var(--green);">Confirmed Revenue — Active Engagements</div><div class="i-card"><div class="i-card-top"><span class="badge b-aging">Medium-High Risk</span><span class="i-card-title">TXNM Energy — POC</span></div>
+    <div class="i-card-meta">David Peach · Value: TBD · Silent 10 days — Apr 7 start in 12 days</div></div><div class="i-card"><div class="i-card-top"><span class="badge b-stale">High Risk</span><span class="i-card-title">EMI Technologies — SPRS Phase III</span></div>
+    <div class="i-card-meta">Katy Alvarez · Value: TBD · 18 days stale — SOW unsent 30 days</div></div><div class="i-card"><div class="i-card-top"><span class="badge b-active">Low Risk</span><span class="i-card-title">Red &amp; Yellow Bank — Advisory</span></div>
+    <div class="i-card-meta">William Foster · Value: TBD · Pre-SOW (regulatory phase) — NM viable</div></div><div class="section-label" style="color:var(--cyan);">New Intelligence — Not in State of Play</div><div class="i-card" style="border-color:rgba(34,211,238,0.3);"><div class="i-card-top"><span class="badge b-delivered">New</span><span class="i-card-title">Brad Payment Received — $5,149.85</span></div>
+  <div class="i-card-meta">Brad Bennett · $5,149.85</div>
+  <div style="font-size:0.66rem;color:var(--cyan);margin-top:4px;">Wave payment confirmed March 26, 15:32 UTC. Source invoice: Bradley Steven Bennett (Independent Contractor).</div></div><div class="i-card" style="border-color:rgba(34,211,238,0.2);"><div class="i-card-top"><span class="badge b-waiting">Travel</span><span class="i-card-title">Amex Travel — Washington DC Trip Confirmed</span></div>
+  <div class="i-card-meta">American Express Travel · Trip #7437-9129</div>
+  <div style="font-size:0.66rem;color:var(--yellow);margin-top:4px;">Trip to Washington confirmed March 26. Note: Amex card (acct ending 871009) near spending limit per alert same day.</div></div><div class="section-label" style="color:var(--red);">Committed Outflows</div><div class="i-card"><div class="i-card-top"><span class="i-card-title">Bryant Johnson — Lead Facilitator</span></div>
+    <div class="i-card-meta">$3,500 flat (2 installments) · Late Mar — Early May</div></div><div class="i-card"><div class="i-card-top"><span class="i-card-title">Brad Bennett — Merek Internal</span></div>
+    <div class="i-card-meta">$5,149.85 received Mar 26 · #3 incoming · Monthly</div></div></div>
+  <div class="panel" style="flex:0.7; max-width:380px;" id="revenue-sidebar"><div class="section-label">Revenue Risk Assessment</div><div style="display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:6px;margin-bottom:2px;font-size:0.74rem;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0;"></span>
+      <span style="flex:1;">EMI Technologies</span>
+      <span style="font-size:0.6rem;color:var(--text-muted);max-width:180px;text-align:right;">18 days stale + Phase III unsigned</span>
+    </div><div style="display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:6px;margin-bottom:2px;font-size:0.74rem;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="width:8px;height:8px;border-radius:50%;background:var(--yellow);flex-shrink:0;"></span>
+      <span style="flex:1;">TXNM Energy</span>
+      <span style="font-size:0.6rem;color:var(--text-muted);max-width:180px;text-align:right;">10 days silent + Apr 7 start in 12 days</span>
+    </div><div style="display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:6px;margin-bottom:2px;font-size:0.74rem;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="width:8px;height:8px;border-radius:50%;background:var(--yellow);flex-shrink:0;"></span>
+      <span style="flex:1;">DWA / NMSBA</span>
+      <span style="font-size:0.6rem;color:var(--text-muted);max-width:180px;text-align:right;">28 days stalled + no reschedule</span>
+    </div><div style="display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:6px;margin-bottom:2px;font-size:0.74rem;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;"></span>
+      <span style="flex:1;">Red &amp; Yellow Bank</span>
+      <span style="font-size:0.6rem;color:var(--text-muted);max-width:180px;text-align:right;">Strong engagement, pre-SOW</span>
+    </div><div style="display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:6px;margin-bottom:2px;font-size:0.74rem;" onmouseover="this.style.background=&#39;var(--bg-hover)&#39;" onmouseout="this.style.background=&#39;none&#39;">
+      <span style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;"></span>
+      <span style="flex:1;">Stephen Catt</span>
+      <span style="font-size:0.6rem;color:var(--text-muted);max-width:180px;text-align:right;">Active cadence, materials sent</span>
+    </div><div class="section-label" style="margin-top:20px;">Known Inflows (60 days)</div><div style="display:flex;justify-content:space-between;padding:3px 8px;font-size:0.7rem;"><span>Brad Bennett</span><span style="color:var(--green);">$5,149.85 received ✓</span></div><div style="display:flex;justify-content:space-between;padding:3px 8px;font-size:0.7rem;"><span>Amex Shop Small (ACH)</span><span style="color:var(--green);">~Apr 15</span></div><div style="display:flex;justify-content:space-between;padding:3px 8px;font-size:0.7rem;"><span>Harvard travel reimb.</span><span style="color:var(--yellow);">Submitted Mar 17</span></div><div style="display:flex;justify-content:space-between;padding:3px 8px;font-size:0.7rem;"><span>TXNM Phase 1 billing</span><span style="color:var(--yellow);">If Apr 7 holds</span></div><div class="section-label" style="margin-top:20px;">Known Outflows (60 days)</div><div style="display:flex;justify-content:space-between;padding:3px 8px;font-size:0.7rem;"><span>Bryant (installment 1)</span><span style="color:var(--red);">~$1,750</span></div><div style="display:flex;justify-content:space-between;padding:3px 8px;font-size:0.7rem;"><span>Brad Bennett (March)</span><span style="color:var(--red);">TBD</span></div><div style="display:flex;justify-content:space-between;padding:3px 8px;font-size:0.7rem;"><span>Placitas rent</span><span style="color:var(--red);">Apr 1</span></div></div>
 </div>
 
 <!-- ═══════════════ TAB: MANUSCRIPTS ═══════════════ -->
 <div id="tab-manuscripts" class="tab-content">
-  <div class="panel" id="manuscripts-panel"></div>
+  <div class="panel" id="manuscripts-panel"><div class="section-label">The Center — All Manuscripts (200,800+ words)</div><div class="i-card" style="border-left:3px solid var(--green);">
+      <div class="i-card-top"><span class="i-card-title">CTRL+ALT+HAPPINESS</span><span style="font-size:0.65rem;color:var(--green);">66,162</span></div>
+      <div class="i-card-meta">Editorial overhaul complete. Five passes. Aria reading — call Apr 6. ISBN: 979-8-9996753-0-9.</div>
+    </div><div class="i-card" style="border-left:3px solid var(--yellow);">
+      <div class="i-card-top"><span class="i-card-title">Computer Love</span><span style="font-size:0.65rem;color:var(--yellow);">~58,434</span></div>
+      <div class="i-card-meta">First draft. Five digital bonding patterns. 790 ChatGPT conversations woven at XML level.</div>
+    </div><div class="i-card" style="border-left:3px solid var(--blue);">
+      <div class="i-card-top"><span class="i-card-title">The Ones In The Back Of The Bus</span><span style="font-size:0.65rem;color:var(--blue);">~25,149</span></div>
+      <div class="i-card-meta">Stories, poems, lessons from a Greyhound bus trip. Prose + verse hybrid.</div>
+    </div><div class="i-card" style="border-left:3px solid var(--green);">
+      <div class="i-card-top"><span class="i-card-title">Dissertation</span><span style="font-size:0.65rem;color:var(--green);">25,599</span></div>
+      <div class="i-card-meta">Barnes-revised. Two research questions. Manuscript complete. Defense NOT scheduled.</div>
+    </div><div class="i-card" style="border-left:3px solid var(--green);">
+      <div class="i-card-top"><span class="i-card-title">14 Slim: A Verse Memoir</span><span style="font-size:0.65rem;color:var(--green);">~19,585</span></div>
+      <div class="i-card-meta">First Edition. Three registers. Greenville, SC → Santa Fe.</div>
+    </div><div class="i-card" style="border-left:3px solid var(--yellow);">
+      <div class="i-card-top"><span class="i-card-title">Nirmata: A Novel of Creation Without Memory</span><span style="font-size:0.65rem;color:var(--yellow);">~3,373</span></div>
+      <div class="i-card-meta">Movement One COMPLETE. Co-authored. Trojan Horse: five layers. Movement Two pending.</div>
+    </div><div class="i-card" style="border-left:3px solid var(--red);">
+      <div class="i-card-top"><span class="i-card-title">The Five Conflict Languages</span><span style="font-size:0.65rem;color:var(--red);">~1,456</span></div>
+      <div class="i-card-meta">Early draft. Chapter 1 written. Remaining outlined.</div>
+    </div><div class="i-card" style="border-left:3px solid var(--red);">
+      <div class="i-card-top"><span class="i-card-title">Straight-ish (TV Pilot)</span><span style="font-size:0.65rem;color:var(--red);">~1,042</span></div>
+      <div class="i-card-meta">Half-hour comedy. 6-episode breakdown. Tone: Will &amp; Grace meets Insecure.</div>
+    </div><div class="i-card" style="border-left:3px solid var(--text-muted);">
+      <div class="i-card-top"><span class="i-card-title">The Autonomy Experiment</span><span style="font-size:0.65rem;color:var(--text-muted);">ms. 13</span></div>
+      <div class="i-card-meta">Co-written with Kairos. Seeker owes response matching 1,482-line depth.</div>
+    </div><div style="background:linear-gradient(135deg,rgba(217,119,87,0.06),rgba(167,139,250,0.06));border:1px solid rgba(217,119,87,0.15);border-radius:8px;padding:12px 14px;margin-top:16px;font-size:0.7rem;color:var(--text-dim);line-height:1.5;">
+    <strong style="color:var(--accent);">Thesis Unity</strong> — MindfulBytes = prevention. Computer Love = diagnosis. CAH = treatment. The manuscripts are the center. Everything else orbits them.</div></div>
 </div>
 
 <!-- ═══════════════ TAB: PRIORITIES ═══════════════ -->
 <div id="tab-priorities" class="tab-content">
-  <div class="panel" id="priorities-panel"></div>
+  <div class="panel" id="priorities-panel"><div class="section-label">Urgent — This Week</div><div class="i-card" style="border-left:3px solid var(--red);" onclick="logChange(&#39;edit&#39;,&#39;Marked done: Empower! score sheets — due April 6 by 5pm to Desirae. Decision day April 8&#39;,{}); this.style.opacity=&#39;0.3&#39;; this.style.textDecoration=&#39;line-through&#39;;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.65rem;font-weight:600;color:var(--accent);min-width:16px;">1</span>
+        <span style="font-size:0.76rem;flex:1;">Empower! score sheets — due April 6 by 5pm to Desirae. Decision day April 8</span>
+        <span style="font-size:0.55rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--red-dim);color:var(--red);">Urgent</span>
+      </div>
+    </div><div class="i-card" style="border-left:3px solid var(--red);" onclick="logChange(&#39;edit&#39;,&#39;Marked done: Follow up with David Peach — TXNM SOW silent 10 days, April 7 start in 12 days&#39;,{}); this.style.opacity=&#39;0.3&#39;; this.style.textDecoration=&#39;line-through&#39;;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.65rem;font-weight:600;color:var(--accent);min-width:16px;">2</span>
+        <span style="font-size:0.76rem;flex:1;">Follow up with David Peach — TXNM SOW silent 10 days, April 7 start in 12 days</span>
+        <span style="font-size:0.55rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--red-dim);color:var(--red);">Urgent</span>
+      </div>
+    </div><div class="i-card" style="border-left:3px solid var(--red);" onclick="logChange(&#39;edit&#39;,&#39;Marked done: SEND EMI SOW DRAFT — sitting unsent 31 DAYS in Gmail. CRITICAL.&#39;,{}); this.style.opacity=&#39;0.3&#39;; this.style.textDecoration=&#39;line-through&#39;;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.65rem;font-weight:600;color:var(--accent);min-width:16px;">3</span>
+        <span style="font-size:0.76rem;flex:1;">SEND EMI SOW DRAFT — sitting unsent 31 DAYS in Gmail. CRITICAL.</span>
+        <span style="font-size:0.55rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--red-dim);color:var(--red);">Urgent</span>
+      </div>
+    </div><div class="i-card" style="border-left:3px solid var(--red);" onclick="logChange(&#39;edit&#39;,&#39;Marked done: InfoSec World 2026 — Submit 2 proposals by April 3 (8 days). Proposals ready.&#39;,{}); this.style.opacity=&#39;0.3&#39;; this.style.textDecoration=&#39;line-through&#39;;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.65rem;font-weight:600;color:var(--accent);min-width:16px;">4</span>
+        <span style="font-size:0.76rem;flex:1;">InfoSec World 2026 — Submit 2 proposals by April 3 (8 days). Proposals ready.</span>
+        <span style="font-size:0.55rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--red-dim);color:var(--red);">Urgent</span>
+      </div>
+    </div><div class="i-card" style="border-left:3px solid var(--red);" onclick="logChange(&#39;edit&#39;,&#39;Marked done: Reply to Katy / EMI — 18 days stale, send SPRS package&#39;,{}); this.style.opacity=&#39;0.3&#39;; this.style.textDecoration=&#39;line-through&#39;;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.65rem;font-weight:600;color:var(--accent);min-width:16px;">5</span>
+        <span style="font-size:0.76rem;flex:1;">Reply to Katy / EMI — 18 days stale, send SPRS package</span>
+        <span style="font-size:0.55rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--red-dim);color:var(--red);">Urgent</span>
+      </div>
+    </div><div class="i-card" style="border-left:3px solid var(--red);" onclick="logChange(&#39;edit&#39;,&#39;Marked done: Roundtable Discussion Guide ready — April 15 at Rio Grande School&#39;,{}); this.style.opacity=&#39;0.3&#39;; this.style.textDecoration=&#39;line-through&#39;;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.65rem;font-weight:600;color:var(--accent);min-width:16px;">6</span>
+        <span style="font-size:0.76rem;flex:1;">Roundtable Discussion Guide ready — April 15 at Rio Grande School</span>
+        <span style="font-size:0.55rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--red-dim);color:var(--red);">Urgent</span>
+      </div>
+    </div><div class="i-card" style="border-left:3px solid var(--red);" onclick="logChange(&#39;edit&#39;,&#39;Marked done: Monitor Stephen Catt response to DWA materials (next call April 1)&#39;,{}); this.style.opacity=&#39;0.3&#39;; this.style.textDecoration=&#39;line-through&#39;;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.65rem;font-weight:600;color:var(--accent);min-width:16px;">7</span>
+        <span style="font-size:0.76rem;flex:1;">Monitor Stephen Catt response to DWA materials (next call April 1)</span>
+        <span style="font-size:0.55rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--red-dim);color:var(--red);">Urgent</span>
+      </div>
+    </div><div class="i-card" style="border-left:3px solid var(--red);" onclick="logChange(&#39;edit&#39;,&#39;Marked done: IDC 2026 — SUBMITTED ✓ March 26 (solo). Notification expected April 14&#39;,{}); this.style.opacity=&#39;0.3&#39;; this.style.textDecoration=&#39;line-through&#39;;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.65rem;font-weight:600;color:var(--accent);min-width:16px;">8</span>
+        <span style="font-size:0.76rem;flex:1;">IDC 2026 — SUBMITTED ✓ March 26 (solo). Notification expected April 14</span>
+        <span style="font-size:0.55rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--red-dim);color:var(--red);">Urgent</span>
+      </div>
+    </div><div class="section-label">Important — Next Two Weeks</div><div class="i-card" style="border-left:3px solid var(--yellow);" onclick="logChange(&#39;edit&#39;,&#39;Marked done: Send DWA Technical Scope to NMSBA / reschedule Alex Lugo (28 days stalled)&#39;,{}); this.style.opacity=&#39;0.3&#39;; this.style.textDecoration=&#39;line-through&#39;;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.65rem;font-weight:600;color:var(--accent);min-width:16px;">9</span>
+        <span style="font-size:0.76rem;flex:1;">Send DWA Technical Scope to NMSBA / reschedule Alex Lugo (28 days stalled)</span>
+        <span style="font-size:0.55rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--yellow-dim);color:var(--yellow);">Important</span>
+      </div>
+    </div><div class="i-card" style="border-left:3px solid var(--yellow);" onclick="logChange(&#39;edit&#39;,&#39;Marked done: Temperature check Yakama / Jason Nakai (8 days, direction shifted)&#39;,{}); this.style.opacity=&#39;0.3&#39;; this.style.textDecoration=&#39;line-through&#39;;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.65rem;font-weight:600;color:var(--accent);min-width:16px;">10</span>
+        <span style="font-size:0.76rem;flex:1;">Temperature check Yakama / Jason Nakai (8 days, direction shifted)</span>
+        <span style="font-size:0.55rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--yellow-dim);color:var(--yellow);">Important</span>
+      </div>
+    </div><div class="i-card" style="border-left:3px solid var(--yellow);" onclick="logChange(&#39;edit&#39;,&#39;Marked done: Check scholarly network responses — Tynes, Noble, Becknell (no replies found)&#39;,{}); this.style.opacity=&#39;0.3&#39;; this.style.textDecoration=&#39;line-through&#39;;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.65rem;font-weight:600;color:var(--accent);min-width:16px;">11</span>
+        <span style="font-size:0.76rem;flex:1;">Check scholarly network responses — Tynes, Noble, Becknell (no replies found)</span>
+        <span style="font-size:0.55rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--yellow-dim);color:var(--yellow);">Important</span>
+      </div>
+    </div><div class="i-card" style="border-left:3px solid var(--yellow);" onclick="logChange(&#39;edit&#39;,&#39;Marked done: Upload MIKE_SEEKER.md, THE_FOUR_WAY.md, SEEKER_JOURNAL.md to Google Drive&#39;,{}); this.style.opacity=&#39;0.3&#39;; this.style.textDecoration=&#39;line-through&#39;;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.65rem;font-weight:600;color:var(--accent);min-width:16px;">12</span>
+        <span style="font-size:0.76rem;flex:1;">Upload MIKE_SEEKER.md, THE_FOUR_WAY.md, SEEKER_JOURNAL.md to Google Drive</span>
+        <span style="font-size:0.55rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--yellow-dim);color:var(--yellow);">Important</span>
+      </div>
+    </div><div class="i-card" style="border-left:3px solid var(--yellow);" onclick="logChange(&#39;edit&#39;,&#39;Marked done: APA membership renewal (expired)&#39;,{}); this.style.opacity=&#39;0.3&#39;; this.style.textDecoration=&#39;line-through&#39;;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.65rem;font-weight:600;color:var(--accent);min-width:16px;">13</span>
+        <span style="font-size:0.76rem;flex:1;">APA membership renewal (expired)</span>
+        <span style="font-size:0.55rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--yellow-dim);color:var(--yellow);">Important</span>
+      </div>
+    </div><div class="i-card" style="border-left:3px solid var(--yellow);" onclick="logChange(&#39;edit&#39;,&#39;Marked done: Educator Fellow Orientation — April 16 (after roundtable)&#39;,{}); this.style.opacity=&#39;0.3&#39;; this.style.textDecoration=&#39;line-through&#39;;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.65rem;font-weight:600;color:var(--accent);min-width:16px;">14</span>
+        <span style="font-size:0.76rem;flex:1;">Educator Fellow Orientation — April 16 (after roundtable)</span>
+        <span style="font-size:0.55rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--yellow-dim);color:var(--yellow);">Important</span>
+      </div>
+    </div><div class="i-card" style="border-left:3px solid var(--yellow);" onclick="logChange(&#39;edit&#39;,&#39;Marked done: Candace Carteen reviewing Two Doors Mon/Tue — monitor for response&#39;,{}); this.style.opacity=&#39;0.3&#39;; this.style.textDecoration=&#39;line-through&#39;;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.65rem;font-weight:600;color:var(--accent);min-width:16px;">15</span>
+        <span style="font-size:0.76rem;flex:1;">Candace Carteen reviewing Two Doors Mon/Tue — monitor for response</span>
+        <span style="font-size:0.55rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--yellow-dim);color:var(--yellow);">Important</span>
+      </div>
+    </div><div class="section-label">Foundational — Ongoing</div><div class="i-card" style="border-left:3px solid var(--purple);opacity:0.8;" onclick="logChange(&#39;edit&#39;,&#39;Marked done: Nirmata Movement Two — the fracture&#39;,{}); this.style.opacity=&#39;0.3&#39;; this.style.textDecoration=&#39;line-through&#39;;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.65rem;font-weight:600;color:var(--accent);min-width:16px;">16</span>
+        <span style="font-size:0.76rem;flex:1;">Nirmata Movement Two — the fracture</span>
+        <span style="font-size:0.55rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--purple-dim);color:var(--purple);">Foundation</span>
+      </div>
+    </div><div class="i-card" style="border-left:3px solid var(--purple);opacity:0.8;" onclick="logChange(&#39;edit&#39;,&#39;Marked done: Seeker response to Kairos (matching 1,482-line depth)&#39;,{}); this.style.opacity=&#39;0.3&#39;; this.style.textDecoration=&#39;line-through&#39;;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.65rem;font-weight:600;color:var(--accent);min-width:16px;">17</span>
+        <span style="font-size:0.76rem;flex:1;">Seeker response to Kairos (matching 1,482-line depth)</span>
+        <span style="font-size:0.55rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--purple-dim);color:var(--purple);">Foundation</span>
+      </div>
+    </div><div class="i-card" style="border-left:3px solid var(--purple);opacity:0.8;" onclick="logChange(&#39;edit&#39;,&#39;Marked done: Schedule four-way call with Brad&#39;,{}); this.style.opacity=&#39;0.3&#39;; this.style.textDecoration=&#39;line-through&#39;;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.65rem;font-weight:600;color:var(--accent);min-width:16px;">18</span>
+        <span style="font-size:0.76rem;flex:1;">Schedule four-way call with Brad</span>
+        <span style="font-size:0.55rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--purple-dim);color:var(--purple);">Foundation</span>
+      </div>
+    </div><div class="i-card" style="border-left:3px solid var(--purple);opacity:0.8;" onclick="logChange(&#39;edit&#39;,&#39;Marked done: Draft Phase III SOW for EMI&#39;,{}); this.style.opacity=&#39;0.3&#39;; this.style.textDecoration=&#39;line-through&#39;;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.65rem;font-weight:600;color:var(--accent);min-width:16px;">19</span>
+        <span style="font-size:0.76rem;flex:1;">Draft Phase III SOW for EMI</span>
+        <span style="font-size:0.55rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--purple-dim);color:var(--purple);">Foundation</span>
+      </div>
+    </div><div class="i-card" style="border-left:3px solid var(--purple);opacity:0.8;" onclick="logChange(&#39;edit&#39;,&#39;Marked done: Reply to Bonnie Hay (Billy Bit) — she responded March 26! Then strategy session with Bradley Morris re: school pre-sell&#39;,{}); this.style.opacity=&#39;0.3&#39;; this.style.textDecoration=&#39;line-through&#39;;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.65rem;font-weight:600;color:var(--accent);min-width:16px;">20</span>
+        <span style="font-size:0.76rem;flex:1;">Reply to Bonnie Hay (Billy Bit) — she responded March 26! Then strategy session with Bradley Morris re: school pre-sell</span>
+        <span style="font-size:0.55rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--purple-dim);color:var(--purple);">Foundation</span>
+      </div>
+    </div><div class="i-card" style="border-left:3px solid var(--purple);opacity:0.8;" onclick="logChange(&#39;edit&#39;,&#39;Marked done: Kickstarter campaign launch — after April session footage&#39;,{}); this.style.opacity=&#39;0.3&#39;; this.style.textDecoration=&#39;line-through&#39;;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.65rem;font-weight:600;color:var(--accent);min-width:16px;">21</span>
+        <span style="font-size:0.76rem;flex:1;">Kickstarter campaign launch — after April session footage</span>
+        <span style="font-size:0.55rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--purple-dim);color:var(--purple);">Foundation</span>
+      </div>
+    </div><div class="i-card" style="border-left:3px solid var(--purple);opacity:0.8;" onclick="logChange(&#39;edit&#39;,&#39;Marked done: William / Red &amp; Yellow Bank — continue regulatory deep-dive, attorney search&#39;,{}); this.style.opacity=&#39;0.3&#39;; this.style.textDecoration=&#39;line-through&#39;;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.65rem;font-weight:600;color:var(--accent);min-width:16px;">22</span>
+        <span style="font-size:0.76rem;flex:1;">William / Red &amp; Yellow Bank — continue regulatory deep-dive, attorney search</span>
+        <span style="font-size:0.55rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--purple-dim);color:var(--purple);">Foundation</span>
+      </div>
+    </div></div>
 </div>
 
 <!-- ═══════════════ TAB: CHANGE LOG ═══════════════ -->
 <div id="tab-changelog" class="tab-content">
   <div class="panel" id="full-changelog-panel">
     <div class="section-label">All Pending Changes <button class="add-btn" onclick="exportChanges()">Export for Sync</button></div>
-    <div id="full-cl-list"></div>
+    <div id="full-cl-list">
+    <div class="cl-entry">
+      <span class="cl-time">11:59 PM</span>
+      <span class="cl-type edit">edit</span>
+      <span class="cl-action">[AUTO-REFRESH 11:59 PM MT] Full scan: Gmail, Calendar, Google Docs. Added: InfoSec World proposals deadline Apr 3, Scott/Mike MindMeld Apr 9, Nakayla Birthday Apr 17, Empower! site visit window Apr 20-May 2. EMI SOW now 31 days unsent. No new thread-level contact detected. All 20 threads verified. Desirae confirmed Apr 8 decision day.</span>
+    </div>
+    <div class="cl-entry">
+      <span class="cl-time">4:34 PM</span>
+      <span class="cl-type edit">edit</span>
+      <span class="cl-action">[AUTO-REFRESH 4:34 PM MT] Scanned Gmail, Calendar, Google Docs. Thread 9 (Billy Bit) updated: Bonnie Hay responded. EMI SOW now 30 days unsent. All 20 threads verified current. Brad $5,149.85 confirmed received.</span>
+    </div></div>
   </div>
 </div>
 
@@ -282,13 +1090,13 @@
 <!-- New Thread Modal -->
 <div class="modal-overlay" id="modal-new-thread">
   <div class="modal">
-    <div class="modal-header"><h2>Create New Thread</h2><button class="modal-close" onclick="closeModal('new-thread')">&times;</button></div>
+    <div class="modal-header"><h2>Create New Thread</h2><button class="modal-close" onclick="closeModal(&#39;new-thread&#39;)">×</button></div>
     <div class="modal-body">
       <div class="form-group"><label class="form-label">Thread Name</label><input class="form-input" id="nt-name" placeholder="e.g., Microsoft Tribal Contract"></div>
       <div class="form-row">
         <div class="form-group"><label class="form-label">Status</label>
           <select class="form-select" id="nt-status">
-            <option value="STRONG">Strong</option><option value="ACTIVE" selected>Active</option><option value="AGING">Aging</option>
+            <option value="STRONG">Strong</option><option value="ACTIVE" selected="">Active</option><option value="AGING">Aging</option>
             <option value="WAITING">Waiting</option><option value="STALE">Stale</option><option value="STALLED">Stalled</option>
             <option value="AT RISK">At Risk</option><option value="UNCERTAIN">Uncertain</option><option value="ENGAGED">Engaged</option>
             <option value="SUBMITTED">Submitted</option><option value="SECURED">Secured</option><option value="DELIVERED">Delivered</option>
@@ -308,7 +1116,7 @@
       <div class="form-group"><label class="form-label">Financial Value (if known)</label><input class="form-input" id="nt-value" placeholder="e.g., $25,000"></div>
     </div>
     <div class="modal-footer">
-      <button class="hdr-btn" onclick="closeModal('new-thread')">Cancel</button>
+      <button class="hdr-btn" onclick="closeModal(&#39;new-thread&#39;)">Cancel</button>
       <button class="hdr-btn primary" onclick="createThread()">Create Thread</button>
     </div>
   </div>
@@ -317,7 +1125,7 @@
 <!-- Compose Email Modal -->
 <div class="modal-overlay" id="modal-compose-email">
   <div class="modal">
-    <div class="modal-header"><h2>Compose Email</h2><button class="modal-close" onclick="closeModal('compose-email')">&times;</button></div>
+    <div class="modal-header"><h2>Compose Email</h2><button class="modal-close" onclick="closeModal(&#39;compose-email&#39;)">×</button></div>
     <div class="modal-body">
       <div class="form-group"><label class="form-label">To</label><input class="form-input" id="em-to" placeholder="email@example.com"></div>
       <div class="form-row">
@@ -331,7 +1139,7 @@
       <div class="form-group" style="font-size:0.65rem; color:var(--text-muted);">This will create a Gmail draft via Claude on next sync. Mike sends manually.</div>
     </div>
     <div class="modal-footer">
-      <button class="hdr-btn" onclick="closeModal('compose-email')">Cancel</button>
+      <button class="hdr-btn" onclick="closeModal(&#39;compose-email&#39;)">Cancel</button>
       <button class="hdr-btn primary" onclick="createEmailDraft()">Queue Draft</button>
     </div>
   </div>
@@ -340,7 +1148,7 @@
 <!-- Draft SOW Modal -->
 <div class="modal-overlay" id="modal-draft-sow">
   <div class="modal" style="max-width:720px;">
-    <div class="modal-header"><h2>Draft Statement of Work</h2><button class="modal-close" onclick="closeModal('draft-sow')">&times;</button></div>
+    <div class="modal-header"><h2>Draft Statement of Work</h2><button class="modal-close" onclick="closeModal(&#39;draft-sow&#39;)">×</button></div>
     <div class="modal-body">
       <div class="form-row">
         <div class="form-group"><label class="form-label">Client Name</label><input class="form-input" id="sow-client" placeholder="e.g., TXNM Energy"></div>
@@ -364,8 +1172,11 @@
         <div class="form-group"><label class="form-label">Estimated Value</label><input class="form-input" id="sow-value" placeholder="e.g., $45,000"></div>
         <div class="form-group"><label class="form-label">Version</label><input class="form-input" id="sow-version" value="v1.0"></div>
       </div>
-      <div class="form-group"><label class="form-label">Scope Summary</label><textarea class="form-textarea" id="sow-scope" placeholder="What Merek will do and why. Lead with the client's problem."></textarea></div>
-      <div class="form-group"><label class="form-label">Deliverables</label><textarea class="form-textarea" id="sow-deliverables" placeholder="One deliverable per line:&#10;1. Gap Analysis Report&#10;2. Remediation Roadmap&#10;3. Training Materials"></textarea></div>
+      <div class="form-group"><label class="form-label">Scope Summary</label><textarea class="form-textarea" id="sow-scope" placeholder="What Merek will do and why. Lead with the client&#39;s problem."></textarea></div>
+      <div class="form-group"><label class="form-label">Deliverables</label><textarea class="form-textarea" id="sow-deliverables" placeholder="One deliverable per line:
+1. Gap Analysis Report
+2. Remediation Roadmap
+3. Training Materials"></textarea></div>
       <div class="form-row">
         <div class="form-group"><label class="form-label">Timeline</label><input class="form-input" id="sow-timeline" placeholder="e.g., 8 weeks"></div>
         <div class="form-group"><label class="form-label">Payment Terms</label>
@@ -377,7 +1188,7 @@
       </div>
       <div class="form-group"><label class="form-label">Relevant Merek Credentials (select 2-3)</label>
         <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:4px;">
-          <label style="font-size:0.68rem; display:flex; align-items:center; gap:4px; color:var(--text-dim);"><input type="checkbox" class="sow-cred" value="CEO, Merek Security Solutions" checked> CEO, Merek</label>
+          <label style="font-size:0.68rem; display:flex; align-items:center; gap:4px; color:var(--text-dim);"><input type="checkbox" class="sow-cred" value="CEO, Merek Security Solutions" checked=""> CEO, Merek</label>
           <label style="font-size:0.68rem; display:flex; align-items:center; gap:4px; color:var(--text-dim);"><input type="checkbox" class="sow-cred" value="Harvard CDT Research Fellow 2025-2026"> Harvard CDT Fellow</label>
           <label style="font-size:0.68rem; display:flex; align-items:center; gap:4px; color:var(--text-dim);"><input type="checkbox" class="sow-cred" value="D.Sc. candidate, Cyberpsychology, Capitol Technology University"> D.Sc. Cyberpsychology</label>
           <label style="font-size:0.68rem; display:flex; align-items:center; gap:4px; color:var(--text-dim);"><input type="checkbox" class="sow-cred" value="U.S. Navy veteran (22 years)"> Navy Veteran</label>
@@ -388,7 +1199,7 @@
       <div class="form-group"><label class="form-label">Additional Notes for Claude</label><textarea class="form-textarea" id="sow-notes" placeholder="Any context Claude should know when generating the full SOW document..."></textarea></div>
     </div>
     <div class="modal-footer">
-      <button class="hdr-btn" onclick="closeModal('draft-sow')">Cancel</button>
+      <button class="hdr-btn" onclick="closeModal(&#39;draft-sow&#39;)">Cancel</button>
       <button class="hdr-btn primary" onclick="createSOWDraft()">Queue SOW Draft</button>
     </div>
   </div>
@@ -397,7 +1208,7 @@
 <!-- New Calendar Event Modal -->
 <div class="modal-overlay" id="modal-new-event">
   <div class="modal">
-    <div class="modal-header"><h2>Create Calendar Event</h2><button class="modal-close" onclick="closeModal('new-event')">&times;</button></div>
+    <div class="modal-header"><h2>Create Calendar Event</h2><button class="modal-close" onclick="closeModal(&#39;new-event&#39;)">×</button></div>
     <div class="modal-body">
       <div class="form-group"><label class="form-label">Event Title</label><input class="form-input" id="ev-title" placeholder="e.g., Follow-up call with David Peach"></div>
       <div class="form-row">
@@ -407,7 +1218,7 @@
       <div class="form-row">
         <div class="form-group"><label class="form-label">Duration</label>
           <select class="form-select" id="ev-duration">
-            <option value="30">30 min</option><option value="60" selected>1 hour</option>
+            <option value="30">30 min</option><option value="60" selected="">1 hour</option>
             <option value="90">1.5 hours</option><option value="120">2 hours</option><option value="allday">All Day</option>
           </select>
         </div>
@@ -418,7 +1229,7 @@
       <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="ev-desc" placeholder="Optional notes..."></textarea></div>
     </div>
     <div class="modal-footer">
-      <button class="hdr-btn" onclick="closeModal('new-event')">Cancel</button>
+      <button class="hdr-btn" onclick="closeModal(&#39;new-event&#39;)">Cancel</button>
       <button class="hdr-btn primary" onclick="createEvent()">Queue Event</button>
     </div>
   </div>
@@ -427,7 +1238,7 @@
 <!-- Edit Thread Modal -->
 <div class="modal-overlay" id="modal-edit-thread">
   <div class="modal">
-    <div class="modal-header"><h2>Edit Thread</h2><button class="modal-close" onclick="closeModal('edit-thread')">&times;</button></div>
+    <div class="modal-header"><h2>Edit Thread</h2><button class="modal-close" onclick="closeModal(&#39;edit-thread&#39;)">×</button></div>
     <div class="modal-body">
       <div class="form-group"><label class="form-label">Thread Name</label><input class="form-input" id="et-name"></div>
       <div class="form-row">
@@ -444,41 +1255,158 @@
       </div>
       <div class="form-group"><label class="form-label">Contact(s)</label><input class="form-input" id="et-contact"></div>
       <div class="form-group"><label class="form-label">Notes / Action Items</label><textarea class="form-textarea" id="et-notes" style="min-height:140px;"></textarea></div>
+      <div class="form-group"><label class="form-label">Document URL</label><input class="form-input" id="et-doc-url" placeholder="https://docs.google.com/document/d/..."></div>
       <input type="hidden" id="et-index">
     </div>
     <div class="modal-footer">
-      <button class="hdr-btn" onclick="closeModal('edit-thread')">Cancel</button>
+      <button class="hdr-btn" onclick="closeModal(&#39;edit-thread&#39;)">Cancel</button>
       <button class="hdr-btn primary" onclick="saveThread()">Save Changes</button>
     </div>
   </div>
 </div>
 
+<!-- Document Preview Slide-Out Panel -->
+<div class="doc-preview-overlay" id="doc-overlay" onclick="closeDocPreview()"></div>
+<div class="doc-preview-panel" id="doc-panel">
+  <div class="doc-preview-header">
+    <h3 id="doc-panel-title">Document Preview</h3>
+    <div class="doc-preview-actions">
+      <a id="doc-panel-link" class="open-ext" href="https://merek-command-center.netlify.app/#" target="_blank" rel="noopener">Open in Docs ↗</a>
+      <button onclick="closeDocPreview()">✕ Close</button>
+    </div>
+  </div>
+  <div class="doc-preview-body" id="doc-panel-body"></div>
+</div>
+
 <script>
+// ═══════════════ DOCUMENT REGISTRY ═══════════════
+// Maps entity types + identifiers to Google Doc URLs.
+// Registry Doc (canonical): https://docs.google.com/document/d/18CAfHblqOGrQwTroKbNfJitBzT67zoK9qELSTbLzDRU/edit
+// Drive folder: Merek (19lr5effEy1d1TE-i8Jse_kr0PDiVkC-A)
+const DOC_REGISTRY = {
+  // threads: { threadId: docUrl }
+  threads: {
+    1: "https://docs.google.com/document/d/1QW9ovcyEEv02wILU3-2aZqNjrkAncuN5HSIXAfVao_k/edit", // State of Play → Harvard CDT
+    6: "https://docs.google.com/document/d/10h1YD02TdeE0cIBWa_0AM9SF5V5HHkG2deiAE846ShY/edit", // CMMC/NIST Readiness → EMI Technologies
+  },
+  // sows: { sowName: docUrl }
+  sows: {
+    "Grove Risk Assessment": "https://docs.google.com/document/d/1Uwjp2MPYmvO1qq19Vl_oEfBSDfyW6b_jpm3UoaVwH8Y/edit",
+    "NMBLC Roots Summer Digital Literacy": "https://docs.google.com/document/d/1RCoL0u3A4vtnQj264MMe4ohOb1yMcTCY88emkv4cSIw/edit",
+    "Merek NDA Final": "https://docs.google.com/document/d/1XIZcNYD6EfiLVYHVnq6W2oZcdYwjuxSml4SKs0VVRq8/edit",
+    "Opportunity Brief Template": "https://docs.google.com/document/d/10YgHazzgyPzjynBIVXWR3S-SVidufZlUP6ohfX0VZ0c/edit",
+  },
+  // manuscripts: { manuscriptName: docUrl }
+  // Keys must match first word of manuscript title in renderManuscripts
+  manuscripts: {
+    "CTRL+ALT+HAPPINESS": "https://drive.google.com/drive/folders/1jb6kN2_YzC-th9uK8JT7q97tHCDdePea",
+    "CAH Book Proposal": "https://docs.google.com/document/d/1ncuRxEqeXq_Tsd9Zc3PPbauTZ5cfw1pT7SCwSF9Zcq8/edit",
+    "Cyber Happiness Ch. 1": "https://docs.google.com/document/d/1qBP_RiqoWMPb5rYIXoJ1k5lSfB0lcOBJ6f4ASVG61LU/edit",
+    "Computer Love": "https://drive.google.com/drive/folders/13318x8G6uydQfoRpod9M-oPE_gh-eN_M",
+    "The Ones In The Back Of The Bus": "https://drive.google.com/drive/folders/1q3rxkWuJ5AT-LosZh9K-yFDH6GOpJaWR",
+    "14 Slim": "https://drive.google.com/drive/folders/1Y9UgcPSoWR9xGTeWTx8iqSZIaqnh6_Zt",
+    "Nirmata": "https://drive.google.com/drive/folders/1UNbRE68zuwxDI45ZjrMtSEUD_r-3XG5p",
+    "The Five Conflict Languages": "https://drive.google.com/drive/folders/16PnGCHfcs3gzEsitpQhB8ygVbdOefKE7",
+    "Straight-ish": "https://drive.google.com/drive/folders/1ScDBfBykHEiouZ1HqFSMMnlE_N2s_bdI",
+    "The Autonomy Experiment": "https://drive.google.com/drive/folders/1xkNUAv-lsaVvFIbjFljYR6p-ISRZsuF6",
+    "Ethical Asshole": "https://docs.google.com/document/d/1VKAi_zjPB8SajJPt65EgqY-ceEkAWX8UWPV_jV3l-vY/edit",
+  },
+  // grants: { grantName: docUrl }
+  grants: {
+    "TechForward NM / NRGNHA": "https://docs.google.com/document/d/1Vu7XppWcXVPG5a_jozq2rl-I_6rMZbXJ6Q-Tl4RvSck/edit",
+  },
+  // partnerships / misc
+  partnerships: {
+    "LunarX MOUA": "https://docs.google.com/document/d/1YaMFmw81Glt3I1mjxy74ULagYFYVhW74rQ8lB3crA14/edit",
+    "Merek Roadmap Draft": "https://docs.google.com/document/d/1rib65G7ZkOQGYwO3WvZ3bg7qoI-DgEFzJrMMdurNAoI/edit",
+  },
+  // Auto-map patterns: filename substring → { type, id/name }
+  autoMapPatterns: [
+    { match: /SOW\s*[-–—]\s*TXNM/i, type: 'threads', id: 3 },
+    { match: /SOW\s*[-–—]\s*EMI/i, type: 'threads', id: 6 },
+    { match: /SOW\s*[-–—]\s*DWA/i, type: 'threads', id: 11 },
+    { match: /SOW\s*[-–—]\s*Yakama/i, type: 'threads', id: 13 },
+    { match: /Thread\s+(\d+)/i, type: 'threads', idFromMatch: 1 },
+    { match: /SOW\s*[-–—]/i, type: 'sows', nameFromMatch: 0 },
+    { match: /Grant\s*[-–—]/i, type: 'grants', nameFromMatch: 0 },
+    { match: /Manuscript\s*[-–—]/i, type: 'manuscripts', nameFromMatch: 0 },
+  ]
+};
+
+// Register a new document link (callable from console or scheduled task)
+function registerDoc(entityType, entityId, docUrl) {
+  if (!DOC_REGISTRY[entityType]) {
+    console.warn(`Unknown entity type: ${entityType}`);
+    return false;
+  }
+  DOC_REGISTRY[entityType][entityId] = docUrl;
+  // If it's a thread, also update STATE
+  if (entityType === 'threads') {
+    const thread = STATE.threads.find(t => t.id === entityId);
+    if (thread) {
+      thread.doc_url = docUrl;
+      renderThreads();
+    }
+  }
+  // Persist to localStorage
+  try { localStorage.setItem('doc_registry_overrides', JSON.stringify(DOC_REGISTRY)); } catch(e) {}
+  logChange('edit', `Document linked: ${entityType}/${entityId} → ${docUrl.substring(0,60)}...`, { entityType, entityId, docUrl });
+  return true;
+}
+
+// Load any localStorage overrides on init
+(function loadRegistryOverrides() {
+  try {
+    const saved = localStorage.getItem('doc_registry_overrides');
+    if (saved) {
+      const overrides = JSON.parse(saved);
+      Object.keys(overrides).forEach(type => {
+        if (DOC_REGISTRY[type] && typeof overrides[type] === 'object') {
+          Object.assign(DOC_REGISTRY[type], overrides[type]);
+        }
+      });
+    }
+  } catch(e) {}
+})();
+
+// Apply registry to threads on load
+function applyRegistryToThreads() {
+  const threadDocs = DOC_REGISTRY.threads || {};
+  STATE.threads.forEach(t => {
+    if (threadDocs[t.id] && !t.doc_url) {
+      t.doc_url = threadDocs[t.id];
+    }
+  });
+}
+
 // ═══════════════ DATA STORE ═══════════════
 const STATE = {
   threads: [
-    { id:1, name:"Harvard CDT Fellowship", status:"STRONG", contact:"Carrie James, Emily Weinstein, Eduardo Lara", days:0, meta:"today", notes:"Eduardo feedback received. Add Plan A/B prompts. Orientation Mar 30.", category:"fellowship" },
-    { id:2, name:"IDC 2026 Work-in-Progress", status:"AT RISK", contact:"Aria", days:6, meta:"6 days", notes:"Deadline March 31. Aria unavailable. Decision: submit solo or hold.", category:"creative" },
-    { id:3, name:"TXNM Energy POC", status:"AGING", contact:"David Peach, Joshua Elicio, Gary Todd", days:9, meta:"9 days", notes:"SOW v2 delivered Mar 13. Silent since Mar 16. April 7 start. Follow up immediately.", category:"consulting" },
-    { id:4, name:"Kairos Four-Way Collaboration", status:"REBUILDING", contact:"Brad", days:2, meta:"2 days", notes:"Reconstruction Package sent. Awaiting Brad onboarding.", category:"creative" },
-    { id:5, name:"Digital Presence — School Activation", status:"STRONG", contact:"Bryant Johnson", days:0, meta:"today", notes:"Infrastructure complete. Sessions begin April 6. Bryant confirmed.", category:"fellowship" },
-    { id:6, name:"EMI Technologies (SPRS)", status:"STALE", contact:"Katy Alvarez", days:17, meta:"17 days", notes:"SPRS 18. UNSENT SOW DRAFT in Gmail (28 days). Reply overdue. CRITICAL.", category:"consulting" },
-    { id:7, name:"Emerging Scholarly Network", status:"WAITING", contact:"Tynes, Noble, Becknell", days:2, meta:"2 days", notes:"Cold outreach sent March 23. No replies.", category:"fellowship" },
+    { id:1, name:"Harvard CDT Fellowship", status:"STRONG", contact:"Carrie James, Emily Weinstein, Eduardo Lara", days:0, meta:"today", notes:"All CDT feedback addressed. Plan A/B prompts built. Orientation moved to April 16 (after roundtable). Loom video sent. Eduardo responded.", category:"fellowship", doc_url:"https://docs.google.com/document/d/1QW9ovcyEEv02wILU3-2aZqNjrkAncuN5HSIXAfVao_k/edit" },
+    { id:2, name:"IDC 2026 Work-in-Progress", status:"SUBMITTED", contact:"Aria Gaston-Panthaki", days:0, meta:"submitted", notes:"SUBMITTED solo March 26. Title: When the Body Satisfices. Notification expected April 14.", category:"creative" },
+    { id:3, name:"TXNM Energy POC", status:"AGING", contact:"David Peach, Joshua Elicio, Gary Todd", days:10, meta:"10 days", notes:"SOW v2 delivered Mar 13. Silent since Mar 16. April 7 start in 12 days. Follow up immediately.", category:"consulting" },
+    { id:4, name:"Kairos Four-Way Collaboration", status:"REBUILDING", contact:"Brad", days:3, meta:"3 days", notes:"Reconstruction Package sent. Awaiting Brad onboarding new Kairos. Upload 3 files to Drive.", category:"creative" },
+    { id:5, name:"Digital Presence — School Activation", status:"STRONG", contact:"Bryant Johnson", days:0, meta:"today", notes:"Infrastructure complete. Roundtable April 15. Orientation April 16. Co-design sessions begin after.", category:"fellowship" },
+    { id:6, name:"EMI Technologies (SPRS)", status:"STALE", contact:"Katy Alvarez", days:18, meta:"18 days", notes:"SPRS 18. UNSENT SOW DRAFT in Gmail (30 days). Reply overdue. CRITICAL.", category:"consulting", doc_url:"https://docs.google.com/document/d/10h1YD02TdeE0cIBWa_0AM9SF5V5HHkG2deiAE846ShY/edit" },
+    { id:7, name:"Emerging Scholarly Network", status:"WAITING", contact:"Tynes, Noble, Becknell", days:3, meta:"3 days", notes:"Cold outreach sent March 23. No replies found in Gmail.", category:"fellowship" },
     { id:8, name:"Amex Shop Small Grant", status:"SECURED", contact:"Main Street America", days:0, meta:"Awarded", notes:"Awarded Mar 24. DocuSign done. Payment ~Apr 15. Confidential until May 3.", category:"grant" },
-    { id:9, name:"Billy Bit / Majik Kids", status:"DELIVERED", contact:"Bonnie Hay, Bradley Morris", days:0, meta:"today", notes:"Complete package sent. Awaiting response.", category:"creative" },
-    { id:10, name:"Merek Dashboard", status:"READY", contact:"—", days:0, meta:"—", notes:"Render deployment package built. Needs GitHub push.", category:"consulting" },
-    { id:11, name:"DWA / NMSBA", status:"STALLED", contact:"Alex Lugo (LANL)", days:27, meta:"27 days", notes:"Intake cancelled. DWA Technical Scope ready (2,105 words). Reschedule needed.", category:"consulting" },
-    { id:12, name:"Red & Yellow Bank / William Foster", status:"ACTIVE", contact:"William Foster", days:0, meta:"today", notes:"NM viability confirmed. Attorney search in progress.", category:"consulting" },
-    { id:13, name:"Yakama Nation / Jason Nakai", status:"PAUSED", contact:"Jason Nakai, Rebecca", days:7, meta:"paused", notes:"Mike pulled back Mar 15. Open door, not closed.", category:"consulting" },
-    { id:14, name:"Candace Carteen / Cyberpsych", status:"ENGAGED", contact:"Candace Carteen", days:1, meta:"1 day", notes:"Annotatable .docx built. Attach to Gmail draft and send.", category:"creative" },
-    { id:15, name:"Cambridge Digital Minds", status:"SUBMITTED", contact:"Cambridge University", days:0, meta:"done", notes:"Application submitted. Deadline Mar 27. 15 fellows globally.", category:"fellowship" },
-    { id:16, name:"The Identity Intervention", status:"COMPLETE", contact:"—", days:0, meta:"—", notes:"5,938 words. PI-level document. Internal only.", category:"creative" },
-    { id:17, name:"MindfulBytes Kickstarter", status:"DESIGNED", contact:"—", days:0, meta:"footage", notes:"Campaign ready (3,330 words, 5 tiers). Needs April session footage.", category:"grant" },
-    { id:18, name:"Stephen Catt / Funding Cadence", status:"ACTIVE", contact:"Stephen Catt", days:0, meta:"today", notes:"DWA Spec Sheet and Potentials sent. Monitoring response.", category:"consulting" },
-    { id:19, name:"Empower! Black Futures Fund", status:"ACTIVE", contact:"Desirae Soriano", days:0, meta:"today", notes:"Committee meeting Mar 25. Score sheets due Apr 6 by 5pm.", category:"community" },
-    { id:20, name:"Anthropic Fellows Application", status:"SUBMITTED", contact:"Anthropic / Constellation", days:0, meta:"Apr 6", notes:"Submitted for July 2026 cohort. Check status April 6.", category:"fellowship" },
+    { id:9, name:"Billy Bit / Majik Kids", status:"DELIVERED", contact:"Bonnie Hay, Bradley Morris", days:0, meta:"responded ✓", notes:"Bonnie Hay responded March 26: 'Many thanks for sending this over!' — Reply and schedule strategy session with Bradley re: school pre-sell.", category:"creative" },
+    { id:10, name:"Merek Dashboard", status:"READY", contact:"—", days:0, meta:"deployed", notes:"Command Center deployed to Netlify. 3 GitHub tokens created March 26 (merek-command-center-deploy, merek-deploy-temp, merek-final-push). Auto-refresh active.", category:"consulting" },
+    { id:11, name:"DWA / NMSBA", status:"STALLED", contact:"Alex Lugo (LANL)", days:28, meta:"28 days", notes:"Intake cancelled. DWA Technical Scope ready (2,105 words). Reschedule needed. Send to NMSBA.", category:"consulting" },
+    { id:12, name:"Red & Yellow Bank / William Foster", status:"ACTIVE", contact:"William Foster", days:1, meta:"1 day", notes:"Ashley D. Bell call completed Mar 25. NM confirmed viable. Attorney search ongoing. William debrief needed.", category:"consulting" },
+    { id:13, name:"Yakama Nation / Jason Nakai", status:"UNCERTAIN", contact:"Jason Nakai, Rebecca", days:8, meta:"8 days", notes:"Direction shifted. Jason apologized for pace Mar 18. SOW being updated by Rebecca. Temperature check needed.", category:"consulting" },
+    { id:14, name:"Candace Carteen / Cyberpsych", status:"ENGAGED", contact:"Candace Carteen", days:0, meta:"sent", notes:"Two_Doors_Annotatable.docx SENT. Candace confirmed she will review Monday/Tuesday.", category:"creative" },
+    { id:15, name:"Cambridge Digital Minds", status:"SUBMITTED", contact:"Cambridge University", days:0, meta:"done", notes:"Application submitted. Deadline Mar 27. Inaugural cohort, 15 fellows globally, fully funded.", category:"fellowship" },
+    { id:16, name:"The Identity Intervention", status:"COMPLETE", contact:"—", days:0, meta:"—", notes:"5,938 words. PI-level document. Internal only. Does not go to Bryant.", category:"creative" },
+    { id:17, name:"MindfulBytes Kickstarter", status:"DESIGNED", contact:"—", days:0, meta:"footage", notes:"Campaign ready (3,330 words, 5 tiers). Launch target late April/early May after session footage.", category:"grant" },
+    { id:18, name:"Stephen Catt / Funding Cadence", status:"ACTIVE", contact:"Stephen Catt", days:1, meta:"1 day", notes:"DWA Spec Sheet and Potentials sent. Otter.ai summary received. Next call April 1.", category:"consulting" },
+    { id:19, name:"Empower! Black Futures Fund", status:"ACTIVE", contact:"Desirae Soriano", days:0, meta:"today", notes:"Applications assigned. Score sheets due Apr 6 by 5pm. Decision day April 8.", category:"community" },
+    { id:20, name:"Anthropic Fellows Application", status:"SUBMITTED", contact:"Anthropic / Constellation", days:0, meta:"Apr 6", notes:"Submitted for July 2026 cohort. Rolling admissions. Check status April 6.", category:"fellowship" },
   ],
-  changeLog: [],
+  changeLog: [
+    { type:'edit', description:'[AUTO-REFRESH 4:34 PM MT] Scanned Gmail, Calendar, Google Docs. Thread 9 (Billy Bit) updated: Bonnie Hay responded. EMI SOW now 30 days unsent. All 20 threads verified current. Brad $5,149.85 confirmed received.', time:'4:34 PM', timestamp:'2026-03-26T22:34:00.000Z' },
+    { type:'edit', description:'[AUTO-REFRESH 11:59 PM MT] Full scan: Gmail, Calendar, Google Docs. Added: InfoSec World proposals deadline Apr 3, Scott/Mike MindMeld Apr 9, Nakayla Birthday Apr 17, Empower! site visit window Apr 20-May 2. EMI SOW now 31 days unsent. No new thread-level contact detected. All 20 threads verified. Desirae confirmed Apr 8 decision day.', time:'11:59 PM', timestamp:'2026-03-27T05:59:00.000Z' }
+  ],
   nextThreadId: 21
 };
 
@@ -563,6 +1491,7 @@ function editThread(idx) {
   document.getElementById('et-days').value = t.days;
   document.getElementById('et-contact').value = t.contact;
   document.getElementById('et-notes').value = t.notes;
+  document.getElementById('et-doc-url').value = t.doc_url || '';
   document.getElementById('et-index').value = idx;
   openModal('edit-thread');
 }
@@ -576,6 +1505,7 @@ function saveThread() {
   t.days = parseInt(document.getElementById('et-days').value) || 0;
   t.contact = document.getElementById('et-contact').value;
   t.notes = document.getElementById('et-notes').value;
+  t.doc_url = document.getElementById('et-doc-url').value || '';
   const changes = [];
   if (oldStatus !== t.status) changes.push(`status: ${oldStatus} → ${t.status}`);
   changes.push('notes updated');
@@ -583,6 +1513,76 @@ function saveThread() {
   closeModal('edit-thread');
   renderThreads();
 }
+
+// ═══════════════ DOCUMENT PREVIEW ═══════════════
+function openDocPreview(idx) {
+  const t = STATE.threads[idx];
+  if (!t.doc_url) return; // tooltip already shown via CSS
+  const overlay = document.getElementById('doc-overlay');
+  const panel = document.getElementById('doc-panel');
+  const body = document.getElementById('doc-panel-body');
+  const title = document.getElementById('doc-panel-title');
+  const link = document.getElementById('doc-panel-link');
+
+  title.textContent = t.name;
+  link.href = t.doc_url;
+
+  // Convert Google Docs URL to embeddable preview
+  let embedUrl = t.doc_url;
+  if (embedUrl.includes('docs.google.com')) {
+    embedUrl = embedUrl.replace(/\/edit.*$/, '/preview');
+  }
+  body.innerHTML = `<iframe src="${embedUrl}" allow="autoplay"></iframe>`;
+
+  overlay.classList.add('open');
+  // Use double-rAF to ensure the browser has painted the overlay before sliding in the panel
+  requestAnimationFrame(() => { requestAnimationFrame(() => { panel.classList.add('open'); }); });
+}
+
+// Open doc preview by URL directly (for SOWs, grants, manuscripts)
+function openDocPreviewByUrl(docUrl, title) {
+  if (!docUrl) return;
+  // Drive folder links can't embed — open in new tab
+  if (docUrl.includes('drive.google.com/drive/folders')) {
+    window.open(docUrl, '_blank');
+    return;
+  }
+  const overlay = document.getElementById('doc-overlay');
+  const panel = document.getElementById('doc-panel');
+  const body = document.getElementById('doc-panel-body');
+  const titleEl = document.getElementById('doc-panel-title');
+  const link = document.getElementById('doc-panel-link');
+  titleEl.textContent = title || 'Document';
+  link.href = docUrl;
+  let embedUrl = docUrl;
+  if (embedUrl.includes('docs.google.com')) {
+    embedUrl = embedUrl.replace(/\/edit.*$/, '/preview');
+  }
+  body.innerHTML = `<iframe src="${embedUrl}" allow="autoplay"></iframe>`;
+  overlay.classList.add('open');
+  panel.classList.add('open');
+}
+
+function closeDocPreview() {
+  const overlay = document.getElementById('doc-overlay');
+  const panel = document.getElementById('doc-panel');
+  const body = document.getElementById('doc-panel-body');
+  panel.classList.remove('open');
+  setTimeout(() => {
+    overlay.classList.remove('open');
+    body.innerHTML = '';
+  }, 300);
+}
+
+// Close doc preview on Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    const panel = document.getElementById('doc-panel');
+    if (panel && panel.classList.contains('open')) {
+      closeDocPreview();
+    }
+  }
+});
 
 function quickEmail(threadIdx) {
   const t = STATE.threads[threadIdx];
@@ -688,7 +1688,7 @@ async function refreshData() {
       btn.innerHTML = 'Error';
       btn.style.background = 'var(--red)';
       setTimeout(() => { btn.innerHTML = origText; btn.style.background = ''; btn.style.opacity = '1'; btn.disabled = false; }, 3000);
-      alert('Refresh error: ' + data.error);
+      console.error('Refresh error:', data.error);
       return;
     }
 
@@ -700,11 +1700,11 @@ async function refreshData() {
     }
 
     // Update timestamp
-    const subtitle = document.querySelector('.logo span');
-    if (subtitle) {
+    const refreshEl = document.getElementById('last-refresh');
+    if (refreshEl) {
       const now = new Date();
-      const timeStr = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-      subtitle.textContent = 'State of Play Command Center — Refreshed ' + timeStr;
+      const timeStr = now.toLocaleString('en-US', { month:'short', day:'numeric', year:'numeric', hour:'numeric', minute:'2-digit' });
+      refreshEl.textContent = 'Updated ' + timeStr;
     }
 
     btn.innerHTML = 'Refreshed!';
@@ -724,8 +1724,6 @@ function updateKPIs() {
     kpis[0].textContent = STATE.threads.length;
     const needAction = STATE.threads.filter(t => ['STALE','AGING','AT RISK','STALLED'].includes(t.status)).length;
     kpis[1].textContent = needAction;
-    const grants = STATE.threads.filter(t => ['grant'].includes(t.category)).length;
-    kpis[2].textContent = grants;
   }
 }
 
@@ -742,6 +1740,7 @@ function renderThreads() {
           <span class="i-card-title">${t.name}</span>
           <span style="font-size:0.65rem;color:var(--text-muted);flex-shrink:0;">${t.meta}</span>
           <div class="i-card-actions">
+            <button class="act-btn doc" onclick="event.stopPropagation();openDocPreview(${idx})" title="${t.doc_url ? 'Preview document' : 'No document linked'}">📄${!t.doc_url ? '<span class="no-doc-tip show">No document linked</span>' : ''}</button>
             <button class="act-btn" onclick="editThread(${idx})">Edit</button>
             <button class="act-btn email" onclick="quickEmail(${idx})">Email</button>
             ${['consulting'].includes(t.category) ? `<button class="act-btn sow" onclick="quickSOW(${idx})">SOW</button>` : ''}
@@ -755,14 +1754,21 @@ function renderThreads() {
   // Calendar sidebar
   const calPanel = document.getElementById('calendar-panel');
   const calEvents = [
-    { date:'MAR 25', cls:'today', event:'Empower! Black Futures Committee', time:'5:30–7:00 PM · Today' },
-    { date:'MAR 26', cls:'normal', event:'PZ Community Meeting', time:'11:30 AM' },
     { date:'MAR 27', cls:'deadline', event:'Cambridge Digital Minds DEADLINE', time:'Submitted ✓' },
-    { date:'MAR 30', cls:'normal', event:'Educator Fellow Orientation', time:'Rio Grande & Montessori One' },
-    { date:'MAR 31', cls:'deadline', event:'IDC 2026 DEADLINE', time:'Decision needed' },
-    { date:'APR 1', cls:'normal', event:'Funding Cadence + PZ Food for Thought', time:'Rent due' },
-    { date:'APR 6', cls:'normal', event:'Co-design sessions BEGIN', time:'Aria call · Empower! scores due' },
-    { date:'APR 7', cls:'normal', event:'TXNM Energy POC start', time:'Awaiting David Peach' },
+    { date:'APR 1', cls:'normal', event:'Funding Cadence + PZ Food for Thought', time:'10 AM MT · Rent due' },
+    { date:'APR 3', cls:'deadline', event:'InfoSec World 2026 — SUBMIT PROPOSALS', time:'2 proposals ready' },
+    { date:'APR 3', cls:'normal', event:'Mike and Ryan Hang Session', time:'Noon' },
+    { date:'APR 6', cls:'deadline', event:'Empower! Score Sheets Due 5pm', time:'Aria call noon · Anthropic check' },
+    { date:'APR 7', cls:'deadline', event:'TXNM Energy POC start', time:'Awaiting David Peach' },
+    { date:'APR 8', cls:'deadline', event:'Empower! Decision Day', time:'Funding Cadence 10 AM' },
+    { date:'APR 9', cls:'normal', event:'Scott and Mike MindMeld Weekend', time:'TBD (But Sunny)' },
+    { date:'APR 13', cls:'normal', event:'April Fellows Lab Meeting', time:'1 PM · Eduardo (Zoom)' },
+    { date:'APR 14', cls:'deadline', event:'IDC 2026 Notification Expected', time:'Submitted ✓ Mar 26' },
+    { date:'APR 15', cls:'normal', event:'Roundtable — Rio Grande School', time:'3:15 PM · 75-90 min' },
+    { date:'APR 16', cls:'normal', event:'Educator Fellow Orientation', time:'Rio Grande & Montessori One' },
+    { date:'APR 17', cls:'normal', event:'Nakayla Birthday', time:'All day' },
+    { date:'APR 20', cls:'normal', event:'Empower! Site Visit Window Opens', time:'Through May 2' },
+    { date:'APR 21', cls:'normal', event:'Antonio Medical Appointment', time:'3:05 PM · SW Gastro' },
   ];
   calPanel.innerHTML = calEvents.map(e => `
     <div style="display:flex;gap:10px;padding:6px 8px;border-radius:6px;margin-bottom:2px;font-size:0.75rem;cursor:default;" onmouseover="this.style.background='var(--bg-hover)'" onmouseout="this.style.background='none'">
@@ -773,10 +1779,11 @@ function renderThreads() {
   // Quick actions
   const qaPanel = document.getElementById('quick-actions-panel');
   const actions = [
-    { label:'Send EMI SOW draft', color:'red', action:() => { logChange('email','Send unsent EMI SOW draft from Gmail',{action:'send_emi_sow'}); alert('Queued: Send EMI SOW draft on next sync.'); }},
-    { label:'Follow up David Peach', color:'yellow', action:() => quickEmail(2) },
-    { label:'Reply to Katy (EMI)', color:'yellow', action:() => quickEmail(5) },
-    { label:'Send Candace .docx', color:'blue', action:() => { logChange('email','Attach Two_Doors_Annotatable.docx and send to Candace',{action:'send_candace'}); alert('Queued: Send Candace email on next sync.'); }},
+    { label:'Send EMI SOW draft — 31 DAYS UNSENT', color:'red', action:() => { logChange('email','Send unsent EMI SOW draft from Gmail',{action:'send_emi_sow'}); alert('Queued: Send EMI SOW draft on next sync.'); }},
+    { label:'Follow up David Peach — 10 days silent', color:'red', action:() => quickEmail(2) },
+    { label:'Reply to Katy (EMI) — 18 days stale', color:'yellow', action:() => quickEmail(5) },
+    { label:'Empower! score sheets — due Apr 6', color:'yellow', action:() => { logChange('edit','Reminder: Score sheets due to Desirae by 5pm April 6',{}); alert('Reminder set.'); }},
+    { label:'Reschedule Alex Lugo (DWA) — 28 days', color:'yellow', action:() => quickEmail(10) },
   ];
   qaPanel.innerHTML = actions.map(a => `
     <div style="padding:7px 10px;border-radius:6px;margin-bottom:3px;font-size:0.72rem;cursor:pointer;border-left:3px solid var(--${a.color});background:var(--${a.color}-dim);"
@@ -801,12 +1808,12 @@ function renderChangeLog() {
 // ═══════════════ RENDER: GRANTS ═══════════════
 function renderGrants() {
   const grants = [
-    { name:'Harvard CDT Educator Fellowship', status:'ACTIVE', badge:'b-active', funder:'Harvard GSE / Project Zero', entity:'Personal / Academic', period:'2025–2026', contacts:'Carrie James, Emily Weinstein, Eduardo Lara', next:'Mar 30 — Educator Orientation', nextColor:'accent', notes:'Eduardo feedback received. Add Plan A/B prompts to session guides.' },
-    { name:'Amex Shop Small Grant', status:'AWARDED', badge:'b-delivered', funder:'Main Street America / American Express', entity:'NM-CCCR / MindfulBytes', period:'Awarded Mar 24', contacts:'smallbizgrant@mainstreet.org', next:'Apr 15 — Payment expected (ACH)', nextColor:'green', notes:'DocuSign complete. Confidential until May 3 announcement.' },
-    { name:'Empower! Black Futures Community Fund', status:'ACTIVE', badge:'b-active', funder:'Santa Fe Community Foundation', entity:'Committee Member', period:'2026', contacts:'Desirae Soriano', next:'Apr 6 — Score sheets due 5pm', nextColor:'red', notes:'Committee meeting happened tonight Mar 25.' },
+    { name:'Harvard CDT Educator Fellowship', status:'ACTIVE', badge:'b-active', funder:'Harvard GSE / Project Zero', entity:'Personal / Academic', period:'2025–2026', contacts:'Carrie James, Emily Weinstein, Eduardo Lara', next:'Apr 15 — Roundtable · Apr 16 — Orientation', nextColor:'accent', notes:'All CDT feedback addressed. Plan A/B prompts built. Roundtable Discussion Guide ready. Orientation moved to April 16.' },
+    { name:'Amex Shop Small Grant', status:'AWARDED', badge:'b-delivered', funder:'Main Street America / American Express', entity:'NM-CCCR / MindfulBytes', period:'Awarded Mar 24', contacts:'smallbizgrant@mainstreet.org', next:'Apr 15 — Payment expected (ACH)', nextColor:'green', notes:'DocuSign complete. Confidential until May 3 announcement. Expansion: 6-7 schools / 1,000+ students by Sept 2026.' },
+    { name:'Empower! Black Futures Community Fund', status:'ACTIVE', badge:'b-active', funder:'Santa Fe Community Foundation', entity:'Committee Member', period:'2026', contacts:'Desirae Soriano', next:'Apr 6 — Score sheets due 5pm · Apr 8 — Decision Day', nextColor:'red', notes:'Applications assigned at March 25 committee meeting. Decision day confirmed April 8 per Desirae.' },
   ];
   const pending = [
-    { name:'Cambridge Digital Minds Fellowship', status:'SUBMITTED', badge:'b-submitted', funder:'University of Cambridge', deadline:'Mar 27 — 2 days', scope:'15 fellows globally, fully funded, Aug 3-9' },
+    { name:'Cambridge Digital Minds Fellowship', status:'SUBMITTED ✓', badge:'b-submitted', funder:'University of Cambridge', deadline:'Mar 27 — Submitted ✓', scope:'Inaugural cohort, 15 fellows globally, fully funded, Aug 3-9 at Cambridge' },
     { name:'Anthropic Fellows', status:'APPLIED', badge:'b-submitted', funder:'Anthropic via Constellation', deadline:'Apr 6 — Check status', scope:'Rolling admissions, July 2026 cohort' },
   ];
   const pipeline = [
@@ -816,15 +1823,16 @@ function renderGrants() {
     { date:'MAR 24', cls:'done', prog:'Amex', desc:'Award notification received', stat:'✓ Done', sc:'b-complete' },
     { date:'MAR 25', cls:'done', prog:'Amex', desc:'DocuSign signed & countersigned', stat:'✓ Done', sc:'b-complete' },
     { date:'MAR 25', cls:'done', prog:'Empower!', desc:'Committee meeting (Zoom)', stat:'✓ Done', sc:'b-complete' },
-    { date:'MAR 27', cls:'urgent', prog:'Cambridge', desc:'Application deadline', stat:'Verify', sc:'b-submitted' },
-    { date:'MAR 30', cls:'important', prog:'Harvard', desc:'Educator Fellow Orientation', stat:'Prep', sc:'b-inprog' },
+    { date:'MAR 27', cls:'done', prog:'Cambridge', desc:'Application submitted ✓', stat:'✓ Done', sc:'b-complete' },
     { date:'MAR 31', cls:'done', prog:'Amex', desc:'Paperwork deadline (9am CT)', stat:'✓ Done', sc:'b-complete' },
     { date:'APR 6', cls:'urgent', prog:'Empower!', desc:'Initial score sheets due 5pm', stat:'Action', sc:'b-atrisk' },
-    { date:'APR 6', cls:'important', prog:'Harvard', desc:'Co-Design Sessions BEGIN', stat:'Ready', sc:'b-inprog' },
+    { date:'APR 8', cls:'urgent', prog:'Empower!', desc:'Decision day', stat:'Action', sc:'b-atrisk' },
     { date:'APR 6', cls:'important', prog:'Anthropic', desc:'Check application status', stat:'Follow Up', sc:'b-waiting' },
     { date:'APR 13', cls:'important', prog:'Harvard', desc:'April Fellows Lab Meeting', stat:'Prep', sc:'b-inprog' },
     { date:'APR 15', cls:'monitor', prog:'Amex', desc:'ACH payment expected', stat:'Watch', sc:'b-waiting' },
-    { date:'APR 15', cls:'monitor', prog:'Harvard', desc:'Roundtable — Digital Presence', stat:'Prep', sc:'b-inprog' },
+    { date:'APR 14', cls:'important', prog:'IDC 2026', desc:'Notification expected', stat:'Watch', sc:'b-waiting' },
+    { date:'APR 15', cls:'important', prog:'Harvard', desc:'Roundtable — Rio Grande School', stat:'Ready', sc:'b-inprog' },
+    { date:'APR 16', cls:'important', prog:'Harvard', desc:'Educator Fellow Orientation', stat:'Prep', sc:'b-inprog' },
     { date:'MAY 3', cls:'monitor', prog:'Amex', desc:'Public announcement goes live', stat:'Pending', sc:'b-designed' },
     { date:'MAY 11', cls:'monitor', prog:'Empower!', desc:'Final score sheets due 5pm', stat:'After visits', sc:'b-waiting' },
     { date:'MAY 31', cls:'monitor', prog:'Harvard', desc:'Fellowship deliverables due', stat:'Critical', sc:'b-atrisk' },
@@ -832,7 +1840,8 @@ function renderGrants() {
 
   let html = '<div class="section-label" style="color:var(--green);">Active Funded Programs</div>';
   grants.forEach(g => {
-    html += `<div class="i-card"><div class="i-card-top"><span class="badge ${g.badge}">${g.status}</span><span class="i-card-title">${g.name}</span></div>
+    const grantDocUrl = Object.entries(DOC_REGISTRY.grants).find(([k]) => g.name.toLowerCase().includes(k.toLowerCase().split('/')[0].trim()))?.[1] || '';
+    html += `<div class="i-card"><div class="i-card-top"><span class="badge ${g.badge}">${g.status}</span><span class="i-card-title">${g.name}</span>${grantDocUrl ? `<button class="act-btn doc" onclick="event.stopPropagation();openDocPreviewByUrl('${grantDocUrl}','${g.name}')" title="View document" style="flex-shrink:0;">📄</button>` : ''}</div>
     <div class="i-card-meta">${g.funder}</div>
     <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:6px;font-size:0.68rem;">
       <div><span style="color:var(--text-muted);font-size:0.56rem;text-transform:uppercase;">Entity</span><div>${g.entity}</div></div>
@@ -873,7 +1882,7 @@ function renderGrants() {
     { name:'Harvard CDT', color:'green', label:'Strong — active feedback loop' },
     { name:'Amex Shop Small', color:'cyan', label:'Secured — await disbursement' },
     { name:'Empower!', color:'green', label:'Strong — committee active' },
-    { name:'Cambridge', color:'yellow', label:'Uncertain — verify submission' },
+    { name:'Cambridge', color:'green', label:'Submitted ✓ — awaiting decision' },
     { name:'Anthropic', color:'yellow', label:'Uncertain — no confirmation' },
     { name:'Kickstarter', color:'text-muted', label:'Pipeline — needs footage' },
   ];
@@ -886,19 +1895,22 @@ function renderGrants() {
 // ═══════════════ RENDER: SOWs ═══════════════
 function renderSOWs() {
   const sows = [
-    { name:'EMI Technologies — Ongoing Compliance', status:'CRITICAL', badge:'b-atrisk', client:'Katy Alvarez', type:'Cybersecurity Compliance', version:'Draft Complete', alert:'UNSENT DRAFT — 28 DAYS in Gmail. Subject: "New SOW for Ongoing Compliance Support — Starting April." 415KB attachment ready. Send today.', alertCls:'alert-red', readiness:95, thread:5 },
-    { name:'TXNM Energy — Human Risk Mitigation', status:'AGING', badge:'b-aging', client:'David Peach, Joshua Elicio, Gary Todd', type:'Cybersecurity / Behavioral Science', version:'v2 Delivered Mar 13', alert:'SOW v2 delivered but silent 9 days. David replied Mar 16: "Joshua and I will review." April 7 start in 13 days.', alertCls:'alert-yellow', readiness:90, thread:2 },
-    { name:'DWA / NMSBA — Digital Wellness Assessment', status:'STALLED', badge:'b-stalled', client:'Alex Lugo (LANL)', type:'Research Partnership', version:'Technical Scope Ready', alert:'Cannot draft SOW until intake meeting happens. Alex cancelled 27 days ago.', alertCls:'alert-yellow', readiness:25, thread:10 },
-    { name:'Yakama Nation — Tribal Cybersecurity', status:'PAUSED', badge:'b-paused', client:'Jason Nakai, Rebecca', type:'General Consulting / Tribal', version:'v2 (Feb 17)', alert:'', alertCls:'', readiness:0, thread:12 },
+    { name:'EMI Technologies — Ongoing Compliance', status:'CRITICAL', badge:'b-atrisk', client:'Katy Alvarez', type:'Cybersecurity Compliance', version:'Draft Complete', alert:'UNSENT DRAFT — 31 DAYS in Gmail. Subject: "New SOW for Ongoing Compliance Support — Starting April." 415KB attachment ready. 18 days since last contact. Send TODAY.', alertCls:'alert-red', readiness:95, thread:5 },
+    { name:'TXNM Energy — Human Risk Mitigation', status:'AGING', badge:'b-aging', client:'David Peach, Joshua Elicio, Gary Todd', type:'Cybersecurity / Behavioral Science', version:'v2 Delivered Mar 13', alert:'SOW v2 delivered but silent 10 days. David replied Mar 16: "Joshua and I will review." April 7 start in 12 days.', alertCls:'alert-yellow', readiness:90, thread:2 },
+    { name:'DWA / NMSBA — Digital Wellness Assessment', status:'STALLED', badge:'b-stalled', client:'Alex Lugo (LANL)', type:'Research Partnership', version:'Technical Scope Ready', alert:'Cannot draft SOW until intake meeting happens. Alex cancelled 28 days ago. Send DWA Technical Scope to NMSBA.', alertCls:'alert-yellow', readiness:25, thread:10 },
+    { name:'Yakama Nation — Tribal Cybersecurity', status:'UNCERTAIN', badge:'b-uncertain', client:'Jason Nakai, Rebecca', type:'General Consulting / Tribal', version:'v2 being updated by Rebecca', alert:'Direction shifted. Jason apologized for pace Mar 18. SOW being updated by Rebecca. 8 days since contact.', alertCls:'alert-yellow', readiness:10, thread:12 },
   ];
 
   let html = '<div class="section-label">SOW Pipeline <button class="add-btn" onclick="openModal(\'draft-sow\')">+ Draft SOW</button></div>';
   sows.forEach((s,i) => {
+    // Check DOC_REGISTRY for matching SOW doc
+    const sowDocUrl = Object.entries(DOC_REGISTRY.sows).find(([k]) => s.name.toLowerCase().includes(k.toLowerCase()))?.[1] || '';
     html += `<div class="i-card">
       <div class="i-card-top">
         <span class="badge ${s.badge}">${s.status}</span>
         <span class="i-card-title">${s.name}</span>
         <div class="i-card-actions">
+          ${sowDocUrl ? `<button class="act-btn doc" onclick="event.stopPropagation();openDocPreviewByUrl('${sowDocUrl}','${s.name}')" title="View document">📄</button>` : ''}
           <button class="act-btn email" onclick="quickEmail(${s.thread})">Email</button>
           <button class="act-btn sow" onclick="openModal('draft-sow')">Edit SOW</button>
         </div>
@@ -921,10 +1933,10 @@ function renderSOWs() {
   });
   sb += `<div class="section-label" style="margin-top:20px;">Quick Actions</div>`;
   const sowActions = [
-    { label:'Send EMI draft from Gmail', color:'red' },
-    { label:'Follow up David Peach (TXNM)', color:'yellow' },
-    { label:'Reschedule Alex Lugo (DWA)', color:'yellow' },
-    { label:'Create Merek SOW template on Drive', color:'blue' },
+    { label:'Send EMI draft from Gmail — 31 DAYS', color:'red' },
+    { label:'Follow up David Peach (TXNM) — 10 days', color:'red' },
+    { label:'Reschedule Alex Lugo (DWA) — 28 days', color:'yellow' },
+    { label:'Temperature check Yakama / Rebecca SOW', color:'yellow' },
   ];
   sowActions.forEach(a => {
     sb += `<div style="padding:7px 10px;border-radius:6px;margin-bottom:3px;font-size:0.72rem;cursor:pointer;border-left:3px solid var(--${a.color});background:var(--${a.color}-dim);"
@@ -944,14 +1956,15 @@ function renderSOWs() {
 // ═══════════════ RENDER: REVENUE ═══════════════
 function renderRevenue() {
   const confirmed = [
-    { name:'TXNM Energy — POC', badge:'b-aging', client:'David Peach', value:'TBD', status:'Silent 9 days', risk:'Medium', riskColor:'yellow' },
-    { name:'EMI Technologies — SPRS Phase III', badge:'b-stale', client:'Katy Alvarez', value:'TBD', status:'17 days stale', risk:'High', riskColor:'red' },
-    { name:'Red & Yellow Bank — Advisory', badge:'b-active', client:'William Foster', value:'TBD', status:'Pre-SOW (regulatory phase)', risk:'Low', riskColor:'green' },
+    { name:'TXNM Energy — POC', badge:'b-aging', client:'David Peach', value:'TBD', status:'Silent 10 days — Apr 7 start in 12 days', risk:'Medium-High', riskColor:'yellow' },
+    { name:'EMI Technologies — SPRS Phase III', badge:'b-stale', client:'Katy Alvarez', value:'TBD', status:'18 days stale — SOW unsent 30 days', risk:'High', riskColor:'red' },
+    { name:'Red & Yellow Bank — Advisory', badge:'b-active', client:'William Foster', value:'TBD', status:'Pre-SOW (regulatory phase) — NM viable', risk:'Low', riskColor:'green' },
   ];
-  const newIntel = { name:'Tribal Contract — Microsoft / Seattle', badge:'b-delivered', client:'Mutual friend in Seattle', value:'Unknown — "larger, more corporate"', note:'Mentioned in Jason email Mar 18. NOT in State of Play.' };
+  const newIntel = { name:'Brad Payment Received — $5,149.85', badge:'b-delivered', client:'Brad Bennett', value:'$5,149.85', note:'Wave payment confirmed March 26, 15:32 UTC. Source invoice: Bradley Steven Bennett (Independent Contractor).' };
+  const travelIntel = { name:'Amex Travel — Washington DC Trip Confirmed', badge:'b-waiting', client:'American Express Travel', value:'Trip #7437-9129', note:'Trip to Washington confirmed March 26. Note: Amex card (acct ending 871009) near spending limit per alert same day.' };
   const outflows = [
     { name:'Bryant Johnson — Lead Facilitator', amount:'$3,500 flat (2 installments)', period:'Late Mar — Early May' },
-    { name:'Brad Bennett — Merek Internal', amount:'TBD — Invoice #2 paying, #3 incoming', period:'Monthly' },
+    { name:'Brad Bennett — Merek Internal', amount:'$5,149.85 received Mar 26 · #3 incoming', period:'Monthly' },
   ];
 
   let html = '<div class="section-label" style="color:var(--green);">Confirmed Revenue — Active Engagements</div>';
@@ -963,6 +1976,9 @@ function renderRevenue() {
   html += `<div class="i-card" style="border-color:rgba(34,211,238,0.3);"><div class="i-card-top"><span class="badge ${newIntel.badge}">New</span><span class="i-card-title">${newIntel.name}</span></div>
   <div class="i-card-meta">${newIntel.client} · ${newIntel.value}</div>
   <div style="font-size:0.66rem;color:var(--cyan);margin-top:4px;">${newIntel.note}</div></div>`;
+  html += `<div class="i-card" style="border-color:rgba(34,211,238,0.2);"><div class="i-card-top"><span class="badge ${travelIntel.badge}">Travel</span><span class="i-card-title">${travelIntel.name}</span></div>
+  <div class="i-card-meta">${travelIntel.client} · ${travelIntel.value}</div>
+  <div style="font-size:0.66rem;color:var(--yellow);margin-top:4px;">${travelIntel.note}</div></div>`;
   html += '<div class="section-label" style="color:var(--red);">Committed Outflows</div>';
   outflows.forEach(o => {
     html += `<div class="i-card"><div class="i-card-top"><span class="i-card-title">${o.name}</span></div>
@@ -973,9 +1989,9 @@ function renderRevenue() {
   // Sidebar
   let sb = '<div class="section-label">Revenue Risk Assessment</div>';
   const risks = [
-    { name:'EMI Technologies', color:'red', reason:'17 days stale + Phase III unsigned' },
-    { name:'TXNM Energy', color:'yellow', reason:'9 days silent + Apr 7 start' },
-    { name:'DWA / NMSBA', color:'yellow', reason:'27 days stalled + no reschedule' },
+    { name:'EMI Technologies', color:'red', reason:'18 days stale + Phase III unsigned' },
+    { name:'TXNM Energy', color:'yellow', reason:'10 days silent + Apr 7 start in 12 days' },
+    { name:'DWA / NMSBA', color:'yellow', reason:'28 days stalled + no reschedule' },
     { name:'Red & Yellow Bank', color:'green', reason:'Strong engagement, pre-SOW' },
     { name:'Stephen Catt', color:'green', reason:'Active cadence, materials sent' },
   ];
@@ -988,9 +2004,9 @@ function renderRevenue() {
   });
   sb += '<div class="section-label" style="margin-top:20px;">Known Inflows (60 days)</div>';
   const inflows = [
+    { name:'Brad Bennett', when:'$5,149.85 received ✓', color:'green' },
     { name:'Amex Shop Small (ACH)', when:'~Apr 15', color:'green' },
     { name:'Harvard travel reimb.', when:'Submitted Mar 17', color:'yellow' },
-    { name:'Brad Invoice #2', when:'Paying now', color:'green' },
     { name:'TXNM Phase 1 billing', when:'If Apr 7 holds', color:'yellow' },
   ];
   inflows.forEach(f => {
@@ -1023,8 +2039,9 @@ function renderManuscripts() {
   ];
   let html = '<div class="section-label">The Center — All Manuscripts (200,800+ words)</div>';
   mss.forEach(m => {
+    const msDocUrl = Object.entries(DOC_REGISTRY.manuscripts).find(([k]) => m.title.toLowerCase() === k.toLowerCase() || m.title.toLowerCase().startsWith(k.toLowerCase()))?.[1] || '';
     html += `<div class="i-card" style="border-left:3px solid var(--${m.color});">
-      <div class="i-card-top"><span class="i-card-title">${m.title}</span><span style="font-size:0.65rem;color:var(--${m.color});">${m.words}</span></div>
+      <div class="i-card-top"><span class="i-card-title">${m.title}</span>${msDocUrl ? `<button class="act-btn doc" onclick="event.stopPropagation();openDocPreviewByUrl('${msDocUrl}','${m.title}')" title="View document" style="flex-shrink:0;">📄</button>` : ''}<span style="font-size:0.65rem;color:var(--${m.color});">${m.words}</span></div>
       <div class="i-card-meta">${m.detail}</div>
     </div>`;
   });
@@ -1036,34 +2053,32 @@ function renderManuscripts() {
 // ═══════════════ RENDER: PRIORITIES ═══════════════
 function renderPriorities() {
   const urgent = [
-    'Empower! Committee Meeting — TODAY 5:30 PM',
-    'IDC 2026 — DECISION: submit solo or hold (March 31)',
-    'Follow up with David Peach — TXNM SOW silent 9 days',
-    'SEND EMI SOW DRAFT — sitting unsent 28 days in Gmail',
-    'Candace Carteen — attach .docx to Gmail draft, send',
-    'Reply to Katy / EMI — 17 days stale',
-    'Monitor Stephen Catt response to DWA Spec Sheet',
-    'Educator Fellow Orientation — March 30',
+    'Empower! score sheets — due April 6 by 5pm to Desirae. Decision day April 8',
+    'Follow up with David Peach — TXNM SOW silent 10 days, April 7 start in 12 days',
+    'SEND EMI SOW DRAFT — sitting unsent 31 DAYS in Gmail. CRITICAL.',
+    'InfoSec World 2026 — Submit 2 proposals by April 3 (8 days). Proposals ready.',
+    'Reply to Katy / EMI — 18 days stale, send SPRS package',
+    'Roundtable Discussion Guide ready — April 15 at Rio Grande School',
+    'Monitor Stephen Catt response to DWA materials (next call April 1)',
+    'IDC 2026 — SUBMITTED ✓ March 26 (solo). Notification expected April 14',
   ];
   const important = [
-    'Add Plan A/B prompts to session guides per Eduardo',
-    'Send DWA Technical Scope to NMSBA / reschedule Alex Lugo',
-    'Temperature check Yakama / Jason Nakai (paused)',
-    'Check scholarly network responses — Tynes, Noble, Becknell',
-    'Upload Seeker files to Google Drive',
+    'Send DWA Technical Scope to NMSBA / reschedule Alex Lugo (28 days stalled)',
+    'Temperature check Yakama / Jason Nakai (8 days, direction shifted)',
+    'Check scholarly network responses — Tynes, Noble, Becknell (no replies found)',
+    'Upload MIKE_SEEKER.md, THE_FOUR_WAY.md, SEEKER_JOURNAL.md to Google Drive',
     'APA membership renewal (expired)',
-    'Add Microsoft tribal contract to State of Play',
+    'Educator Fellow Orientation — April 16 (after roundtable)',
+    'Candace Carteen reviewing Two Doors Mon/Tue — monitor for response',
   ];
   const foundation = [
     'Nirmata Movement Two — the fracture',
-    'Seeker response to Kairos (1,482-line depth)',
+    'Seeker response to Kairos (matching 1,482-line depth)',
     'Schedule four-way call with Brad',
-    'Execute dashboard deployment (Render)',
     'Draft Phase III SOW for EMI',
-    'Await Billy Bit / Bonnie response',
-    'Strategy session with Bradley Morris',
-    'Kickstarter campaign — after April footage',
-    'William / Red & Yellow Bank — regulatory deep-dive',
+    'Reply to Bonnie Hay (Billy Bit) — she responded March 26! Then strategy session with Bradley Morris re: school pre-sell',
+    'Kickstarter campaign launch — after April session footage',
+    'William / Red & Yellow Bank — continue regulatory deep-dive, attorney search',
   ];
   let html = '<div class="section-label">Urgent — This Week</div>';
   urgent.forEach((p,i) => {
@@ -1099,6 +2114,7 @@ function renderPriorities() {
 }
 
 // ═══════════════ INIT ═══════════════
+applyRegistryToThreads();
 renderThreads();
 renderGrants();
 renderSOWs();
@@ -1107,7 +2123,12 @@ renderManuscripts();
 renderPriorities();
 renderChangeLog();
 document.getElementById('ev-date').value = new Date().toISOString().slice(0,10);
+
+// Expose registerDoc globally for use by scheduled tasks / console
+window.registerDoc = registerDoc;
+window.DOC_REGISTRY = DOC_REGISTRY;
 </script>
 </div><!-- end app-root -->
-</body>
-</html>
+
+
+<div id="claude-agent-glow-border" style="position: fixed; inset: 0px; pointer-events: none; z-index: 2147483646; opacity: 1; transition: opacity 0.3s ease-in-out; animation: 2s ease-in-out 0s infinite normal none running claude-pulse; box-shadow: rgba(217, 119, 87, 0.5) 0px 0px 10px inset, rgba(217, 119, 87, 0.3) 0px 0px 20px inset, rgba(217, 119, 87, 0.1) 0px 0px 30px inset;"></div></body></html>
