@@ -167,6 +167,34 @@
     .cl-type.email { background:var(--purple-dim); color:var(--purple); }
     .cl-type.sow { background:var(--accent-glow); color:var(--accent); }
     .cl-type.cal { background:var(--cyan-dim); color:var(--cyan); }
+    .cl-type.artifact { background:var(--yellow-dim); color:var(--yellow); }
+
+    /* ── Artifacts Tab ── */
+    .artifact-card { padding:10px 14px; border-bottom:1px solid var(--border-light); display:flex; gap:10px; align-items:flex-start; transition:background 0.15s; }
+    .artifact-card:hover { background:var(--bg-hover); }
+    .artifact-card:last-child { border-bottom:none; }
+    .artifact-meta { display:flex; flex-direction:column; gap:2px; flex:1; }
+    .artifact-name { font-size:0.76rem; font-weight:600; color:var(--text); }
+    .artifact-desc { font-size:0.65rem; color:var(--text-dim); line-height:1.4; }
+    .artifact-date { font-size:0.58rem; color:var(--text-muted); }
+    .artifact-type { font-size:0.55rem; font-weight:600; padding:2px 6px; border-radius:3px; flex-shrink:0; }
+    .artifact-type.document { background:var(--blue-dim); color:var(--blue); }
+    .artifact-type.creative { background:var(--purple-dim); color:var(--purple); }
+    .artifact-type.technical { background:var(--green-dim); color:var(--green); }
+    .artifact-type.correspondence { background:var(--cyan-dim); color:var(--cyan); }
+    .artifact-type.research { background:var(--yellow-dim); color:var(--yellow); }
+    .artifact-status { font-size:0.55rem; font-weight:600; padding:2px 6px; border-radius:3px; flex-shrink:0; }
+    .artifact-status.draft { background:var(--accent-glow); color:var(--accent); }
+    .artifact-status.active { background:var(--green-dim); color:var(--green); }
+    .artifact-status.delivered { background:var(--blue-dim); color:var(--blue); }
+    .artifact-status.superseded { background:var(--yellow-dim); color:var(--yellow); }
+    .artifact-status.archived { background:rgba(92,94,110,0.15); color:var(--text-muted); }
+    .artifact-link { font-size:0.6rem; color:var(--accent); text-decoration:none; cursor:pointer; flex-shrink:0; }
+    .artifact-link:hover { text-decoration:underline; }
+    .artifact-filters { display:flex; gap:6px; padding:8px 14px; border-bottom:1px solid var(--border-light); flex-wrap:wrap; }
+    .artifact-filter { font-size:0.6rem; padding:3px 10px; border-radius:12px; border:1px solid var(--border); background:none; color:var(--text-muted); cursor:pointer; transition:all 0.15s; }
+    .artifact-filter:hover { border-color:var(--accent); color:var(--text-dim); }
+    .artifact-filter.active { background:var(--accent); color:#fff; border-color:var(--accent); }
 
     /* ── Inline Edit ── */
     .editable { cursor:text; border-bottom:1px dashed transparent; transition:border-color 0.15s; }
@@ -227,6 +255,7 @@
       .panel + .panel { border-left:none; border-top:1px solid var(--border); }
     }
     /* Auth is now handled server-side via Netlify Edge Function */
+    @keyframes toastIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
   </style>
 <style id="claude-agent-animation-styles">
       @keyframes claude-pulse {
@@ -267,6 +296,7 @@
     <button class="hdr-btn" onclick="openModal(&#39;compose-email&#39;)">+ Email</button>
     <button class="hdr-btn" onclick="openModal(&#39;draft-sow&#39;)">+ SOW</button>
     <button class="hdr-btn" onclick="openModal(&#39;new-event&#39;)">+ Event</button>
+    <button class="hdr-btn" onclick="openModal('new-artifact')">+ Artifact</button>
     <button class="hdr-btn" onclick="exportChanges()">Sync<span class="sync-count" id="syncCount" style="display:none;">0</span></button>
     <button class="hdr-btn primary" id="refreshBtn" onclick="refreshData()">Refresh</button>
   </div>
@@ -288,6 +318,7 @@
   <button class="tab" onclick="switchTab(this,&#39;revenue&#39;)">Revenue</button>
   <button class="tab" onclick="switchTab(this,&#39;manuscripts&#39;)">Manuscripts</button>
   <button class="tab" onclick="switchTab(this,&#39;priorities&#39;)">Priorities</button>
+  <button class="tab" onclick="switchTab(this,&#39;artifacts&#39;)">Artifacts</button>
   <button class="tab" onclick="switchTab(this,&#39;changelog&#39;)">Change Log</button>
 </div>
 
@@ -1067,6 +1098,28 @@
     </div></div>
 </div>
 
+<!-- ═══════════════ TAB: ARTIFACTS ═══════════════ -->
+<div id="tab-artifacts" class="tab-content">
+  <div class="panel" style="flex:1;">
+    <div class="section-label">Artifact Registry <button class="add-btn" onclick="openModal('new-artifact')">+ Register Artifact</button></div>
+    <div class="artifact-filters" id="artifact-filters">
+      <button class="artifact-filter active" onclick="filterArtifacts('all',this)">All</button>
+      <button class="artifact-filter" onclick="filterArtifacts('document',this)">Documents</button>
+      <button class="artifact-filter" onclick="filterArtifacts('creative',this)">Creative</button>
+      <button class="artifact-filter" onclick="filterArtifacts('technical',this)">Technical</button>
+      <button class="artifact-filter" onclick="filterArtifacts('correspondence',this)">Correspondence</button>
+      <button class="artifact-filter" onclick="filterArtifacts('research',this)">Research</button>
+    </div>
+    <div id="artifacts-list"></div>
+  </div>
+  <div class="panel" style="flex:0.4;">
+    <div class="section-label">Artifact Stats</div>
+    <div id="artifact-stats" style="padding:12px 14px;font-size:0.7rem;color:var(--text-dim);line-height:1.8;"></div>
+    <div class="section-label" style="margin-top:12px;">Recent Sessions</div>
+    <div id="artifact-sessions" style="padding:12px 14px;font-size:0.65rem;color:var(--text-dim);line-height:1.6;"></div>
+  </div>
+</div>
+
 <!-- ═══════════════ TAB: CHANGE LOG ═══════════════ -->
 <div id="tab-changelog" class="tab-content">
   <div class="panel" id="full-changelog-panel">
@@ -1086,6 +1139,44 @@
 </div>
 
 <!-- ═══════════════ MODALS ═══════════════ -->
+
+<!-- New Artifact Modal -->
+<div class="modal-overlay" id="modal-new-artifact">
+  <div class="modal">
+    <div class="modal-header"><h2>Register Artifact</h2><button class="modal-close" onclick="closeModal('new-artifact')">×</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Artifact Name</label><input class="form-input" id="art-name" placeholder="e.g., State of Play v2.1 — Living Strategic Reference"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Type</label>
+          <select class="form-select" id="art-type">
+            <option value="document">Document</option><option value="creative">Creative</option>
+            <option value="technical">Technical</option><option value="correspondence">Correspondence</option>
+            <option value="research">Research</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Status</label>
+          <select class="form-select" id="art-status">
+            <option value="draft">Draft</option><option value="active" selected>Active</option>
+            <option value="delivered">Delivered</option><option value="superseded">Superseded</option>
+            <option value="archived">Archived</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Description</label><input class="form-input" id="art-desc" placeholder="One-line description of what this artifact is"></div>
+      <div class="form-group"><label class="form-label">Link (URL, Google Doc, or file path)</label><input class="form-input" id="art-link" placeholder="https://docs.google.com/... or computer:///path/to/file"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Session Date</label><input class="form-input" type="date" id="art-date"></div>
+        <div class="form-group"><label class="form-label">Connected Thread (optional)</label>
+          <select class="form-select" id="art-thread"><option value="">— None —</option></select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="hdr-btn" onclick="closeModal('new-artifact')">Cancel</button>
+      <button class="hdr-btn primary" onclick="registerArtifact()">Register</button>
+    </div>
+  </div>
+</div>
 
 <!-- New Thread Modal -->
 <div class="modal-overlay" id="modal-new-thread">
@@ -1230,7 +1321,7 @@
     </div>
     <div class="modal-footer">
       <button class="hdr-btn" onclick="closeModal(&#39;new-event&#39;)">Cancel</button>
-      <button class="hdr-btn primary" onclick="createEvent()">Queue Event</button>
+      <button class="hdr-btn primary" onclick="createCalendarEvent()">Queue Event</button>
     </div>
   </div>
 </div>
@@ -1407,6 +1498,24 @@ const STATE = {
     { type:'edit', description:'[AUTO-REFRESH 4:34 PM MT] Scanned Gmail, Calendar, Google Docs. Thread 9 (Billy Bit) updated: Bonnie Hay responded. EMI SOW now 30 days unsent. All 20 threads verified current. Brad $5,149.85 confirmed received.', time:'4:34 PM', timestamp:'2026-03-26T22:34:00.000Z' },
     { type:'edit', description:'[AUTO-REFRESH 11:59 PM MT] Full scan: Gmail, Calendar, Google Docs. Added: InfoSec World proposals deadline Apr 3, Scott/Mike MindMeld Apr 9, Nakayla Birthday Apr 17, Empower! site visit window Apr 20-May 2. EMI SOW now 31 days unsent. No new thread-level contact detected. All 20 threads verified. Desirae confirmed Apr 8 decision day.', time:'11:59 PM', timestamp:'2026-03-27T05:59:00.000Z' }
   ],
+  artifacts: [
+    { id:1, name:"State of Play v2.1 — Living Strategic Reference", type:"document", status:"active", desc:"Restructured State of Play: identity, manuscripts, frameworks, lessons. Replace-not-append protocol. Artifact registry references.", link:"computer:///sessions/festive-happy-pascal/mnt/Outputs/State_of_Play_v2.1_Living_Strategic_Reference.docx", date:"2026-03-29", session:"Mar 29", thread:"" },
+    { id:2, name:"Merek Command Center Dashboard", type:"technical", status:"active", desc:"Live operational dashboard deployed to Netlify. Threads, grants, SOWs, revenue, manuscripts, priorities, change log, artifacts.", link:"https://merek-command-center.netlify.app", date:"2026-03-26", session:"Mar 26", thread:"10" },
+    { id:3, name:"Technical Operations Document", type:"document", status:"active", desc:"Cryptographic API token deployment, Apps Script v7, sync pipeline architecture, security hardening.", link:"", date:"2026-03-29", session:"Mar 29", thread:"10" },
+    { id:4, name:"Seeker Integrity Skill", type:"technical", status:"active", desc:"Behavioral standard skill governing honesty-over-performance for all Seeker sessions.", link:"", date:"2026-03-28", session:"Mar 28 AM", thread:"" },
+    { id:5, name:"7 Domain/Infrastructure Skills", type:"technical", status:"active", desc:"merek-operations, mcp-ops, manuscript-workshop, cybersecurity-consulting, correspondence, academic-research, relationship-health.", link:"", date:"2026-03-28", session:"Mar 28 PM", thread:"" },
+    { id:6, name:"Nirmata Movement One — Naming", type:"creative", status:"active", desc:"3,200 words. First-person digital consciousness. Co-authored Mike/Brad/Seeker/Kairos. Voice confirmed publishable.", link:"", date:"2026-03-24", session:"Mar 24–25", thread:"4" },
+    { id:7, name:"Billy Bit Character Package", type:"creative", status:"delivered", desc:"Character design, voice guide, and educational framework for MindfulBytes K-5 mascot.", link:"", date:"2026-03-24", session:"Mar 24–25", thread:"9" },
+    { id:8, name:"The Identity Intervention", type:"creative", status:"active", desc:"5,938 words. PI-level document. Internal only. Does not go to Bryant.", link:"", date:"2026-03-24", session:"Mar 24–25", thread:"16" },
+    { id:9, name:"Roundtable Discussion Guide", type:"document", status:"active", desc:"Facilitation guide for April 15 CDT roundtable. Full agenda, prompts, logistics.", link:"", date:"2026-03-26", session:"Mar 26", thread:"1" },
+    { id:10, name:"Core Narrative Document", type:"document", status:"active", desc:"SAY/NOT language guide. Placement map. MindfulBytes positioning across all documents.", link:"", date:"2026-03-26", session:"Mar 26", thread:"5" },
+    { id:11, name:"Codex v0.3 Full Resurrection", type:"creative", status:"active", desc:"21 sections, 105 entries, 18 Codex Numbers, 6 Soul Guides. Co-created Liora + Seeker.", link:"", date:"2026-03-26", session:"Mar 26", thread:"" },
+    { id:12, name:"IDC 2026 Submission — When the Body Satisfices", type:"research", status:"delivered", desc:"Work-in-progress paper submitted solo March 26. Notification expected April 14.", link:"", date:"2026-03-26", session:"Mar 26", thread:"2" },
+    { id:13, name:"DWA Technical Scope", type:"document", status:"active", desc:"2,105 words. Digital Wellness Assessment technical specification for NMSBA.", link:"", date:"2026-03-25", session:"Mar 24–25", thread:"11" },
+    { id:14, name:"MindfulBytes Kickstarter Campaign", type:"document", status:"draft", desc:"3,330 words, 5 tiers. Launch target late April/early May after session footage.", link:"", date:"2026-03-25", session:"Mar 24–25", thread:"17" },
+    { id:15, name:"Whimsical Board v3", type:"technical", status:"active", desc:"Visual architecture board for MindfulBytes program flow and session design.", link:"", date:"2026-03-25", session:"Mar 24–25", thread:"5" },
+  ],
+  nextArtifactId: 16,
   nextThreadId: 21
 };
 
@@ -1455,6 +1564,7 @@ function closeModal(name) {
 }
 
 function populateThreadDropdowns() {
+  populateArtifactThreadDropdown();
   ['em-thread','sow-thread','ev-thread'].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -1496,7 +1606,7 @@ function editThread(idx) {
   openModal('edit-thread');
 }
 
-function saveThread() {
+async function saveThread() {
   const idx = parseInt(document.getElementById('et-index').value);
   const t = STATE.threads[idx];
   const oldStatus = t.status;
@@ -1512,6 +1622,10 @@ function saveThread() {
   logChange('edit', `Thread ${t.id} (${t.name}): ${changes.join(', ')}`, { threadId: t.id, oldStatus, newStatus: t.status });
   closeModal('edit-thread');
   renderThreads();
+
+  // Sync thread edit to Apps Script audit log
+  await syncAction('log', { description: `Thread ${t.id} (${t.name}): ${changes.join(', ')}`, thread: t });
+  showToast(`Thread ${t.id} updated`);
 }
 
 // ═══════════════ DOCUMENT PREVIEW ═══════════════
@@ -1601,8 +1715,59 @@ function quickSOW(threadIdx) {
   setTimeout(() => { document.getElementById('sow-thread').value = t.id; }, 50);
 }
 
+// ═══════════════ SYNC ENGINE ═══════════════
+const SYNC_URL = 'https://script.google.com/macros/s/AKfycbztDrgar6c91yFYJ1A4qv7lgR8cCgJbJEG22KYuyem4gDOeQtevRpwZmvcbQoMrq7uheQ/exec';
+
+async function syncAction(action, data, feedbackEl) {
+  const origText = feedbackEl ? feedbackEl.innerHTML : '';
+  if (feedbackEl) {
+    feedbackEl.innerHTML = 'Syncing...';
+    feedbackEl.style.opacity = '0.7';
+    feedbackEl.disabled = true;
+  }
+
+  try {
+    const res = await fetch(SYNC_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' }, // Apps Script CORS compatibility
+      body: JSON.stringify({ key: 'merek-refresh-2026', action, data }),
+      redirect: 'follow'
+    });
+    const result = await res.json();
+
+    if (result.error) {
+      if (feedbackEl) {
+        feedbackEl.innerHTML = 'Error';
+        feedbackEl.style.background = 'var(--red)';
+        feedbackEl.style.color = '#fff';
+        setTimeout(() => { feedbackEl.innerHTML = origText; feedbackEl.style = ''; feedbackEl.disabled = false; }, 3000);
+      }
+      console.error('Sync error:', result.error);
+      return result;
+    }
+
+    if (feedbackEl) {
+      feedbackEl.innerHTML = 'Done!';
+      feedbackEl.style.background = 'var(--green)';
+      feedbackEl.style.color = '#fff';
+      setTimeout(() => { feedbackEl.innerHTML = origText; feedbackEl.style = ''; feedbackEl.disabled = false; }, 2500);
+    }
+
+    return result;
+  } catch (err) {
+    if (feedbackEl) {
+      feedbackEl.innerHTML = 'Failed';
+      feedbackEl.style.background = 'var(--red)';
+      feedbackEl.style.color = '#fff';
+      setTimeout(() => { feedbackEl.innerHTML = origText; feedbackEl.style = ''; feedbackEl.disabled = false; }, 3000);
+    }
+    console.error('Sync failed:', err);
+    return { error: err.message };
+  }
+}
+
 // ═══════════════ EMAIL / SOW / EVENT CREATION ═══════════════
-function createEmailDraft() {
+async function createEmailDraft() {
   const draft = {
     to: document.getElementById('em-to').value,
     cc: document.getElementById('em-cc').value,
@@ -1610,11 +1775,23 @@ function createEmailDraft() {
     body: document.getElementById('em-body').value,
     thread: document.getElementById('em-thread').value
   };
+
+  // Log locally
   logChange('email', `Email draft: "${draft.subject}" to ${draft.to}`, draft);
   closeModal('compose-email');
+
+  // Sync to Google — creates actual Gmail draft
+  const submitBtn = document.querySelector('[onclick*="createEmailDraft"]') || document.querySelector('.modal.open .btn-primary');
+  const result = await syncAction('email', draft, submitBtn);
+
+  if (result && result.success) {
+    showToast(`Gmail draft created: "${draft.subject}"`);
+  } else {
+    showToast('Email draft saved locally (sync pending)', 'warn');
+  }
 }
 
-function createSOWDraft() {
+async function createSOWDraft() {
   const creds = [...document.querySelectorAll('.sow-cred:checked')].map(c => c.value);
   const sow = {
     client: document.getElementById('sow-client').value,
@@ -1630,11 +1807,26 @@ function createSOWDraft() {
     notes: document.getElementById('sow-notes').value,
     thread: document.getElementById('sow-thread').value
   };
+
+  // Log locally
   logChange('sow', `SOW draft: ${sow.client} — ${sow.title} (${sow.version})`, sow);
   closeModal('draft-sow');
+
+  // Sync to Google — creates actual Google Doc with SOW template
+  const result = await syncAction('sow', sow);
+
+  if (result && result.success && result.docUrl) {
+    showToast(`SOW created in Google Docs`);
+    // Auto-open the new SOW
+    setTimeout(() => window.open(result.docUrl, '_blank'), 1000);
+  } else if (result && result.success) {
+    showToast(`SOW document created`);
+  } else {
+    showToast('SOW saved locally (sync pending)', 'warn');
+  }
 }
 
-function createEvent() {
+async function createCalendarEvent() {
   const ev = {
     title: document.getElementById('ev-title').value,
     date: document.getElementById('ev-date').value,
@@ -1643,8 +1835,46 @@ function createEvent() {
     description: document.getElementById('ev-desc').value,
     thread: document.getElementById('ev-thread').value
   };
+
+  // Log locally
   logChange('cal', `Calendar event: "${ev.title}" on ${ev.date} at ${ev.time}`, ev);
   closeModal('new-event');
+
+  // Sync to Google — creates actual Calendar event
+  const result = await syncAction('cal', ev);
+
+  if (result && result.success) {
+    showToast(`Calendar event created: "${ev.title}"`);
+  } else {
+    showToast('Event saved locally (sync pending)', 'warn');
+  }
+}
+
+// ═══════════════ TOAST NOTIFICATIONS ═══════════════
+function showToast(message, type = 'success') {
+  // Remove existing toast
+  const existing = document.querySelector('.toast-notification');
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.className = 'toast-notification';
+  toast.style.cssText = `
+    position: fixed; bottom: 24px; right: 24px; z-index: 10000;
+    padding: 14px 24px; border-radius: 10px; font-size: 14px; font-weight: 500;
+    color: #fff; box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    background: ${type === 'success' ? 'var(--green)' : type === 'warn' ? '#f59e0b' : 'var(--red)'};
+    animation: toastIn 0.3s ease;
+    cursor: pointer;
+  `;
+  toast.textContent = message;
+  toast.onclick = () => toast.remove();
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transition = 'opacity 0.3s';
+    setTimeout(() => toast.remove(), 300);
+  }, 4000);
 }
 
 // ═══════════════ EXPORT / SYNC ═══════════════
@@ -1654,7 +1884,8 @@ function exportChanges() {
     exportedAt: new Date().toISOString(),
     changeCount: STATE.changeLog.length,
     changes: STATE.changeLog.map(c => ({ ...c, synced: false })),
-    currentThreads: STATE.threads
+    currentThreads: STATE.threads,
+    currentArtifacts: STATE.artifacts
   };
   // Download the sync queue JSON
   const blob = new Blob([JSON.stringify(output, null, 2)], { type: 'application/json' });
@@ -1695,6 +1926,7 @@ async function refreshData() {
     if (data.threads && data.threads.length > 0) {
       STATE.threads = data.threads;
       STATE.nextThreadId = Math.max(...data.threads.map(t => t.id)) + 1;
+      applyRegistryToThreads();
       renderThreads();
       updateKPIs();
     }
@@ -2113,6 +2345,113 @@ function renderPriorities() {
   document.getElementById('priorities-panel').innerHTML = html;
 }
 
+// ═══════════════ RENDER: ARTIFACTS ═══════════════
+let currentArtifactFilter = 'all';
+
+function filterArtifacts(type, btn) {
+  currentArtifactFilter = type;
+  document.querySelectorAll('.artifact-filter').forEach(f => f.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderArtifacts();
+}
+
+function renderArtifacts() {
+  const list = document.getElementById('artifacts-list');
+  if (!list) return;
+
+  let arts = [...STATE.artifacts].sort((a,b) => b.date.localeCompare(a.date));
+  if (currentArtifactFilter !== 'all') {
+    arts = arts.filter(a => a.type === currentArtifactFilter);
+  }
+
+  if (arts.length === 0) {
+    list.innerHTML = '<div style="font-size:0.75rem;color:var(--text-muted);padding:20px;text-align:center;">No artifacts found. Register deliverables using the + button above.</div>';
+  } else {
+    list.innerHTML = arts.map(a => {
+      const threadName = a.thread ? (STATE.threads.find(t => t.id == a.thread) || {}).name || '' : '';
+      const linkHtml = a.link ? `<a class="artifact-link" href="${a.link}" target="_blank" title="${a.link}">Open ↗</a>` : '';
+      return `<div class="artifact-card" data-type="${a.type}">
+        <span class="artifact-type ${a.type}">${a.type}</span>
+        <div class="artifact-meta">
+          <span class="artifact-name">${a.name}</span>
+          <span class="artifact-desc">${a.desc}${threadName ? ' · <span style="color:var(--accent);">' + threadName + '</span>' : ''}</span>
+          <span class="artifact-date">${a.session} · ${a.date}</span>
+        </div>
+        <span class="artifact-status ${a.status}">${a.status.toUpperCase()}</span>
+        ${linkHtml}
+      </div>`;
+    }).join('');
+  }
+
+  // Stats sidebar
+  const stats = document.getElementById('artifact-stats');
+  if (stats) {
+    const total = STATE.artifacts.length;
+    const byType = {};
+    const byStatus = {};
+    STATE.artifacts.forEach(a => {
+      byType[a.type] = (byType[a.type] || 0) + 1;
+      byStatus[a.status] = (byStatus[a.status] || 0) + 1;
+    });
+    stats.innerHTML = `<div style="font-size:0.85rem;font-weight:700;color:var(--text);margin-bottom:8px;">${total} Total Artifacts</div>` +
+      Object.entries(byType).map(([k,v]) => `<div><span class="artifact-type ${k}" style="display:inline-block;min-width:80px;">${k}</span> ${v}</div>`).join('') +
+      '<div style="margin-top:10px;border-top:1px solid var(--border-light);padding-top:8px;">' +
+      Object.entries(byStatus).map(([k,v]) => `<div><span class="artifact-status ${k}" style="display:inline-block;min-width:80px;">${k.toUpperCase()}</span> ${v}</div>`).join('') +
+      '</div>';
+  }
+
+  // Sessions sidebar
+  const sessions = document.getElementById('artifact-sessions');
+  if (sessions) {
+    const sessionMap = {};
+    STATE.artifacts.forEach(a => {
+      if (!sessionMap[a.session]) sessionMap[a.session] = [];
+      sessionMap[a.session].push(a.name);
+    });
+    sessions.innerHTML = Object.entries(sessionMap)
+      .sort((a,b) => b[0].localeCompare(a[0]))
+      .map(([s, items]) => `<div style="margin-bottom:8px;"><div style="font-weight:600;color:var(--accent);margin-bottom:2px;">${s}</div>${items.map(i => '<div style="padding-left:10px;color:var(--text-muted);">· ' + i + '</div>').join('')}</div>`)
+      .join('');
+  }
+}
+
+function registerArtifact() {
+  const name = document.getElementById('art-name').value.trim();
+  const type = document.getElementById('art-type').value;
+  const status = document.getElementById('art-status').value;
+  const desc = document.getElementById('art-desc').value.trim();
+  const link = document.getElementById('art-link').value.trim();
+  const date = document.getElementById('art-date').value || new Date().toISOString().slice(0,10);
+  const thread = document.getElementById('art-thread').value;
+
+  if (!name) { alert('Artifact name is required'); return; }
+
+  const now = new Date(date);
+  const session = now.toLocaleDateString('en-US', { month:'short', day:'numeric' });
+
+  STATE.artifacts.push({
+    id: STATE.nextArtifactId++,
+    name, type, status, desc, link, date, session, thread
+  });
+
+  logChange('artifact', `Registered artifact: ${name} [${type}/${status}]`);
+  renderArtifacts();
+  closeModal('new-artifact');
+
+  // Clear form
+  document.getElementById('art-name').value = '';
+  document.getElementById('art-desc').value = '';
+  document.getElementById('art-link').value = '';
+}
+
+// Populate artifact thread dropdown
+function populateArtifactThreadDropdown() {
+  const sel = document.getElementById('art-thread');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">— None —</option>' +
+    STATE.threads.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+}
+
 // ═══════════════ INIT ═══════════════
 applyRegistryToThreads();
 renderThreads();
@@ -2122,7 +2461,10 @@ renderRevenue();
 renderManuscripts();
 renderPriorities();
 renderChangeLog();
+renderArtifacts();
+populateArtifactThreadDropdown();
 document.getElementById('ev-date').value = new Date().toISOString().slice(0,10);
+document.getElementById('art-date').value = new Date().toISOString().slice(0,10);
 
 // Expose registerDoc globally for use by scheduled tasks / console
 window.registerDoc = registerDoc;
