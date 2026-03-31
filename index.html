@@ -1730,7 +1730,7 @@ async function syncAction(action, data, feedbackEl) {
     const res = await fetch(SYNC_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain' }, // Apps Script CORS compatibility
-      body: JSON.stringify({ key: 'merek-refresh-2026', action, data }),
+      body: JSON.stringify({ key: '_-mmQmB-0ZsU0Xc23T14r75a-hZs_72W8F0O0mrWpzw', action, data }),
       redirect: 'follow'
     });
     const result = await res.json();
@@ -1912,7 +1912,7 @@ async function refreshData() {
   btn.disabled = true;
 
   try {
-    const res = await fetch(REFRESH_URL + '?key=merek-refresh-2026');
+    const res = await fetch(REFRESH_URL + '?key=_-mmQmB-0ZsU0Xc23T14r75a-hZs_72W8F0O0mrWpzw');
     const data = await res.json();
 
     if (data.error) {
