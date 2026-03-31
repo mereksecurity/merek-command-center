@@ -4,6 +4,7 @@
 [[edge_functions]]
   function = "auth"
   path = "/*"
+  excludedPath = "/registry.json"
 
 # Serve registry.json directly (bypass SPA catch-all)
 [[redirects]]
