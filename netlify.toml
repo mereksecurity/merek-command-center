@@ -5,6 +5,12 @@
   function = "auth"
   path = "/*"
 
+# Serve registry.json directly (bypass SPA catch-all)
+[[redirects]]
+  from = "/registry.json"
+  to = "/registry.json"
+  status = 200
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
