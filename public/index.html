@@ -1370,6 +1370,24 @@
 </div>
 
 <script>
+// ╔═══════════════════════════════════════════════════════════════════════════╗
+// ║  MEREK COMMAND CENTER — CONFIG                                          ║
+// ║  ⚠ CRITICAL: All secrets & endpoint URLs live HERE and ONLY here.       ║
+// ║  If you change the API token, change it in ONE place: CONFIG.API_TOKEN  ║
+// ║  Last verified: 2026-03-31 (commit 0b3e604)                            ║
+// ║                                                                         ║
+// ║  PRE-PUSH CHECKLIST:                                                    ║
+// ║  1. git diff origin/main — review ANY line touching CONFIG              ║
+// ║  2. Confirm API_TOKEN matches the live Apps Script token                ║
+// ║  3. If in doubt, test Refresh on the live site BEFORE overwriting       ║
+// ╚═══════════════════════════════════════════════════════════════════════════╝
+const CONFIG = {
+  API_TOKEN: '_-mmQmB-0ZsU0Xc23T14r75a-hZs_72W8F0O0mrWpzw',
+  APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbztDrgar6c91yFYJ1A4qv7lgR8cCgJbJEG22KYuyem4gDOeQtevRpwZmvcbQoMrq7uheQ/exec',
+  VERSION: '2.1.1',
+  LAST_CONFIG_UPDATE: '2026-03-31'
+};
+
 // ═══════════════ DOCUMENT REGISTRY ═══════════════
 // Maps entity types + identifiers to Google Doc URLs.
 // Registry Doc (canonical): https://docs.google.com/document/d/18CAfHblqOGrQwTroKbNfJitBzT67zoK9qELSTbLzDRU/edit
@@ -1514,8 +1532,11 @@ const STATE = {
     { id:13, name:"DWA Technical Scope", type:"document", status:"active", desc:"2,105 words. Digital Wellness Assessment technical specification for NMSBA.", link:"", date:"2026-03-25", session:"Mar 24–25", thread:"11" },
     { id:14, name:"MindfulBytes Kickstarter Campaign", type:"document", status:"draft", desc:"3,330 words, 5 tiers. Launch target late April/early May after session footage.", link:"", date:"2026-03-25", session:"Mar 24–25", thread:"17" },
     { id:15, name:"Whimsical Board v3", type:"technical", status:"active", desc:"Visual architecture board for MindfulBytes program flow and session design.", link:"", date:"2026-03-25", session:"Mar 24–25", thread:"5" },
+    { id:16, name:"Dashboard Artifacts Tab", type:"technical", status:"active", desc:"Full artifacts registry tab added to Command Center: type filtering, stats sidebar, session history, registration modal. 15 pre-populated artifacts.", link:"https://merek-command-center.netlify.app", date:"2026-03-29", session:"Mar 29", thread:"10" },
+    { id:17, name:"State of Play v2.1 — Google Doc Replace", type:"document", status:"delivered", desc:"Replaced 43-page Google Doc with lean v2.1 living reference (14,196 chars). Replace-not-append protocol established.", link:"https://docs.google.com/document/d/1QW9ovcyEEv02wILU3-2aZqNjrkAncuN5HSIXAfVao_k/edit", date:"2026-03-29", session:"Mar 29", thread:"" },
+    { id:18, name:"CONFIG Block & Drift Prevention Protocol", type:"technical", status:"active", desc:"Centralized CONFIG object, pre-push checklist, session-start sync protocol. Prevents token/config regression on pushes.", link:"https://merek-command-center.netlify.app", date:"2026-03-31", session:"Mar 31", thread:"10" },
   ],
-  nextArtifactId: 16,
+  nextArtifactId: 19,
   nextThreadId: 21
 };
 
@@ -1716,7 +1737,7 @@ function quickSOW(threadIdx) {
 }
 
 // ═══════════════ SYNC ENGINE ═══════════════
-const SYNC_URL = 'https://script.google.com/macros/s/AKfycbztDrgar6c91yFYJ1A4qv7lgR8cCgJbJEG22KYuyem4gDOeQtevRpwZmvcbQoMrq7uheQ/exec';
+const SYNC_URL = CONFIG.APPS_SCRIPT_URL;
 
 async function syncAction(action, data, feedbackEl) {
   const origText = feedbackEl ? feedbackEl.innerHTML : '';
@@ -1730,7 +1751,7 @@ async function syncAction(action, data, feedbackEl) {
     const res = await fetch(SYNC_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain' }, // Apps Script CORS compatibility
-      body: JSON.stringify({ key: '_-mmQmB-0ZsU0Xc23T14r75a-hZs_72W8F0O0mrWpzw', action, data }),
+      body: JSON.stringify({ key: CONFIG.API_TOKEN, action, data }),
       redirect: 'follow'
     });
     const result = await res.json();
@@ -1902,7 +1923,7 @@ function exportChanges() {
 }
 
 // ═══════════════ LIVE REFRESH ═══════════════
-const REFRESH_URL = 'https://script.google.com/macros/s/AKfycbztDrgar6c91yFYJ1A4qv7lgR8cCgJbJEG22KYuyem4gDOeQtevRpwZmvcbQoMrq7uheQ/exec';
+const REFRESH_URL = CONFIG.APPS_SCRIPT_URL;
 
 async function refreshData() {
   const btn = document.getElementById('refreshBtn');
@@ -1912,7 +1933,7 @@ async function refreshData() {
   btn.disabled = true;
 
   try {
-    const res = await fetch(REFRESH_URL + '?key=_-mmQmB-0ZsU0Xc23T14r75a-hZs_72W8F0O0mrWpzw');
+    const res = await fetch(REFRESH_URL + '?key=' + CONFIG.API_TOKEN);
     const data = await res.json();
 
     if (data.error) {
