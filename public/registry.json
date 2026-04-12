@@ -1,40 +1,40 @@
 {
-  "grants": {
-    "TechForward NM / NRGNHA Packet": "https://docs.google.com/document/d/1Vu7XppWcXVPG5a_jozq2rl-I_6rMZbXJ6Q-Tl4RvSck/edit"
+  "threads": {
+    "1": "https://docs.google.com/document/d/1QW9ovcyEEv02wILU3-2aZqNjrkAncuN5HSIXAfVao_k/edit",
+    "6": "https://docs.google.com/document/d/10h1YD02TdeE0cIBWa_0AM9SF5V5HHkG2deiAE846ShY/edit"
+  },
+  "sows": {
+    "Grove Risk Assessment Base Line SOW": "https://docs.google.com/document/d/1Uwjp2MPYmvO1qq19Vl_oEfBSDfyW6b_jpm3UoaVwH8Y/edit",
+    "NMBLC Roots Summer Leadership Digital Literacy SOW": "https://docs.google.com/document/d/1RCoL0u3A4vtnQj264MMe4ohOb1yMcTCY88emkv4cSIw/edit",
+    "Merek Security Solutions NDA (Final)": "https://docs.google.com/document/d/1XIZcNYD6EfiLVYHVnq6W2oZcdYwjuxSml4SKs0VVRq8/edit",
+    "Merek Opportunity Brief Template": "https://docs.google.com/document/d/10YgHazzgyPzjynBIVXWR3S-SVidufZlUP6ohfX0VZ0c/edit"
   },
   "manuscripts": {
-    "14 Slim: A Verse Memoir Folder": "https://drive.google.com/drive/folders/1Y9UgcPSoWR9xGTeWTx8iqSZIaqnh6_Zt",
-    "Asshole Ethics (Full Manuscript)": "https://docs.google.com/document/d/1VKAi_zjPB8SajJPt65EgqY-ceEkAWX8UWPV_jV3l-vY/edit",
-    "CAH Book Proposal": "https://docs.google.com/document/d/1ncuRxEqeXq_Tsd9Zc3PPbauTZ5cfw1pT7SCwSF9Zcq8/edit",
+    "Writings Folder": "https://drive.google.com/drive/folders/1YirY_Q1cQ6KdK0P_rRCBIaMo5UshWhJw",
     "CTRL+ALT+HAPPINESS (CAH) Folder": "https://drive.google.com/drive/folders/1jb6kN2_YzC-th9uK8JT7q97tHCDdePea",
-    "Choose Your Own Shit Folder": "https://drive.google.com/drive/folders/11ZPQrC90eglr02DNkSWytlA4YM_pFB01",
-    "Cocaine and Avocados Folder": "https://drive.google.com/drive/folders/1MV5jtPzC6go3hHvwUR5WBR8EDBtUlBGz",
-    "Computer Love Folder": "https://drive.google.com/drive/folders/13318x8G6uydQfoRpod9M-oPE_gh-eN_M",
+    "CAH Book Proposal": "https://docs.google.com/document/d/1ncuRxEqeXq_Tsd9Zc3PPbauTZ5cfw1pT7SCwSF9Zcq8/edit",
     "Cyber Happiness Ch. 1 Draft": "https://docs.google.com/document/d/1qBP_RiqoWMPb5rYIXoJ1k5lSfB0lcOBJ6f4ASVG61LU/edit",
+    "OLD Book Proposal (Cutler)": "https://docs.google.com/document/d/1Po-3HISt1lujsjkxlyR1ocXQM_f0tb6kxurY1HgODxQ/edit",
     "Ethical Asshole Folder": "https://drive.google.com/drive/folders/1RRWNij-yEPzlW8RFAr5_OavUTwnhaVyW",
-    "Five Folder": "https://drive.google.com/drive/folders/1-2TbV-8eXxIHbqW70s-5rsRCo3IpsFWx",
+    "Asshole Ethics (Full Manuscript)": "https://docs.google.com/document/d/1VKAi_zjPB8SajJPt65EgqY-ceEkAWX8UWPV_jV3l-vY/edit",
+    "Computer Love Folder": "https://drive.google.com/drive/folders/13318x8G6uydQfoRpod9M-oPE_gh-eN_M",
+    "The Ones In The Back Of The Bus (Greyhound) Folder": "https://drive.google.com/drive/folders/1q3rxkWuJ5AT-LosZh9K-yFDH6GOpJaWR",
+    "14 Slim: A Verse Memoir Folder": "https://drive.google.com/drive/folders/1Y9UgcPSoWR9xGTeWTx8iqSZIaqnh6_Zt",
     "Nirmata Folder": "https://drive.google.com/drive/folders/1UNbRE68zuwxDI45ZjrMtSEUD_r-3XG",
     "Nirmata Manuscript Architecture": "https://docs.google.com/document/d/1SJbtnfaEwEZ12f06CHNtE_wQ_MdlMbT9AgOlVhAb9EE/edit",
-    "OLD Book Proposal (Cutler)": "https://docs.google.com/document/d/1Po-3HISt1lujsjkxlyR1ocXQM_f0tb6kxurY1HgODxQ/edit",
-    "RCT Folder": "https://drive.google.com/drive/folders/1leXo9O-ygoKXgVR6fABnBBDw2yX--itm",
-    "Straight-ish (TV Pilot) Folder": "https://drive.google.com/drive/folders/1ScDBfBykHEiouZ1HqFSMMnlE_N2s_bdI",
-    "The Autonomy Experiment (Seeker Kairos Exchange) Folder": "https://drive.google.com/drive/folders/1xkNUAv-lsaVvFIbjFljYR6p-ISRZsuF6",
     "The Five Conflict Languages Folder": "https://drive.google.com/drive/folders/16PnGCHfcs3gzEsitpQhB8ygVbdOefKE7",
-    "The Ones In The Back Of The Bus (Greyhound) Folder": "https://drive.google.com/drive/folders/1q3rxkWuJ5AT-LosZh9K-yFDH6GOpJaWR",
-    "Writings Folder": "https://drive.google.com/drive/folders/1YirY_Q1cQ6KdK0P_rRCBIaMo5UshWhJw"
+    "Straight-ish (TV Pilot) Folder": "https://drive.google.com/drive/folders/1ScDBfBykHEiouZ1HqFSMMnlE_N2s_bdI",
+    "The Autonomy Experiment Folder": "https://drive.google.com/drive/folders/1xkNUAv-lsaVvFIbjFljYR6p-ISRZsuF6",
+    "Five Folder": "https://drive.google.com/drive/folders/1-2TbV-8eXxIHbqW70s-5rsRCo3IpsFWx",
+    "Cocaine and Avocados Folder": "https://drive.google.com/drive/folders/1MV5jtPzC6go3hHvwUR5WBR8EDBtUlBGz",
+    "Choose Your Own Shit Folder": "https://drive.google.com/drive/folders/11ZPQrC90eglr02DNkSWytlA4YM_pFB01",
+    "RCT Folder": "https://drive.google.com/drive/folders/1leXo9O-ygoKXgVR6fABnBBDw2yX--itm"
+  },
+  "grants": {
+    "TechForward NM / NRGNHA Packet": "https://docs.google.com/document/d/1Vu7XppWcXVPG5a_jozq2rl-I_6rMZbXJ6Q-Tl4RvSck/edit"
   },
   "partnerships": {
     "LunarX Partnership MOUA": "https://docs.google.com/document/d/1YaMFmw81Glt3I1mjxy74ULagYFYVhW74rQ8lB3crA14/edit",
     "Merek Roadmap Draft": "https://docs.google.com/document/d/1rib65G7ZkOQGYwO3WvZ3bg7qoI-DgEFzJrMMdurNAoI/edit"
-  },
-  "sows": {
-    "Grove Risk Assessment Base Line SOW": "https://docs.google.com/document/d/1Uwjp2MPYmvO1qq19Vl_oEfBSDfyW6b_jpm3UoaVwH8Y/edit",
-    "Merek Opportunity Brief Template": "https://docs.google.com/document/d/10YgHazzgyPzjynBIVXWR3S-SVidufZlUP6ohfX0VZ0c/edit",
-    "Merek Security Solutions NDA (Final)": "https://docs.google.com/document/d/1XIZcNYD6EfiLVYHVnq6W2oZcdYwjuxSml4SKs0VVRq8/edit",
-    "NMBLC Roots Summer Leadership Digital Literacy SOW": "https://docs.google.com/document/d/1RCoL0u3A4vtnQj264MMe4ohOb1yMcTCY88emkv4cSIw/edit"
-  },
-  "threads": {
-    "1": "https://docs.google.com/document/d/1QW9ovcyEEv02wILU3-2aZqNjrkAncuN5HSIXAfVao_k/edit",
-    "6": "https://docs.google.com/document/d/10h1YD02TdeE0cIBWa_0AM9SF5V5HHkG2deiAE846ShY/edit"
   }
 }
