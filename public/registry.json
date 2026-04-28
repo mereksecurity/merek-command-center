@@ -1,6 +1,13 @@
 {
-  "grants": {
-    "TechForward NM / NRGNHA Packet": "https://docs.google.com/document/d/1Vu7XppWcXVPG5a_jozq2rl-I_6rMZbXJ6Q-Tl4RvSck/edit"
+  "threads": {
+    "1": "https://docs.google.com/document/d/1QW9ovcyEEv02wILU3-2aZqNjrkAncuN5HSIXAfVao_k/edit",
+    "6": "https://docs.google.com/document/d/10h1YD02TdeE0cIBWa_0AM9SF5V5HHkG2deiAE846ShY/edit"
+  },
+  "sows": {
+    "Grove Risk Assessment Base Line SOW": "https://docs.google.com/document/d/1Uwjp2MPYmvO1qq19Vl_oEfBSDfyW6b_jpm3UoaVwH8Y/edit",
+    "Merek Opportunity Brief Template": "https://docs.google.com/document/d/10YgHazzgyPzjynBIVXWR3S-SVidufZlUP6ohfX0VZ0c/edit",
+    "Merek Security Solutions NDA (Final)": "https://docs.google.com/document/d/1XIZcNYD6EfiLVYHVnq6W2oZcdYwjuxSml4SKs0VVRq8/edit",
+    "NMBLC Roots Summer Leadership Digital Literacy SOW": "https://docs.google.com/document/d/1RCoL0u3A4vtnQj264MMe4ohOb1yMcTCY88emkv4cSIw/edit"
   },
   "manuscripts": {
     "14 Slim: A Verse Memoir Folder": "https://drive.google.com/drive/folders/1Y9UgcPSoWR9xGTeWTx8iqSZIaqnh6_Zt",
@@ -30,20 +37,14 @@
     "The Autonomy Experiment (Seeker Kairos Exchange) Folder": "https://drive.google.com/drive/folders/1xkNUAv-lsaVvFIbjFljYR6p-ISRZsuF6",
     "The Five Conflict Languages Folder": "https://drive.google.com/drive/folders/16PnGCHfcs3gzEsitpQhB8ygVbdOefKE7",
     "The Ones In The Back Of The Bus (Greyhound) Folder": "https://drive.google.com/drive/folders/1q3rxkWuJ5AT-LosZh9K-yFDH6GOpJaWR",
-    "Writings Folder": "https://drive.google.com/drive/folders/1YirY_Q1cQ6KdK0P_rRCBIaMo5UshWhJw"
+    "Writings Folder": "https://drive.google.com/drive/folders/1YirY_Q1cQ6KdK0P_rRCBIaMo5UshWhJw",
+    "Manuscript Architecture": "https://docs.google.com/document/d/1SJbtnfaEwEZ12f06CHNtE_wQ_MdlMbT9AgOlVhAb9EE/edit"
+  },
+  "grants": {
+    "TechForward NM / NRGNHA Packet": "https://docs.google.com/document/d/1Vu7XppWcXVPG5a_jozq2rl-I_6rMZbXJ6Q-Tl4RvSck/edit"
   },
   "partnerships": {
     "LunarX Partnership MOUA": "https://docs.google.com/document/d/1YaMFmw81Glt3I1mjxy74ULagYFYVhW74rQ8lB3crA14/edit",
     "Merek Roadmap Draft": "https://docs.google.com/document/d/1rib65G7ZkOQGYwO3WvZ3bg7qoI-DgEFzJrMMdurNAoI/edit"
-  },
-  "sows": {
-    "Grove Risk Assessment Base Line SOW": "https://docs.google.com/document/d/1Uwjp2MPYmvO1qq19Vl_oEfBSDfyW6b_jpm3UoaVwH8Y/edit",
-    "Merek Opportunity Brief Template": "https://docs.google.com/document/d/10YgHazzgyPzjynBIVXWR3S-SVidufZlUP6ohfX0VZ0c/edit",
-    "Merek Security Solutions NDA (Final)": "https://docs.google.com/document/d/1XIZcNYD6EfiLVYHVnq6W2oZcdYwjuxSml4SKs0VVRq8/edit",
-    "NMBLC Roots Summer Leadership Digital Literacy SOW": "https://docs.google.com/document/d/1RCoL0u3A4vtnQj264MMe4ohOb1yMcTCY88emkv4cSIw/edit"
-  },
-  "threads": {
-    "1": "https://docs.google.com/document/d/1QW9ovcyEEv02wILU3-2aZqNjrkAncuN5HSIXAfVao_k/edit",
-    "6": "https://docs.google.com/document/d/10h1YD02TdeE0cIBWa_0AM9SF5V5HHkG2deiAE846ShY/edit"
   }
 }
