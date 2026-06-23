@@ -1,26 +1,60 @@
 {
-  "threads": {
-    "1": "https://docs.google.com/document/d/1QW9ovcyEEv02wILU3-2aZqNjrkAncuN5HSIXAfVao_k/edit",
-    "3": "https://docs.google.com/document/d/1sC7cF3PSDg189H9TCw1iBwuUWbSk7Dlvq5smNwLdR8M/edit",
-    "6": "https://docs.google.com/document/d/10h1YD02TdeE0cIBWa_0AM9SF5V5HHkG2deiAE846ShY/edit",
-    "11": "https://docs.google.com/document/d/13zu-jTJjihS9IHZF2pFf46fTrRKCa-haBhvoEcOTLvQ/edit",
-    "18": "https://docs.google.com/document/d/11adz-hQjxrHrJ7eFVXQFlLoxFPUk-ayVMVJQ4kIFsyc/edit",
-    "19": "https://docs.google.com/document/d/1NPQ_3i5VvzjS8cz7HM3F0RdcXpUnv8OyWl0M71aL5EU/edit",
-    "21": "https://docs.google.com/document/d/13L5q2VgBc8-1wk53kVp_KVBjt8yOGy115Ql48CGanLY/edit",
-    "22": "https://docs.google.com/document/d/18gAf4Ne8rC6CpVjVJGR5k05-_OW8Dat6TL_fb3zEhn8/edit",
-    "23": "https://taxhelpsantafe-preview.netlify.app",
-    "24": "https://docs.google.com/document/d/17XX7wwr_HTJzqa_TyhM4UzHWMUojBTLI5a8ceHsPlxQ/edit",
-    "CyberKMS Pipeline": "https://docs.google.com/document/d/1OARw_zjLBRO-r-VqYICo2S_B2Z0pxvb6B72kxPg-_B4/edit",
-    "EO-Insight/Michael Hinke Gmail Draft": "https://mail.google.com/mail/u/0/#drafts?compose=19d4f0c6db536281",
-    "Conrad Foundation/Nancy Conrad": "[narrative thread - no standalone SoP doc URL]"
+  "cah_manuscript": {
+    "CAH Manuscript — Aria Pass 1": "https://docs.google.com/document/d/1eAQLoSgcNKfqpBy-62hTiVZ1qFzJeSa1/edit"
   },
-  "sows": {
-    "Grove Risk Assessment Base Line SOW": "https://docs.google.com/document/d/1Uwjp2MPYmvO1qq19Vl_oEfBSDfyW6b_jpm3UoaVwH8Y/edit",
-    "NMBLC Roots Summer Leadership Digital Literacy SOW": "https://docs.google.com/document/d/1RCoL0u3A4vtnQj264MMe4ohOb1yMcTCY88emkv4cSIw/edit",
-    "Merek Security Solutions NDA (Final)": "https://docs.google.com/document/d/1XIZcNYD6EfiLVYHVnq6W2oZcdYwjuxSml4SKs0VVRq8/edit",
-    "EMI Technologies Ongoing Compliance Retainer SOW": "https://docs.google.com/document/d/1K5xzSqiVcA0pUOTBc-7so2EB-Rrg-bJhwId9dO9hvB4/edit",
-    "Merek Opportunity Brief Template": "https://docs.google.com/document/d/10YgHazzgyPzjynBIVXWR3S-SVidufZlUP6ohfX0VZ0c/edit",
-    "TXNM Energy POC SOW (Draft)": "https://docs.google.com/document/d/1G3bvPayAS1l-orrCrLe6hzA3ycW9bwxo8BeNKDqQrs4/edit"
+  "cant_never_could": {
+    "Can't Never Could — Newsletter Article": "https://docs.google.com/document/d/1CfP7nR0rc_DgOG5ItGdRrGRBpBqhLwu0vKzm-ToUAMg/edit",
+    "Can't Never Could — LinkedIn Post": "https://docs.google.com/document/d/1hfmKLGXTDTqymHJ5VORsXhs5eEgsRmvhpOVnxLM4pTY/edit",
+    "Can't Never Could — Cyberpsychology Unplugged Issue (Option B)": "https://docs.google.com/document/d/1bNS4h_Jumi8yZUocMhk3b4Tni6tPM-zUgLOMPROGqaI/edit"
+  },
+  "cyberpsychology_unplugged": {
+    "Cyberpsychology Unplugged — Video Channel Strategy": "https://docs.google.com/document/d/13L5q2VgBc8-1wk53kVp_KVBjt8yOGy115Ql48CGanLY/edit",
+    "Cyberpsychology Unplugged — Pilot Scripts (Episodes 1–4)": "https://docs.google.com/document/d/1dwYVeEuqXDsubrKGq0JIkUFGCsYngHqCA4LjAyZ87VQ/edit"
+  },
+  "cyberpsychologyresearch_io": {
+    "Capitol Tech Dissertation Framing Audit Commit": "https://github.com/mereksecurity/cyberpsychologyresearch-io/commit/6fd27b817aa9488726f808b7e0699d7fd7d876ed",
+    "GitHub Repo": "https://github.com/mereksecurity/cyberpsychologyresearch-io",
+    "cyberpsychologyresearch-io-github-pat": "https://docs.google.com/document/d/1rs1bBmyU1Bwm0nTF3W0lZ88MUk5OVQNmtP5tjJMC5WM/edit"
+  },
+  "digital_presence_fellowship": {
+    "Digital Presence Fellowship — Cohort 1 Final Disposition — Rio Grande": "https://docs.google.com/document/d/1Tdxzi4NPrsBLNer28o09wBBuDkCm2QWq7wbdBrfzoLg/edit",
+    "Co-Design Session Notes — Rio Grande Cohort 1 — Sessions 1 and 2": "https://docs.google.com/document/d/1H6NcuZCNJgH3kA43ppr4rvaADzpMlsZ0xWvAYa-8HRI/edit",
+    "Disposition Images — Cohort 1 Rio Grande (folder)": "https://drive.google.com/drive/folders/17j2-EgrcPg4sK0hzztWuiCr0a4x0tJQS",
+    "Q1–Q3 Deliverables — In Their Own Words": "https://docs.google.com/document/d/1M3Bg1xdwHN_JPEFsdoubOpFORtjcsNGr/edit",
+    "IDC 2026 Paper — \"Inside Voice, Outside Voice\" — Fifth Draft": "https://docs.google.com/document/d/15_7UmD6NMHncNlsDUOD-Uv6gptf-HgHn3iuKe2OpQB0/edit",
+    "MindfulBytes Digital Presence Fellowship — Dissemination Plan": "https://docs.google.com/document/d/1eoxpUAmbtAQ41SpMlLzVoj8TiRuz39vXZCw7Wy5YtVQ/edit",
+    "CDT Package — Digital Presence Fellowship (DRAFT v3)": "https://docs.google.com/document/d/1wFNC-Uh2EK5eGaDb8G92iBJIORpjLe9MgRW5Kyvtonk/edit",
+    "Student Work Samples — Student-Facing Artifacts (Q1-Q3)": "https://docs.google.com/document/d/1eM73pv3qB9kYB6qahSLclqFHmOmPDUaRuZVMQ4x-s-0/edit"
+  },
+  "dns_cutover": {
+    "DNS Cutover — mindfulbytes.io & cyberpsychologyresearch.io to Vercel (2026-04-28)": "https://docs.google.com/document/d/1eIawcGKbUnySSnQCW1da_DuU_3OyIdoJCMAxsYna4yU/edit"
+  },
+  "expense_categorization_2018": {
+    "2018 Expense Categorization — Worked Example & Methodology": "https://docs.google.com/document/d/1lc6xYhH9hA1FluVA6atkx1uSGMrAJvvTYfDgrMl6JGo/edit"
+  },
+  "grants": {
+    "TechForward NM / NRGNHA Packet": "https://docs.google.com/document/d/1Vu7XppWcXVPG5a_jozq2rl-I_6rMZbXJ6Q-Tl4RvSck/edit",
+    "Harvard CDT Fellowship 2026": "https://docs.google.com/document/d/1QW9ovcyEEv02wILU3-2aZqNjrkAncuN5HSIXAfVao_k/edit"
+  },
+  "halcon_build": {
+    "VA Construction Loan — Camino Halcón Build Checklist": "https://docs.google.com/document/d/157jFvOk3Tfk9snwbdzD6pWSAVOLeOb8riMrY9CpgtnM/edit",
+    "VA Form 26-1880 — Restoration of Entitlement Filing Packet": "https://docs.google.com/document/d/10mxDqjkJ8fTlxCsoy6IFjijJc_NF4VqdSyyWln4YjYo/edit",
+    "Camino Halcón Build — Feasibility Model": "https://docs.google.com/document/d/1G-5FKa5omkPeVbNd1VArTGikLFXB9SQf32-rucAjqyo/edit"
+  },
+  "halcon_home": {
+    "Halcon Home — Path C: Parallel-Vault Binishell Synthesis": "https://docs.google.com/document/d/1Aed3iCZCJWUjCHu9p-r1yll8xRCAqmx8VJ2QYdiCs84/edit",
+    "VA Construction Loan — Camino Halcón Build Checklist": "https://docs.google.com/document/d/157jFvOk3Tfk9snwbdzD6pWSAVOLeOb8riMrY9CpgtnM/edit",
+    "VA Form 26-1880 — Restoration of Entitlement Filing Packet": "https://docs.google.com/document/d/10mxDqjkJ8fTlxCsoy6IFjijJc_NF4VqdSyyWln4YjYo/edit",
+    "Camino Halcón Build — Feasibility Model": "https://docs.google.com/document/d/1G-5FKa5omkPeVbNd1VArTGikLFXB9SQf32-rucAjqyo/edit"
+  },
+  "halcon_practice": {
+    "The Halcón Practice — Operating Plan v1.0": "https://docs.google.com/document/d/15XgTTgj7C1wl6vwSLzaSQRziMDQU9fRJZByNjC_9o7k/edit"
+  },
+  "halcon_protocol": {
+    "The Halcón Protocol — One-Page Field Guide": "https://docs.google.com/document/d/1XfMRFOJWXRhSjafphbugipImNslsEt_l8o6FQa_5DeM/edit"
+  },
+  "lyra_health_resume": {
+    "Lyra Health VP InfoSec Posting": "http://jobs.lever.co/lyrahealth/977b2d45-949f-435b-8a3d-adcc15e2a6d6"
   },
   "manuscripts": {
     "Writings Folder": "https://drive.google.com/drive/folders/1YirY_Q1cQ6KdK0P_rRCBIaMo5UshWhJw",
@@ -45,20 +79,32 @@
     "CAH Manuscript — Aria Pass 1": "https://docs.google.com/document/d/1eAQLoSgcNKfqpBy-62hTiVZ1qFzJeSa1/edit",
     "Cah Book Proposal": "https://docs.google.com/document/d/1ncuRxEqeXq_Tsd9Zc3PPbauTZ5cfw1pT7SCwSF9Zcq8/edit"
   },
-  "publications": {
-    "Forbes": "https://drive.google.com/drive/folders/1AyFgzbpPHwj0w5b_x0b7pS9zDWJGCp2y",
-    "HBR": "https://drive.google.com/drive/folders/1E6yhabeT-Vedxrrkfqwju7Bt8bCUDU1a",
-    "Medium": "https://drive.google.com/drive/folders/1fOwo2NZm96Dw7Tnmwskjnxoh69Rk_Q-k",
-    "Newsweek": "https://drive.google.com/drive/folders/1KfjM8DfMYhv5LttSRKbBlhVm-lC9XAaw",
-    "Tempesta Media": "https://drive.google.com/drive/folders/16qfL5U9AVrf160Ih6USIqg5dbkXsN1ae",
-    "Peer Reviewed": "https://drive.google.com/drive/folders/1o4JfIqNLkNx_Vs14VDGUvmTZechFVPr2",
-    "White Papers": "https://drive.google.com/drive/folders/1C5WuYoPd8kPhiHexboNWFMvwGsbHIa5W",
-    "Keynote": "https://drive.google.com/drive/folders/1DzlibIxo71c03hymTIMnX1-Sxf8eintJ",
-    "PechaKucha": "https://drive.google.com/drive/folders/1cI6lvHPG85at9oNbAYMVzA-8SaQjaOky"
+  "merek_io_motion_system": {
+    "System-wide Dwell Choreography Commit": "https://github.com/mereksecurity/merek-site/commit/0f346349296caff4260da6ee37c41b90cd06c3e5"
   },
-  "grants": {
-    "TechForward NM / NRGNHA Packet": "https://docs.google.com/document/d/1Vu7XppWcXVPG5a_jozq2rl-I_6rMZbXJ6Q-Tl4RvSck/edit",
-    "Harvard CDT Fellowship 2026": "https://docs.google.com/document/d/1QW9ovcyEEv02wILU3-2aZqNjrkAncuN5HSIXAfVao_k/edit"
+  "michaelcharlesdavis_com": {
+    "GitHub Repo": "https://github.com/mereksecurity/michaelcharlesdavis-com",
+    "Live Site": "https://www.michaelcharlesdavis.com",
+    "Vercel Project": "prj_7n2h3PTeDAujsGTQl8agsXmgNuef",
+    "PAT Doc": "https://docs.google.com/document/d/1X6Jbgb_lYgTVArjh_C3Bx9ELPjWnv_K3zDSMcUippAc/edit"
+  },
+  "mindfulbytes_guides": {
+    "Getting Started with MindfulBytes: A Teacher's Quick Guide": "https://docs.google.com/document/d/1LubtLKdADlyuTk4ngySkE--hYzmClfIO4mAoEpFaskE/edit",
+    "Digital Wellness in K-5: What the Research Says": "https://docs.google.com/document/d/1-SHKfOhww6EDhuu4BTLXfx9Nilh6JKDQUKS81gKTDwk/edit",
+    "The MaaS Framework for Schools: Implementation Guide": "https://docs.google.com/document/d/1rohfrBlztIicfCxDDusS-_-ecFtiX1RLWKvoJVcDMaM/edit",
+    "Screen Time Isn't the Enemy: A Parent's Guide to Digital Wellness": "https://docs.google.com/document/d/1tTJiudFBe2JuAfKt5wHSTNlaDoEZAEgGr3kIQR6KBzo/edit",
+    "Five Ways Your Child Connects with Technology": "https://docs.google.com/document/d/11CwWuQdmFUqZIKeyQy80K5to5cXGsj1Hj63u7N9szXs/edit",
+    "Before You Click: Teaching Your Child to Listen to Their Body": "https://docs.google.com/document/d/1RlRnTzioFzr2zZxuY1VRQm_zI2kEtwBJZYNfvA6OFX8/edit",
+    "MindfulBytes Program Overview": "https://docs.google.com/document/d/1EOUWw6D7eDk9YOP_pg2DAFgSGDWP9Sud4Mne6DgoYn4/edit"
+  },
+  "mindfulbytes_licensing": {
+    "MindfulBytes Licensing Model — A Passive Royalty Engine": "https://docs.google.com/document/d/1WqCSPcM6-PkNqTYLPUAa68ypEntjsENCy6IDm5hVFNE/edit",
+    "The Capital Engine — Passive Income Engine 2": "https://docs.google.com/document/d/1Hxtmyr2Btfhn-R7hm5AaOkCDSbSS7goVFQXKGRkI6AU/edit",
+    "MindfulBytes — The Proof (Validated Outcomes One-Pager)": "https://docs.google.com/document/d/17jbfrWH271bpfzayc0u0yIufEV0p0MG8upTpYp3wWJI/edit",
+    "MindfulBytes License Agreement — Structural Skeleton": "https://docs.google.com/document/d/1VaTqwXCuIEURE8iu1JndRnrV6HxYNfiSI61jfYAN0jU/edit",
+    "MindfulBytes Licensing — Pricing Pressure-Test": "https://docs.google.com/document/d/13Jpl23RTXQ9sous4_gxzFCI_Z1WIBF9ujoaXOB8gdz0/edit",
+    "MindfulBytes from the District's Side (The Buyer's Lens)": "https://docs.google.com/document/d/1LmObwrL7p12Jjvqt7WoIdf6V-Gu5H45DvbFzi3v02lE/edit",
+    "Passive Income — The Two-Engine Architecture (Roadmap)": "https://docs.google.com/document/d/1vumvIplcd3hpFWbuM9m23kN6WXiryRpKR4cmPU1AOog/edit"
   },
   "partnerships": {
     "LunarX Partnership MOUA": "https://docs.google.com/document/d/1YaMFmw81Glt3I1mjxy74ULagYFYVhW74rQ8lB3crA14/edit",
@@ -71,6 +117,32 @@
     "MindfulBytes — Before You Click (Interoceptive Awareness for Families)": "https://docs.google.com/document/d/1RlRnTzioFzr2zZxuY1VRQm_zI2kEtwBJZYNfvA6OFX8/edit",
     "MindfulBytes — Program Overview": "https://docs.google.com/document/d/1EOUWw6D7eDk9YOP_pg2DAFgSGDWP9Sud4Mne6DgoYn4/edit"
   },
+  "per_property_deductions": {
+    "Per-Property Expense & Deductions Analysis (2018–2024)": "https://docs.google.com/document/d/1FwRr9UPJdU4hOEoJzIBDxR8uNLXHcAbxWt20ZEqKaJk/edit",
+    "Per-Property Expense & Deductions (Dale-facing)": "https://docs.google.com/document/d/1dpcHjgHkHwdTV2pwdQx0usOqOtOvjycLoFU_VW96Joo/edit"
+  },
+  "publications": {
+    "Forbes": "https://drive.google.com/drive/folders/1AyFgzbpPHwj0w5b_x0b7pS9zDWJGCp2y",
+    "HBR": "https://drive.google.com/drive/folders/1E6yhabeT-Vedxrrkfqwju7Bt8bCUDU1a",
+    "Medium": "https://drive.google.com/drive/folders/1fOwo2NZm96Dw7Tnmwskjnxoh69Rk_Q-k",
+    "Newsweek": "https://drive.google.com/drive/folders/1KfjM8DfMYhv5LttSRKbBlhVm-lC9XAaw",
+    "Tempesta Media": "https://drive.google.com/drive/folders/16qfL5U9AVrf160Ih6USIqg5dbkXsN1ae",
+    "Peer Reviewed": "https://drive.google.com/drive/folders/1o4JfIqNLkNx_Vs14VDGUvmTZechFVPr2",
+    "White Papers": "https://drive.google.com/drive/folders/1C5WuYoPd8kPhiHexboNWFMvwGsbHIa5W",
+    "Keynote": "https://drive.google.com/drive/folders/1DzlibIxo71c03hymTIMnX1-Sxf8eintJ",
+    "PechaKucha": "https://drive.google.com/drive/folders/1cI6lvHPG85at9oNbAYMVzA-8SaQjaOky"
+  },
+  "rct_dissertation": {
+    "RCT Folder": "https://drive.google.com/drive/folders/1leXo9O-ygoKXgVR6fABnBBDw2yX--itm"
+  },
+  "schedule_e_memo": {
+    "Schedule E Construction & Rental-Activity Reconstruction Memo": "https://docs.google.com/document/d/1kyZjnUThD03_Yu3Nn7Himf9Z_Do3clh89kmn3vZVe9k/edit"
+  },
+  "sdg_fresquez_sports_complex": {
+    "MOU Advisory Review": "https://docs.google.com/document/d/17XX7wwr_HTJzqa_TyhM4UzHWMUojBTLI5a8ceHsPlxQ/edit",
+    "PRIVATE Note — Antonio as operator/tenant": "https://docs.google.com/document/d/1kIPHWnPmAlQCjlbvmM83PseSa3CY8ZCOYXXsXdgAMfs/edit",
+    "Advisory Engagement Letter": "https://docs.google.com/document/d/1BdPMmjUwWB4zv1Hb1GNR3O1x3anbkThW_CUzzXtlqt0/edit"
+  },
   "seeker_skills_archive": {
     "merek-operations": "1WTlJ8l_5vFVVhn8NNrBucQXtzpknI-2QaCilrFY7k8w",
     "seeker-integrity": "1K6zfSwx3ACJX58QWBaUUQJPZGo__mnvixdwLcPctfBs",
@@ -82,6 +154,20 @@
     "mcp-ops": "1DhqBjZctzfX06U54k0Iowf_5w4M1c7MmqzurkldTrd0",
     "key_people.md": "1ZpeuUeypPvatvFu0RcArJ-fSKtslk1oG6AWIjodbDJs",
     "document_registry.md": "108w4HqHxfdmfXEFYVpUjU5K7DU83PNSIfM365kike3U"
+  },
+  "sows": {
+    "Grove Risk Assessment Base Line SOW": "https://docs.google.com/document/d/1Uwjp2MPYmvO1qq19Vl_oEfBSDfyW6b_jpm3UoaVwH8Y/edit",
+    "NMBLC Roots Summer Leadership Digital Literacy SOW": "https://docs.google.com/document/d/1RCoL0u3A4vtnQj264MMe4ohOb1yMcTCY88emkv4cSIw/edit",
+    "Merek Security Solutions NDA (Final)": "https://docs.google.com/document/d/1XIZcNYD6EfiLVYHVnq6W2oZcdYwjuxSml4SKs0VVRq8/edit",
+    "EMI Technologies Ongoing Compliance Retainer SOW": "https://docs.google.com/document/d/1K5xzSqiVcA0pUOTBc-7so2EB-Rrg-bJhwId9dO9hvB4/edit",
+    "Merek Opportunity Brief Template": "https://docs.google.com/document/d/10YgHazzgyPzjynBIVXWR3S-SVidufZlUP6ohfX0VZ0c/edit",
+    "TXNM Energy POC SOW (Draft)": "https://docs.google.com/document/d/1G3bvPayAS1l-orrCrLe6hzA3ycW9bwxo8BeNKDqQrs4/edit"
+  },
+  "state_of_play": {
+    "State of Play v3.1": "https://docs.google.com/document/d/1QW9ovcyEEv02wILU3-2aZqNjrkAncuN5HSIXAfVao_k/edit"
+  },
+  "tax_cover_memo": {
+    "Notes for the Preparer — Davis Tax Filing 2018–2025": "https://docs.google.com/document/d/1Fmoxe1VXGsyu3vHDORnk2ODEK2x9q6nndnH7aiOrn8g/edit"
   },
   "tax_filing": {
     "Folder Structure Blueprint": "https://docs.google.com/document/d/124KacGe_Qe8-uOmdws65qdmhneCnNcTNSRrfB85tRHA/edit",
@@ -112,81 +198,25 @@
     "Notes for the Preparer — Cover Memo": "https://docs.google.com/document/d/1Fmoxe1VXGsyu3vHDORnk2ODEK2x9q6nndnH7aiOrn8g/edit",
     "2018 Expense Categorization — Worked Example & Methodology": "https://docs.google.com/document/d/1lc6xYhH9hA1FluVA6atkx1uSGMrAJvvTYfDgrMl6JGo/edit"
   },
-  "dns_cutover": {
-    "DNS Cutover — mindfulbytes.io & cyberpsychologyresearch.io to Vercel (2026-04-28)": "https://docs.google.com/document/d/1eIawcGKbUnySSnQCW1da_DuU_3OyIdoJCMAxsYna4yU/edit"
-  },
-  "cyberpsychology_unplugged": {
-    "Cyberpsychology Unplugged — Video Channel Strategy": "https://docs.google.com/document/d/13L5q2VgBc8-1wk53kVp_KVBjt8yOGy115Ql48CGanLY/edit",
-    "Cyberpsychology Unplugged — Pilot Scripts (Episodes 1–4)": "https://docs.google.com/document/d/1dwYVeEuqXDsubrKGq0JIkUFGCsYngHqCA4LjAyZ87VQ/edit"
-  },
-  "mindfulbytes_guides": {
-    "Getting Started with MindfulBytes: A Teacher's Quick Guide": "https://docs.google.com/document/d/1LubtLKdADlyuTk4ngySkE--hYzmClfIO4mAoEpFaskE/edit",
-    "Digital Wellness in K-5: What the Research Says": "https://docs.google.com/document/d/1-SHKfOhww6EDhuu4BTLXfx9Nilh6JKDQUKS81gKTDwk/edit",
-    "The MaaS Framework for Schools: Implementation Guide": "https://docs.google.com/document/d/1rohfrBlztIicfCxDDusS-_-ecFtiX1RLWKvoJVcDMaM/edit",
-    "Screen Time Isn't the Enemy: A Parent's Guide to Digital Wellness": "https://docs.google.com/document/d/1tTJiudFBe2JuAfKt5wHSTNlaDoEZAEgGr3kIQR6KBzo/edit",
-    "Five Ways Your Child Connects with Technology": "https://docs.google.com/document/d/11CwWuQdmFUqZIKeyQy80K5to5cXGsj1Hj63u7N9szXs/edit",
-    "Before You Click: Teaching Your Child to Listen to Their Body": "https://docs.google.com/document/d/1RlRnTzioFzr2zZxuY1VRQm_zI2kEtwBJZYNfvA6OFX8/edit",
-    "MindfulBytes Program Overview": "https://docs.google.com/document/d/1EOUWw6D7eDk9YOP_pg2DAFgSGDWP9Sud4Mne6DgoYn4/edit"
-  },
-  "michaelcharlesdavis_com": {
-    "GitHub Repo": "https://github.com/mereksecurity/michaelcharlesdavis-com",
-    "Live Site": "https://www.michaelcharlesdavis.com",
-    "Vercel Project": "prj_7n2h3PTeDAujsGTQl8agsXmgNuef",
-    "PAT Doc": "https://docs.google.com/document/d/1X6Jbgb_lYgTVArjh_C3Bx9ELPjWnv_K3zDSMcUippAc/edit"
-  },
-  "merek_io_motion_system": {
-    "System-wide Dwell Choreography Commit": "https://github.com/mereksecurity/merek-site/commit/0f346349296caff4260da6ee37c41b90cd06c3e5"
-  },
-  "cyberpsychologyresearch_io": {
-    "Capitol Tech Dissertation Framing Audit Commit": "https://github.com/mereksecurity/cyberpsychologyresearch-io/commit/6fd27b817aa9488726f808b7e0699d7fd7d876ed",
-    "GitHub Repo": "https://github.com/mereksecurity/cyberpsychologyresearch-io",
-    "cyberpsychologyresearch-io-github-pat": "https://docs.google.com/document/d/1rs1bBmyU1Bwm0nTF3W0lZ88MUk5OVQNmtP5tjJMC5WM/edit"
-  },
-  "cah_manuscript": {
-    "CAH Manuscript — Aria Pass 1": "https://docs.google.com/document/d/1eAQLoSgcNKfqpBy-62hTiVZ1qFzJeSa1/edit"
-  },
-  "cant_never_could": {
-    "Can't Never Could — Newsletter Article": "https://docs.google.com/document/d/1CfP7nR0rc_DgOG5ItGdRrGRBpBqhLwu0vKzm-ToUAMg/edit",
-    "Can't Never Could — LinkedIn Post": "https://docs.google.com/document/d/1hfmKLGXTDTqymHJ5VORsXhs5eEgsRmvhpOVnxLM4pTY/edit",
-    "Can't Never Could — Cyberpsychology Unplugged Issue (Option B)": "https://docs.google.com/document/d/1bNS4h_Jumi8yZUocMhk3b4Tni6tPM-zUgLOMPROGqaI/edit"
-  },
-  "sdg_fresquez_sports_complex": {
-    "MOU Advisory Review": "https://docs.google.com/document/d/17XX7wwr_HTJzqa_TyhM4UzHWMUojBTLI5a8ceHsPlxQ/edit",
-    "PRIVATE Note — Antonio as operator/tenant": "https://docs.google.com/document/d/1kIPHWnPmAlQCjlbvmM83PseSa3CY8ZCOYXXsXdgAMfs/edit",
-    "Advisory Engagement Letter": "https://docs.google.com/document/d/1BdPMmjUwWB4zv1Hb1GNR3O1x3anbkThW_CUzzXtlqt0/edit"
-  },
-  "rct_dissertation": {
-    "RCT Folder": "https://drive.google.com/drive/folders/1leXo9O-ygoKXgVR6fABnBBDw2yX--itm"
-  },
-  "halcon_protocol": {
-    "The Halcón Protocol — One-Page Field Guide": "https://docs.google.com/document/d/1XfMRFOJWXRhSjafphbugipImNslsEt_l8o6FQa_5DeM/edit"
+  "threads": {
+    "1": "https://docs.google.com/document/d/1QW9ovcyEEv02wILU3-2aZqNjrkAncuN5HSIXAfVao_k/edit",
+    "3": "https://docs.google.com/document/d/1sC7cF3PSDg189H9TCw1iBwuUWbSk7Dlvq5smNwLdR8M/edit",
+    "6": "https://docs.google.com/document/d/10h1YD02TdeE0cIBWa_0AM9SF5V5HHkG2deiAE846ShY/edit",
+    "11": "https://docs.google.com/document/d/13zu-jTJjihS9IHZF2pFf46fTrRKCa-haBhvoEcOTLvQ/edit",
+    "18": "https://docs.google.com/document/d/11adz-hQjxrHrJ7eFVXQFlLoxFPUk-ayVMVJQ4kIFsyc/edit",
+    "19": "https://docs.google.com/document/d/1NPQ_3i5VvzjS8cz7HM3F0RdcXpUnv8OyWl0M71aL5EU/edit",
+    "21": "https://docs.google.com/document/d/13L5q2VgBc8-1wk53kVp_KVBjt8yOGy115Ql48CGanLY/edit",
+    "22": "https://docs.google.com/document/d/18gAf4Ne8rC6CpVjVJGR5k05-_OW8Dat6TL_fb3zEhn8/edit",
+    "23": "https://taxhelpsantafe-preview.netlify.app",
+    "24": "https://docs.google.com/document/d/17XX7wwr_HTJzqa_TyhM4UzHWMUojBTLI5a8ceHsPlxQ/edit",
+    "CyberKMS Pipeline": "https://docs.google.com/document/d/1OARw_zjLBRO-r-VqYICo2S_B2Z0pxvb6B72kxPg-_B4/edit",
+    "EO-Insight/Michael Hinke Gmail Draft": "https://mail.google.com/mail/u/0/#drafts?compose=19d4f0c6db536281",
+    "Conrad Foundation/Nancy Conrad": "[narrative thread - no standalone SoP doc URL]",
+    "Thread 21 — Cyberpsychology Unplugged Channel Strategy (doc 3)": "http://cyberpsychologyunplugged.beehiiv.com"
   },
   "venture_thesis": {
     "Human Risk Regulation — The Venture Thesis": "https://docs.google.com/document/d/1J_UWOm4O5u2MPzo5v3g2JZaATVsxq3EEPIN0dZOxwRc/edit",
     "The Halcón Practice — Operating Plan v1.0": "https://docs.google.com/document/d/15XgTTgj7C1wl6vwSLzaSQRziMDQU9fRJZByNjC_9o7k/edit",
     "Passive Income — The Two-Engine Architecture (Roadmap)": "https://docs.google.com/document/d/1vumvIplcd3hpFWbuM9m23kN6WXiryRpKR4cmPU1AOog/edit"
-  },
-  "mindfulbytes_licensing": {
-    "MindfulBytes Licensing Model — A Passive Royalty Engine": "https://docs.google.com/document/d/1WqCSPcM6-PkNqTYLPUAa68ypEntjsENCy6IDm5hVFNE/edit",
-    "The Capital Engine — Passive Income Engine 2": "https://docs.google.com/document/d/1Hxtmyr2Btfhn-R7hm5AaOkCDSbSS7goVFQXKGRkI6AU/edit",
-    "MindfulBytes — The Proof (Validated Outcomes One-Pager)": "https://docs.google.com/document/d/17jbfrWH271bpfzayc0u0yIufEV0p0MG8upTpYp3wWJI/edit",
-    "MindfulBytes License Agreement — Structural Skeleton": "https://docs.google.com/document/d/1VaTqwXCuIEURE8iu1JndRnrV6HxYNfiSI61jfYAN0jU/edit",
-    "MindfulBytes Licensing — Pricing Pressure-Test": "https://docs.google.com/document/d/13Jpl23RTXQ9sous4_gxzFCI_Z1WIBF9ujoaXOB8gdz0/edit",
-    "MindfulBytes from the District's Side (The Buyer's Lens)": "https://docs.google.com/document/d/1LmObwrL7p12Jjvqt7WoIdf6V-Gu5H45DvbFzi3v02lE/edit",
-    "Passive Income — The Two-Engine Architecture (Roadmap)": "https://docs.google.com/document/d/1vumvIplcd3hpFWbuM9m23kN6WXiryRpKR4cmPU1AOog/edit"
-  },
-  "digital_presence_fellowship": {
-    "Digital Presence Fellowship — Cohort 1 Final Disposition — Rio Grande": "https://docs.google.com/document/d/1Tdxzi4NPrsBLNer28o09wBBuDkCm2QWq7wbdBrfzoLg/edit",
-    "Co-Design Session Notes — Rio Grande Cohort 1 — Sessions 1 and 2": "https://docs.google.com/document/d/1H6NcuZCNJgH3kA43ppr4rvaADzpMlsZ0xWvAYa-8HRI/edit",
-    "Disposition Images — Cohort 1 Rio Grande (folder)": "https://drive.google.com/drive/folders/17j2-EgrcPg4sK0hzztWuiCr0a4x0tJQS",
-    "Q1–Q3 Deliverables — In Their Own Words": "https://docs.google.com/document/d/1M3Bg1xdwHN_JPEFsdoubOpFORtjcsNGr/edit",
-    "IDC 2026 Paper — \"Inside Voice, Outside Voice\" — Fifth Draft": "https://docs.google.com/document/d/15_7UmD6NMHncNlsDUOD-Uv6gptf-HgHn3iuKe2OpQB0/edit",
-    "MindfulBytes Digital Presence Fellowship — Dissemination Plan": "https://docs.google.com/document/d/1eoxpUAmbtAQ41SpMlLzVoj8TiRuz39vXZCw7Wy5YtVQ/edit"
-  },
-  "halcon_home": {
-    "Halcon Home — Path C: Parallel-Vault Binishell Synthesis": "https://docs.google.com/document/d/1Aed3iCZCJWUjCHu9p-r1yll8xRCAqmx8VJ2QYdiCs84/edit",
-    "VA Construction Loan — Camino Halcón Build Checklist": "https://docs.google.com/document/d/157jFvOk3Tfk9snwbdzD6pWSAVOLeOb8riMrY9CpgtnM/edit",
-    "VA Form 26-1880 — Restoration of Entitlement Filing Packet": "https://docs.google.com/document/d/10mxDqjkJ8fTlxCsoy6IFjijJc_NF4VqdSyyWln4YjYo/edit",
-    "Camino Halcón Build — Feasibility Model": "https://docs.google.com/document/d/1G-5FKa5omkPeVbNd1VArTGikLFXB9SQf32-rucAjqyo/edit"
   }
 }
