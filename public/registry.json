@@ -34,7 +34,8 @@
   },
   "grants": {
     "TechForward NM / NRGNHA Packet": "https://docs.google.com/document/d/1Vu7XppWcXVPG5a_jozq2rl-I_6rMZbXJ6Q-Tl4RvSck/edit",
-    "Harvard CDT Fellowship 2026": "https://docs.google.com/document/d/1QW9ovcyEEv02wILU3-2aZqNjrkAncuN5HSIXAfVao_k/edit"
+    "Harvard CDT Fellowship 2026": "https://docs.google.com/document/d/1QW9ovcyEEv02wILU3-2aZqNjrkAncuN5HSIXAfVao_k/edit",
+    "DWA / NMSBA Research Program": null
   },
   "halcon_build": {
     "VA Construction Loan — Camino Halcón Build Checklist": "https://docs.google.com/document/d/157jFvOk3Tfk9snwbdzD6pWSAVOLeOb8riMrY9CpgtnM/edit",
@@ -77,7 +78,8 @@
     "Choose Your Own Shit Folder": "https://drive.google.com/drive/folders/11ZPQrC90eglr02DNkSWytlA4YM_pFB01",
     "RCT Folder": "https://drive.google.com/drive/folders/1leXo9O-ygoKXgVR6fABnBBDw2yX--itm",
     "CAH Manuscript — Aria Pass 1": "https://docs.google.com/document/d/1eAQLoSgcNKfqpBy-62hTiVZ1qFzJeSa1/edit",
-    "Cah Book Proposal": "https://docs.google.com/document/d/1ncuRxEqeXq_Tsd9Zc3PPbauTZ5cfw1pT7SCwSF9Zcq8/edit"
+    "Cah Book Proposal": "https://docs.google.com/document/d/1ncuRxEqeXq_Tsd9Zc3PPbauTZ5cfw1pT7SCwSF9Zcq8/edit",
+    "Nirmata Manuscript Architecture": "https://docs.google.com/document/d/1SJbtnfaEwEZ12f06CHNtE_wQ_MdlMbT9AgOlVhAb9EE/edit"
   },
   "merek_io_motion_system": {
     "System-wide Dwell Choreography Commit": "https://github.com/mereksecurity/merek-site/commit/0f346349296caff4260da6ee37c41b90cd06c3e5"
@@ -212,7 +214,9 @@
     "CyberKMS Pipeline": "https://docs.google.com/document/d/1OARw_zjLBRO-r-VqYICo2S_B2Z0pxvb6B72kxPg-_B4/edit",
     "EO-Insight/Michael Hinke Gmail Draft": "https://mail.google.com/mail/u/0/#drafts?compose=19d4f0c6db536281",
     "Conrad Foundation/Nancy Conrad": "[narrative thread - no standalone SoP doc URL]",
-    "Thread 21 — Cyberpsychology Unplugged Channel Strategy (doc 3)": "http://cyberpsychologyunplugged.beehiiv.com"
+    "Thread 21 — Cyberpsychology Unplugged Channel Strategy (doc 3)": "http://cyberpsychologyunplugged.beehiiv.com",
+    "EO-Insight / Michael Hinke": "https://mail.google.com/mail/u/0/#drafts?compose=19d4f0c6db536281",
+    "Conrad Foundation / Nancy Conrad": "https://docs.google.com/document/d/1XfMRFOJWXRhSjafphbugipImNslsEt_l8o6FQa_5DeM/edit"
   },
   "venture_thesis": {
     "Human Risk Regulation — The Venture Thesis": "https://docs.google.com/document/d/1J_UWOm4O5u2MPzo5v3g2JZaATVsxq3EEPIN0dZOxwRc/edit",
