@@ -2,7 +2,7 @@
   "threads": {
     "1": "https://docs.google.com/document/d/1QW9ovcyEEv02wILU3-2aZqNjrkAncuN5HSIXAfVao_k/edit",
     "3": "https://docs.google.com/document/d/1sC7cF3PSDg189H9TCw1iBwuUWbSk7Dlvq5smNwLdR8M/edit",
-    "6": "https://docs.google.com/document/d/10h1YD02TdeE0cIBWa_0AM9SF5V5HHkG2deiAE846ShY/edit",
+    "6": "https://docs.google.com/document/d/10h1YD02TdeE0cIBWb_0AM9SF5V5HHkG2deiAE846ShY/edit",
     "11": "https://docs.google.com/document/d/13zu-jTJjihS9IHZF2pFf46fTrRKCa-haBhvoEcOTLvQ/edit",
     "18": "https://docs.google.com/document/d/11adz-hQjxrHrJ7eFVXQFlLoxFPUk-ayVMVJQ4kIFsyc/edit",
     "19": "https://docs.google.com/document/d/1NPQ_3i5VvzjS8cz7HM3F0RdcXpUnv8OyWl0M71aL5EU/edit",
@@ -34,18 +34,43 @@
     "RCT": "https://drive.google.com/drive/folders/1leXo9O-ygoKXgVR6fABnBBDw2yX--itm"
   },
   "grants": {
-    "TechForward NM / NRGNHA Packet": "https://docs.google.com/document/d/1Vu7XppWcXVPG5a_jozq2rl-I_6rMZbXJ6Q-Tl4RvSck/edit",
-    "Harvard CDT Fellowship 2026": "https://docs.google.com/document/d/1QW9ovcyEEv02wILU3-2aZqNjrkAncuN5HSIXAfVao_k/edit"
+    "TechForward NM / NRGNHA Packet": "https://docs.google.com/document/d/1Vu7XppWcXVPG5a\\_jozq2rl-I\\_6rMZbXJ6Q-Tl4RvSck/edit",
+    "Harvard CDT Fellowship 2026": "https://docs.google.com/document/d/1QW9ovcyEEv02wILU3-2aZqNjrkAncuN5HSIXAfVao\\_k/edit",
+    "LunarX Partnership MOUA: <https://docs.google.com/document/d/1YaMFmw81Glt3I1mjxy74ULagYFYVhW74rQ8lB3crA14/edit> Merek Roadmap Draft": "https://docs.google.com/document/d/1rib65G7ZkOQGYwO3WvZ3bg7qoI-DgEFzJrMMdurNAoI/edit",
+    "MindfulBytes — Getting Started Teacher Guide": "https://docs.google.com/document/d/1LubtLKdADlyuTk4ngySkE--hYzmClfIO4mAoEpFaskE/edit",
+    "MindfulBytes — Digital Wellness in K-5 Research Brief": "https://docs.google.com/document/d/1-SHKfOhww6EDhuu4BTLXfx9Nilh6JKDQUKS81gKTDwk/edit",
+    "MindfulBytes — MaaS Framework for Schools": "https://docs.google.com/document/d/1rohfrBlztIicfCxDDusS-\\_-ecFtiX1RLWKvoJVcDMaM/edit",
+    "MindfulBytes — Screen Time Isn't the Enemy (Parents)": "https://docs.google.com/document/d/1tTJiudFBe2JuAfKt5wHSTNlaDoEZAEgGr3kIQR6KBzo/edit",
+    "MindfulBytes — Five Ways Your Child Connects with Technology": "https://docs.google.com/document/d/11CwWuQdmFUqZIKeyQy80K5to5cXGsj1Hj63u7N9szXs/edit",
+    "MindfulBytes — Before You Click (Interoceptive Awareness for Families)": "https://docs.google.com/document/d/1RlRnTzioFzr2zZxuY1VRQm\\_zI2kEtwBJZYNfvA6OFX8/edit",
+    "MindfulBytes — Program Overview": "https://docs.google.com/document/d/1EOUWw6D7eDk9YOP\\_pg2DAFgSGDWP9Sud4Mne6DgoYn4/edit",
+    "Folder Structure Blueprint": "https://docs.google.com/document/d/124KacGe\\_Qe8-uOmdws65qdmhneCnNcTNSRrfB85tRHA/edit",
+    "Master Manifest (199 documents)": "https://docs.google.com/document/d/1JaHMTGiq2q6oS0jawY3NGN7MiaylE\\_2R8k9Du7Rhv0Y/edit",
+    "Google Docs Index & Upload Checklist": "https://docs.google.com/document/d/11NF4VxNz48UmOhzLcxBb-dh21srjgAJ6A4qR9BXarOM/edit",
+    "CPA Handover Package": "https://docs.google.com/document/d/1BNdT5QbGF0VP6OhP\\_aQRqRnn85Xm2Dz5kxI92\\_WlwUs/edit",
+    "IRS Transcript Summary (2019–2025)": "https://docs.google.com/document/d/1JHJmvKLpMIkVVezI5qWCSXqHt8Z4iar7S5oIqes4PtY/edit",
+    "Archive README & Guide": "https://docs.google.com/document/d/1a-FXOWBd6aWxKDkWcosBQIY\\_Ekiz-7xXDGf2Ld64E0g/edit",
+    "Property Dispositions §121/§1250 Analysis": "https://docs.google.com/document/d/1\\_tRxBi8qA5BGhxIPkXZ1MAGOk14Rp18OL9u-7NcEaug/edit",
+    "Reasonable Cause Narrative": "https://docs.google.com/document/d/1LScBHsBv1TsfB6DPFRc60nXSg-U9PWJu\\_gvM\\_audlsw/edit",
+    "Records Request Letters": "https://docs.google.com/document/d/1GeL3nDt7m9LWNEOI\\_My1mGITnpa7D2e1dOlkl6OsQcI/edit",
+    "Mailing Checklist": "https://docs.google.com/document/d/1J7azY1nvY2ZMyKKdQTpwca0GRaGkcb89LdP-CWL8jmY/edit",
+    "1040 Data Package": "https://docs.google.com/document/d/1wzxsKiV5Gpj-nRcHFgcQxI88WPMcj5Bh96JiefTyaw4/edit",
+    "1120S Data Package": "https://docs.google.com/document/d/1c26dr6tkRv7Xq1sjf-PUDeEH3gfMY-R9qgrjOmL6QNM/edit",
+    "FTA Request Letter (1120S)": "https://docs.google.com/document/d/17EOO4\\_aVkxAnfBmrnuYanysvW17NVZkAbm3KfhYNc9c/edit",
+    "URL": "https://docs.google.com/document/d/1YnkI99WwesNY5DB6SQY1jw7nsFSJqsRZ8Ew9DQi7tDU/edit",
+    "\\- URL": "https://docs.google.com/document/d/1H6NcuZCNJgH3kA43ppr4rvaADzpMlsZ0xWvAYa-8HRI/edit",
+    "Live URL": "https://www.michaelcharlesdavis.com",
+    "File: CAH\\_Manuscript\\_Aria\\_Pass1.docx | URL": "https://docs.google.com/document/d/1eAQLoSgcNKfqpBy-62hTiVZ1qFzJeSa1/edit"
   },
   "partnerships": {
     "LunarX Partnership MOUA": "https://docs.google.com/document/d/1YaMFmw81Glt3I1mjxy74ULagYFYVhW74rQ8lB3crA14/edit",
     "Merek Roadmap Draft": "https://docs.google.com/document/d/1rib65G7ZkOQGYwO3WvZ3bg7qoI-DgEFzJrMMdurNAoI/edit",
-    "MindfulBytes \u2014 Getting Started Teacher Guide": "https://docs.google.com/document/d/1LubtLKdADlyuTk4ngySkE--hYzmClfIO4mAoEpFaskE/edit",
-    "MindfulBytes \u2014 Digital Wellness in K-5 Research Brief": "https://docs.google.com/document/d/1-SHKfOhww6EDhuu4BTLXfx9Nilh6JKDQUKS81gKTDwk/edit",
-    "MindfulBytes \u2014 MaaS Framework for Schools": "https://docs.google.com/document/d/1rohfrBlztIicfCxDDusS-_-ecFtiX1RLWKvoJVcDMaM/edit",
-    "MindfulBytes \u2014 Screen Time Isn't the Enemy (Parents)": "https://docs.google.com/document/d/1tTJiudFBe2JuAfKt5wHSTNlaDoEZAEgGr3kIQR6KBzo/edit",
-    "MindfulBytes \u2014 Five Ways Your Child Connects with Technology": "https://docs.google.com/document/d/11CwWuQdmFUqZIKeyQy80K5to5cXGsj1Hj63u7N9szXs/edit",
-    "MindfulBytes \u2014 Before You Click (Interoceptive Awareness for Families)": "https://docs.google.com/document/d/1RlRnTzioFzr2zZxuY1VRQm_zI2kEtwBJZYNfvA6OFX8/edit",
-    "MindfulBytes \u2014 Program Overview": "https://docs.google.com/document/d/1EOUWw6D7eDk9YOP_pg2DAFgSGDWP9Sud4Mne6DgoYn4/edit"
+    "MindfulBytes — Getting Started Teacher Guide": "https://docs.google.com/document/d/1LubtLKdADlyuTk4ngySkE--hYzmClfIO4mAoEpFaskE/edit",
+    "MindfulBytes — Digital Wellness in K-5 Research Brief": "https://docs.google.com/document/d/1-SHKfOhww6EDhuu4BTLXfx9Nilh6JKDQUKS81gKTDwk/edit",
+    "MindfulBytes — MaaS Framework for Schools": "https://docs.google.com/document/d/1rohfrBlztIicfCxDDusS-_-ecFtiX1RLWKvoJVcDMaM/edit",
+    "MindfulBytes — Screen Time Isn't the Enemy (Parents)": "https://docs.google.com/document/d/1tTJiudFBe2JuAfKt5wHSTNlaDoEZAEgGr3kIQR6KBzo/edit",
+    "MindfulBytes — Five Ways Your Child Connects with Technology": "https://docs.google.com/document/d/11CwWuQdmFUqZIKeyQy80K5to5cXGsj1Hj63u7N9szXs/edit",
+    "MindfulBytes — Before You Click (Interoceptive Awareness for Families)": "https://docs.google.com/document/d/1RlRnTzioFzr2zZxuY1VRQm_zI2kEtwBJZYNfvA6OFX8/edit",
+    "MindfulBytes — Program Overview": "https://docs.google.com/document/d/1EOUWw6D7eDk9YOP_pg2DAFgSGDWP9Sud4Mne6DgoYn4/edit"
   }
 }
